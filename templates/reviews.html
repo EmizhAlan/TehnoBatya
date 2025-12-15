@@ -1,0 +1,876 @@
+{% extends "base.html" %}
+
+{% block title %}Отзывы - Компьютерный Центр "ТехноБатя"{% endblock %}
+
+{% block content %}
+<!-- Герой секция -->
+<section class="reviews-hero">
+    <div class="container">
+        <div class="hero-content">
+            <h1 class="hero-title">Отзывы наших клиентов</h1>
+            <p class="hero-subtitle">Более 5000 довольных клиентов доверяют нам ремонт и обучение уже более 10 лет</p>
+            
+            <div class="hero-stats">
+                <div class="stat">
+                    <div class="stat-number" id="totalReviews">5000+</div>
+                    <div class="stat-label">Отзывов</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number" id="avgRating">4.9</div>
+                    <div class="stat-label">Средняя оценка</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">100%</div>
+                    <div class="stat-label">Настоящие отзывы</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Секция отзывов -->
+<section class="reviews-section">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Что говорят о нас клиенты</h2>
+            <p class="section-subtitle">Реальные отзывы от людей, которые воспользовались нашими услугами</p>
+        </div>
+        
+        <!-- Фильтры отзывов -->
+        <div class="reviews-filters">
+            <button class="filter-btn active" data-filter="all">Все отзывы</button>
+            <button class="filter-btn" data-filter="5">5 звёзд</button>
+            <button class="filter-btn" data-filter="4">4 звезды</button>
+            <button class="filter-btn" data-filter="3">3 звезды</button>
+            <button class="filter-btn" data-filter="repair">Ремонт</button>
+            <button class="filter-btn" data-filter="courses">Курсы</button>
+            <button class="filter-btn" data-filter="consulting">Консультации</button>
+        </div>
+        
+        <!-- Контейнер для отзывов -->
+        <div class="reviews-container" id="reviewsContainer">
+            <!-- Отзывы будут загружены через JavaScript -->
+        </div>
+        
+        <!-- Кнопка "Показать еще" -->
+        <div class="text-center mt-4">
+            <button id="loadMoreBtn" class="btn btn-outline">
+                <i class="fas fa-plus"></i> Показать еще отзывы
+            </button>
+        </div>
+    </div>
+</section>
+
+<!-- Форма добавления отзыва -->
+<section class="add-review-section">
+    <div class="container">
+        <div class="add-review-card">
+            <div class="review-form-header">
+                <h2>Оставьте свой отзыв</h2>
+                <p>Поделитесь вашим опытом работы с нами</p>
+            </div>
+            
+            <form id="reviewForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="authorName">Ваше имя *</label>
+                        <input type="text" id="authorName" name="author" required 
+                               placeholder="Как к вам обращаться?">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="authorPosition">Ваша должность / описание</label>
+                        <input type="text" id="authorPosition" name="position" 
+                               placeholder="Например: Директор компании, Студент">
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="reviewService">Услуга</label>
+                        <select id="reviewService" name="service">
+                            <option class="alan" value="">Выберите услугу</option>
+                            <option class="alan" value="Ремонт ПК">Ремонт компьютеров</option>
+                            <option class="alan" value="Ремонт ноутбуков">Ремонт ноутбуков</option>
+                            <option class="alan" value="Курсы">Обучение на курсах</option>
+                            <option class="alan" value="Консультации">IT-консультации</option>
+                            <option class="alan" value="Настройка сетей">Настройка сетей</option>
+                            <option class="alan" value="Сборка ПК">Сборка компьютера</option>
+                            <option class="alan" value="Другое">Другая услуга</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Ваша оценка *</label>
+                        <div class="rating-stars">
+                            <input type="radio" id="star5" name="rating" value="5" required>
+                            <label for="star5"><i class="fas fa-star"></i></label>
+                            <input type="radio" id="star4" name="rating" value="4">
+                            <label for="star4"><i class="fas fa-star"></i></label>
+                            <input type="radio" id="star3" name="rating" value="3">
+                            <label for="star3"><i class="fas fa-star"></i></label>
+                            <input type="radio" id="star2" name="rating" value="2">
+                            <label for="star2"><i class="fas fa-star"></i></label>
+                            <input type="radio" id="star1" name="rating" value="1">
+                            <label for="star1"><i class="fas fa-star"></i></label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="reviewText">Ваш отзыв *</label>
+                    <textarea id="reviewText" name="text" rows="5" required 
+                              placeholder="Поделитесь вашими впечатлениями о нашей работе..."></textarea>
+                </div>
+                
+                <div class="form-notice">
+                    <p><i class="fas fa-info-circle"></i> Все отзывы проходят модерацию перед публикацией</p>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-paper-plane"></i> Отправить отзыв
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<!-- Модальное окно успешной отправки -->
+<div id="successModal" class="modal">
+    <div class="modal-content">
+        <span class="modal-close">&times;</span>
+        <div class="modal-success-icon">
+            <i class="fas fa-check-circle"></i>
+        </div>
+        <h3>Спасибо за ваш отзыв!</h3>
+        <p>Ваш отзыв успешно отправлен и будет опубликован после проверки модератором.</p>
+        <button class="btn btn-primary" id="closeModalBtn">Хорошо</button>
+    </div>
+</div>
+
+<!-- Стили для страницы отзывов -->
+<style>
+/* Стили для страницы отзывов */
+.reviews-hero {
+    padding: 120px 0 80px;
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(139, 92, 246, 0.1));
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.reviews-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="1" fill="rgba(59, 130, 246, 0.05)"/></svg>');
+    background-size: 50px 50px;
+    opacity: 0.5;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+}
+
+.hero-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    margin-bottom: 20px;
+    background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.hero-subtitle {
+    font-size: 1.3rem;
+    color: var(--text-secondary);
+    max-width: 700px;
+    margin: 0 auto 50px;
+    line-height: 1.6;
+}
+
+.hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 60px;
+    flex-wrap: wrap;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.hero-stats .stat {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 25px 30px;
+    text-align: center;
+    min-width: 180px;
+    transition: all 0.3s ease;
+}
+
+.hero-stats .stat:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px var(--shadow-color);
+    border-color: var(--accent-primary);
+}
+
+.hero-stats .stat-number {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--accent-primary);
+    margin-bottom: 10px;
+    display: block;
+}
+
+.hero-stats .stat-label {
+    color: var(--text-secondary);
+    font-size: 1rem;
+}
+
+/* Секция отзывов */
+.reviews-section {
+    padding: 100px 0;
+    background: var(--bg-primary);
+}
+
+.reviews-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 40px;
+    justify-content: center;
+}
+
+.filter-btn {
+    padding: 10px 20px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 25px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.95rem;
+}
+
+.filter-btn:hover {
+    background: var(--accent-primary);
+    color: white;
+    border-color: var(--accent-primary);
+}
+
+.filter-btn.active {
+    background: var(--accent-primary);
+    color: white;
+    border-color: var(--accent-primary);
+}
+
+.reviews-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.review-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 30px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.review-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px var(--shadow-color);
+    border-color: var(--accent-primary);
+}
+
+.review-card::before {
+    content: '"';
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    font-size: 5rem;
+    color: var(--accent-primary);
+    opacity: 0.1;
+    font-family: serif;
+}
+
+.review-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.review-avatar {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--accent-primary);
+    flex-shrink: 0;
+}
+
+.review-info {
+    flex: 1;
+}
+
+.review-author {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: var(--text-primary);
+}
+
+.review-position {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+}
+
+.review-service {
+    display: inline-block;
+    background: rgba(var(--accent-primary-rgb, 59, 130, 246), 0.1);
+    color: var(--accent-primary);
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.review-rating {
+    color: #fbbf24;
+    margin-bottom: 15px;
+}
+
+.review-body {
+    margin-bottom: 20px;
+}
+
+.review-text {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    font-style: italic;
+    position: relative;
+}
+
+.review-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color);
+}
+
+.review-date {
+    color: var(--text-tertiary);
+    font-size: 0.9rem;
+}
+
+.review-verified {
+    color: var(--accent-success);
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* Форма добавления отзыва */
+.add-review-section {
+    padding: 100px 0;
+    background: var(--bg-secondary);
+}
+
+.add-review-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 50px;
+    max-width: 800px;
+    margin: 0 auto;
+    box-shadow: 0 15px 40px var(--shadow-color);
+}
+
+.review-form-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.review-form-header h2 {
+    font-size: 2.2rem;
+    margin-bottom: 10px;
+    color: var(--text-primary);
+}
+
+.review-form-header p {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+@media (max-width: 768px) {
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--text-primary);
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 14px;
+    background: var(--input-bg);
+    border: 1px solid var(--input-border);
+    border-radius: 10px;
+    color: var(--input-text);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 3px rgba(var(--accent-primary-rgb, 59, 130, 246), 0.1);
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: var(--text-tertiary);
+}
+
+/* Рейтинг звездочки */
+.rating-stars {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+}
+
+.rating-stars input {
+    display: none;
+}
+
+.rating-stars label {
+    cursor: pointer;
+    font-size: 2rem;
+    color: #d1d5db;
+    padding: 5px;
+    transition: color 0.3s ease;
+}
+
+.rating-stars label:hover,
+.rating-stars label:hover ~ label,
+.rating-stars input:checked ~ label {
+    color: #fbbf24;
+}
+
+.form-notice {
+    background: rgba(var(--accent-primary-rgb, 59, 130, 246), 0.1);
+    border-left: 4px solid var(--accent-primary);
+    padding: 15px 20px;
+    margin: 20px 0 30px;
+    border-radius: 0 8px 8px 0;
+}
+
+.form-notice p {
+    color: var(--text-secondary);
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.form-notice i {
+    color: var(--accent-primary);
+}
+
+.form-actions {
+    text-align: center;
+}
+
+/* Модальное окно */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(5px);
+    z-index: 10000;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 50px 40px;
+    max-width: 500px;
+    width: 90%;
+    text-align: center;
+    position: relative;
+    animation: modalFadeIn 0.3s ease;
+}
+
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 2rem;
+    color: var(--text-tertiary);
+    cursor: pointer;
+    background: none;
+    border: none;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.3s ease;
+}
+
+.modal-close:hover {
+    color: var(--text-primary);
+}
+
+.modal-success-icon {
+    font-size: 4rem;
+    color: var(--accent-success);
+    margin-bottom: 20px;
+}
+
+.modal-content h3 {
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+    color: var(--text-primary);
+}
+
+.modal-content p {
+    color: var(--text-secondary);
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+/* Индикатор загрузки */
+.loading-indicator {
+    display: none;
+    text-align: center;
+    padding: 40px 0;
+}
+
+.loading-indicator.active {
+    display: block;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(var(--accent-primary-rgb, 59, 130, 246), 0.1);
+    border-left-color: var(--accent-primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 20px;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 2.5rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.1rem;
+    }
+    
+    .hero-stats {
+        gap: 20px;
+    }
+    
+    .hero-stats .stat {
+        min-width: 140px;
+        padding: 20px;
+    }
+    
+    .reviews-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .add-review-card {
+        padding: 30px 20px;
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-title {
+        font-size: 2rem;
+    }
+    
+    .hero-stats {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .hero-stats .stat {
+        width: 100%;
+        max-width: 300px;
+    }
+    
+    .reviews-filters {
+        justify-content: flex-start;
+        overflow-x: auto;
+        padding-bottom: 10px;
+    }
+}
+</style>
+
+<!-- JavaScript для работы с отзывами -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    let currentReviews = [];
+    let displayedCount = 0;
+    const reviewsPerLoad = 6;
+    
+    // Элементы DOM
+    const reviewsContainer = document.getElementById('reviewsContainer');
+    const loadMoreBtn = document.getElementById('loadMoreBtn');
+    const reviewForm = document.getElementById('reviewForm');
+    const successModal = document.getElementById('successModal');
+    const closeModalBtns = document.querySelectorAll('.modal-close, #closeModalBtn');
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    
+    // Функция для создания HTML отзыва
+    function createReviewElement(review) {
+        const stars = '★'.repeat(review.rating) + '☆'.repeat(5 - review.rating);
+        const starIcons = Array(review.rating).fill('<i class="fas fa-star"></i>').join('') + 
+                         Array(5 - review.rating).fill('<i class="far fa-star"></i>').join('');
+        
+        return `
+            <div class="review-card" data-rating="${review.rating}" data-service="${review.service || ''}">
+                <div class="review-header">
+                    <img src="${review.avatar_url}" alt="${review.author}" class="review-avatar">
+                    <div class="review-info">
+                        <div class="review-author">${review.author}</div>
+                        <div class="review-position">${review.position || 'Клиент'}</div>
+                        ${review.service ? `<span class="review-service">${review.service}</span>` : ''}
+                    </div>
+                </div>
+                
+                <div class="review-rating">
+                    ${starIcons}
+                </div>
+                
+                <div class="review-body">
+                    <p class="review-text">${review.text}</p>
+                </div>
+                
+                <div class="review-footer">
+                    <div class="review-date">${review.created_at}</div>
+                    <div class="review-verified">
+                        <i class="fas fa-check-circle"></i> Проверенный отзыв
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+    
+    // Загрузка отзывов
+    function loadReviews() {
+        fetch('/api/reviews')
+            .then(response => response.json())
+            .then(data => {
+                currentReviews = data;
+                displayedCount = 0;
+                reviewsContainer.innerHTML = '';
+                updateStats();
+                displayMoreReviews();
+                
+                if (data.length <= reviewsPerLoad) {
+                    loadMoreBtn.style.display = 'none';
+                } else {
+                    loadMoreBtn.style.display = 'block';
+                }
+            })
+            .catch(error => {
+                console.error('Ошибка загрузки отзывов:', error);
+                reviewsContainer.innerHTML = `
+                    <div class="text-center" style="grid-column: 1/-1; padding: 40px 0;">
+                        <p style="color: var(--text-secondary);">Не удалось загрузить отзывы. Попробуйте обновить страницу.</p>
+                    </div>
+                `;
+            });
+    }
+    
+    // Показать больше отзывов
+    function displayMoreReviews() {
+        const reviewsToShow = currentReviews.slice(displayedCount, displayedCount + reviewsPerLoad);
+        
+        reviewsToShow.forEach(review => {
+            reviewsContainer.innerHTML += createReviewElement(review);
+        });
+        
+        displayedCount += reviewsToShow.length;
+        
+        if (displayedCount >= currentReviews.length) {
+            loadMoreBtn.style.display = 'none';
+        }
+    }
+    
+    // Обновление статистики
+    function updateStats() {
+        fetch('/api/reviews/stats')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('totalReviews').textContent = `${data.total}+`;
+                document.getElementById('avgRating').textContent = data.avg_rating;
+            });
+    }
+    
+    // Фильтрация отзывов
+    function filterReviews(filter) {
+        const allReviews = document.querySelectorAll('.review-card');
+        
+        allReviews.forEach(review => {
+            if (filter === 'all') {
+                review.style.display = 'block';
+            } else if (filter === '5' || filter === '4' || filter === '3') {
+                const rating = parseInt(filter);
+                const reviewRating = parseInt(review.dataset.rating);
+                review.style.display = reviewRating === rating ? 'block' : 'none';
+            } else {
+                const service = review.dataset.service.toLowerCase();
+                review.style.display = service.includes(filter.toLowerCase()) ? 'block' : 'none';
+            }
+        });
+    }
+    
+    // Обработка отправки формы
+    function handleReviewSubmit(event) {
+        event.preventDefault();
+        
+        const formData = {
+            author: document.getElementById('authorName').value,
+            position: document.getElementById('authorPosition').value,
+            text: document.getElementById('reviewText').value,
+            rating: document.querySelector('input[name="rating"]:checked')?.value,
+            service: document.getElementById('reviewService').value
+        };
+        
+        if (!formData.rating) {
+            alert('Пожалуйста, поставьте оценку');
+            return;
+        }
+        
+        fetch('/api/reviews/add', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Показать модальное окно успеха
+                successModal.style.display = 'flex';
+                
+                // Очистить форму
+                reviewForm.reset();
+                
+                // Обновить отзывы через 3 секунды
+                setTimeout(() => {
+                    loadReviews();
+                }, 3000);
+            } else {
+                alert('Ошибка: ' + data.message);
+            }
+        })
+        .catch(error => {
+            alert('Ошибка при отправке отзыва: ' + error.message);
+        });
+    }
+    
+    // Инициализация событий
+    loadMoreBtn.addEventListener('click', displayMoreReviews);
+    
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            filterBtns.forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            filterReviews(this.dataset.filter);
+        });
+    });
+    
+    reviewForm.addEventListener('submit', handleReviewSubmit);
+    
+    closeModalBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            successModal.style.display = 'none';
+        });
+    });
+    
+    // Закрытие модального окна при клике вне его
+    window.addEventListener('click', function(event) {
+        if (event.target === successModal) {
+            successModal.style.display = 'none';
+        }
+    });
+    
+    // Инициализация
+    loadReviews();
+});
+</script>
+{% endblock %}

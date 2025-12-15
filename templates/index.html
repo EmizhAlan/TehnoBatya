@@ -1,0 +1,503 @@
+{% extends "base.html" %}
+
+{% block title %}Главная - Компьютерный Центр "ТехноБатя"{% endblock %}
+
+{% block content %}
+<!-- Герой-секция -->
+<section class="hero-section">
+    <div class="container">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1 class="hero-title">Профессиональный <span class="highlight">ремонт компьютеров</span> в Краснодаре</h1>
+                <p class="hero-subtitle">Быстрое устранение любых неисправностей. Выезд мастера в течение 60 минут. Гарантия на все виды работ.</p>
+                <div class="hero-buttons">
+                    <a href="tel:+74951234567" class="btn btn-primary btn-large">
+                        <i class="fas fa-phone-alt"></i> Вызвать мастера
+                    </a>
+                    <a href="#diagnostic" class="btn btn-outline btn-large">
+                        <i class="fas fa-search"></i> Бесплатная диагностика
+                    </a>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <div class="stat-number" data-count="95">0</div>
+                        <div class="stat-label">Ремонтов в день</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number" data-count="15">0</div>
+                        <div class="stat-label">Лет опыта</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number" data-count="12">0</div>
+                        <div class="stat-label">Мастеров</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-number" data-count="100">0</div>
+                        <div class="stat-label">% гарантия</div>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="image-container">
+                    <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Ремонт компьютеров" class="hero-img">
+                    <div class="floating-element el-1">
+                        <i class="fas fa-tools"></i>
+                    </div>
+                    <div class="floating-element el-2">
+                        <i class="fas fa-laptop"></i>
+                    </div>
+                    <div class="floating-element el-3">
+                        <i class="fas fa-microchip"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- Услуги -->
+<section class="services-section" id="services">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Наши услуги</h2>
+            <p class="section-subtitle">Полный спектр услуг по ремонту и обслуживанию компьютерной техники</p>
+        </div>
+        
+        <div class="services-grid">
+            <div class="service-card" data-aos="fade-up">
+                <div class="service-icon">
+                    <i class="fas fa-laptop-medical"></i>
+                </div>
+                <h3>Ремонт ноутбуков</h3>
+                <ul class="service-list">
+                    <li>Замена матрицы и петель</li>
+                    <li>Чистка от пыли и замена термопасты</li>
+                    <li>Ремонт клавиатуры и тачпада</li>
+                    <li>Восстановление после залития</li>
+                </ul>
+                <div class="service-price">от 1500 ₽</div>
+                <a href="/repair" class="btn btn-service">Подробнее</a>
+            </div>
+            
+            <div class="service-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="service-icon">
+                    <i class="fas fa-desktop"></i>
+                </div>
+                <h3>Ремонт компьютеров</h3>
+                <ul class="service-list">
+                    <li>Замена компонентов ПК</li>
+                    <li>Ремонт материнских плат</li>
+                    <li>Диагностика и ремонт БП</li>
+                    <li>Настройка и оптимизация</li>
+                </ul>
+                <div class="service-price">от 1000 ₽</div>
+                <a href="/pc-repair" class="btn btn-service">Подробнее</a>
+            </div>
+            
+            <div class="service-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="service-icon">
+                    <i class="fas fa-server"></i>
+                </div>
+                <h3>Сборка ПК под заказ</h3>
+                <ul class="service-list">
+                    <li>Подбор комплектующих</li>
+                    <li>Профессиональная сборка</li>
+                    <li>Тестирование системы</li>
+                    <li>Установка и настройка ПО</li>
+                </ul>
+                <div class="service-price">от 5000 ₽</div>
+                <a href="/pc-build" class="btn btn-service">Подробнее</a>
+            </div>
+            
+            <div class="service-card" data-aos="fade-up">
+                <div class="service-icon">
+                    <i class="fas fa-database"></i>
+                </div>
+                <h3>Восстановление данных</h3>
+                <ul class="service-list">
+                    <li>Восстановление с HDD/SSD</li>
+                    <li>Спасение данных после форматирования</li>
+                    <li>Ремонт флешек и карт памяти</li>
+                    <li>Восстановление RAID-массивов</li>
+                </ul>
+                <div class="service-price">от 2500 ₽</div>
+                <a href="/data-recovery" class="btn btn-service">Подробнее</a>
+            </div>
+            
+            <div class="service-card" data-aos="fade-up" data-aos-delay="100">
+                <div class="service-icon">
+                    <i class="fas fa-wifi"></i>
+                </div>
+                <h3>Настройка сетей</h3>
+                <ul class="service-list">
+                    <li>Настройка Wi-Fi роутеров</li>
+                    <li>Прокладка сетевого кабеля</li>
+                    <li>Настройка локальной сети</li>
+                    <li>Устранение проблем с интернетом</li>
+                </ul>
+                <div class="service-price">от 2000 ₽</div>
+                <a href="/network" class="btn btn-service">Подробнее</a>
+            </div>
+            
+            <div class="service-card" data-aos="fade-up" data-aos-delay="200">
+                <div class="service-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3>Удаление вирусов</h3>
+                <ul class="service-list">
+                    <li>Полная очистка от вирусов</li>
+                    <li>Восстановление системы</li>
+                    <li>Настройка антивирусной защиты</li>
+                    <li>Резервное копирование данных</li>
+                </ul>
+                <div class="service-price">от 1500 ₽</div>
+                <a href="/antivirus" class="btn btn-service">Подробнее</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Диагностика -->
+<section class="diagnostic-section" id="diagnostic">
+    <div class="container">
+        <div class="diagnostic-content">
+            <div class="diagnostic-text">
+                <h2>Бесплатная диагностика</h2>
+                <p>Привезете технику к нам или вызовите мастера на дом - диагностика бесплатно в любом случае!</p>
+                <div class="diagnostic-features">
+                    <div class="feature">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Быстрая диагностика за 15 минут</span>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Точный расчет стоимости ремонта</span>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Гарантия на все выполненные работы</span>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Бесплатный выезд мастера</span>
+                    </div>
+                </div>
+            </div>
+            <div class="diagnostic-form">
+                <div class="form-header">
+                    <h3>Заявка на диагностику</h3>
+                    <p>Оставьте заявку и мы перезвоним в течение 5 минут</p>
+                </div>
+                <form action="/diagnostic" method="POST" class="diagnostic-request">
+                    <div class="form-group">
+                        <input type="text" name="name" placeholder="Ваше имя" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="tel" name="phone" placeholder="Ваш телефон" required>
+                    </div>
+                    <div class="form-group">
+                        <select name="problem" required>
+                            <option value="" disabled selected>Тип проблемы</option>
+                            <option value="not_turning_on">Не включается</option>
+                            <option value="slow">Тормозит/зависает</option>
+                            <option value="no_display">Нет изображения</option>
+                            <option value="virus">Вирусы</option>
+                            <option value="other">Другое</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <select name="device" required>
+                            <option value="" disabled selected>Тип устройства</option>
+                            <option value="laptop">Ноутбук</option>
+                            <option value="pc">Компьютер</option>
+                            <option value="monitor">Монитор</option>
+                            <option value="printer">Принтер</option>
+                        </select>
+                    </div>
+                    <div class="form-group checkbox-group">
+                        <input type="checkbox" id="call_master" name="call_master">
+                        <label for="call_master">Нужен выезд мастера</label>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">
+                        <i class="fas fa-wrench"></i> Вызвать мастера
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Как мы работаем -->
+<section class="workflow-section">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Как мы работаем</h2>
+            <p class="section-subtitle">Простая и прозрачная схема работы от заявки до результата</p>
+        </div>
+        
+        <div class="workflow-steps">
+            <div class="step" data-aos="fade-right">
+                <div class="step-number">01</div>
+                <div class="step-content">
+                    <h3>Заявка</h3>
+                    <p>Оставляете заявку на сайте или по телефону. Мы перезваниваем в течение 5 минут для уточнения деталей.</p>
+                </div>
+            </div>
+            
+            <div class="step" data-aos="fade-right" data-aos-delay="100">
+                <div class="step-number">02</div>
+                <div class="step-content">
+                    <h3>Диагностика</h3>
+                    <p>Бесплатная диагностика в сервисном центре или выезд мастера на дом. Определяем проблему и стоимость ремонта.</p>
+                </div>
+            </div>
+            
+            <div class="step" data-aos="fade-right" data-aos-delay="200">
+                <div class="step-number">03</div>
+                <div class="step-content">
+                    <h3>Согласование</h3>
+                    <p>Сообщаем точную стоимость и сроки ремонта. Приступаем к работе только после вашего согласия.</p>
+                </div>
+            </div>
+            
+            <div class="step" data-aos="fade-right" data-aos-delay="300">
+                <div class="step-number">04</div>
+                <div class="step-content">
+                    <h3>Ремонт</h3>
+                    <p>Выполняем ремонт на профессиональном оборудовании с использованием оригинальных запчастей.</p>
+                </div>
+            </div>
+            
+            <div class="step" data-aos="fade-right" data-aos-delay="400">
+                <div class="step-number">05</div>
+                <div class="step-content">
+                    <h3>Тестирование</h3>
+                    <p>Тщательно тестируем устройство после ремонта, убеждаясь в устранении всех проблем.</p>
+                </div>
+            </div>
+            
+            <div class="step" data-aos="fade-right" data-aos-delay="500">
+                <div class="step-number">06</div>
+                <div class="step-content">
+                    <h3>Гарантия</h3>
+                    <p>Передаем отремонтированное устройство с гарантией до 2 лет. Всегда на связи для консультаций.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Цены -->
+<section class="pricing-section">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Прайс-лист на популярные услуги</h2>
+            <p class="section-subtitle">Прозрачные цены без скрытых платежей</p>
+        </div>
+        
+        <div class="pricing-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Услуга</th>
+                        <th>Срок выполнения</th>
+                        <th>Стоимость</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Диагностика компьютера/ноутбука</td>
+                        <td>15-30 минут</td>
+                        <td><strong>Бесплатно</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Чистка от пыли с заменой термопасты</td>
+                        <td>1 час</td>
+                        <td><strong>от 1500 ₽</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Установка/переустановка Windows</td>
+                        <td>1-2 часа</td>
+                        <td><strong>от 2000 ₽</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Удаление вирусов и настройка</td>
+                        <td>1-3 часа</td>
+                        <td><strong>от 1500 ₽</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Замена матрицы ноутбука</td>
+                        <td>1-2 часа</td>
+                        <td><strong>от 3000 ₽</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Ремонт материнской платы</td>
+                        <td>1-3 дня</td>
+                        <td><strong>от 2500 ₽</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Сборка игрового ПК</td>
+                        <td>1-2 дня</td>
+                        <td><strong>от 5000 ₽</strong></td>
+                    </tr>
+                    <tr>
+                        <td>Восстановление данных с HDD</td>
+                        <td>1-7 дней</td>
+                        <td><strong>от 3000 ₽</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="text-center mt-3">
+            <a href="/pricing" class="btn btn-outline">
+                <i class="fas fa-file-alt"></i> Полный прайс-лист
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Бренды -->
+<section class="brands-section">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Работаем с техникой любых брендов</h2>
+            <p class="section-subtitle">Опыт ремонта всех популярных производителей</p>
+        </div>
+        
+        <div class="brands-grid">
+            <div class="brand-logo"><i class="fab fa-apple"></i> Apple</div>
+            <div class="brand-logo"><i class="fas fa-laptop"></i> Asus</div>
+            <div class="brand-logo"><i class="fas fa-laptop"></i> Acer</div>
+            <div class="brand-logo"><i class="fas fa-laptop"></i> Lenovo</div>
+            <div class="brand-logo"><i class="fas fa-laptop"></i> HP</div>
+            <div class="brand-logo"><i class="fas fa-laptop"></i> Dell</div>
+            <div class="brand-logo"><i class="fas fa-laptop"></i> MSI</div>
+            <div class="brand-logo"><i class="fas fa-laptop"></i> Samsung</div>
+            <div class="brand-logo"><i class="fas fa-laptop"></i> Sony</div>
+            <div class="brand-logo"><i class="fas fa-laptop"></i> Toshiba</div>
+        </div>
+    </div>
+</section>
+
+<!-- Отзывы -->
+<section class="reviews-section">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Отзывы наших клиентов</h2>
+            <p class="section-subtitle">Более 5000 довольных клиентов за 15 лет работы</p>
+        </div>
+        
+        <div class="reviews-grid">
+            <div class="review-card" data-aos="zoom-in">
+                <div class="review-header">
+                    <img src="https://i.pravatar.cc/100?img=1" alt="Иван" class="review-avatar">
+                    <div class="review-info">
+                        <h4>Иван Петров</h4>
+                        <p>Ремонт ноутбука Asus</p>
+                    </div>
+                    <div class="review-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                <div class="review-body">
+                    <p>"Ноутбук перестал включаться после пролития кофе. Мастер приехал в течение часа, на месте починил блок питания. Все сделано качественно, гарантию дали. Рекомендую!"</p>
+                </div>
+                <div class="review-date">2 недели назад</div>
+            </div>
+            
+            <div class="review-card" data-aos="zoom-in" data-aos-delay="100">
+                <div class="review-header">
+                    <img src="https://i.pravatar.cc/100?img=2" alt="Ольга" class="review-avatar">
+                    <div class="review-info">
+                        <h4>Ольга Смирнова</h4>
+                        <p>Сборка игрового ПК</p>
+                    </div>
+                    <div class="review-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                </div>
+                <div class="review-body">
+                    <p>"Заказывала сборку игрового компьютера для сына. Подобрали оптимальные комплектующие по бюджету, все собрали и настроили. Работает отлично, сын доволен. Спасибо!"</p>
+                </div>
+                <div class="review-date">1 месяц назад</div>
+            </div>
+            
+            <div class="review-card" data-aos="zoom-in" data-aos-delay="200">
+                <div class="review-header">
+                    <img src="https://i.pravatar.cc/100?img=3" alt="Дмитрий" class="review-avatar">
+                    <div class="review-info">
+                        <h4>Дмитрий Козлов</h4>
+                        <p>Восстановление данных</p>
+                    </div>
+                    <div class="review-rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                <div class="review-body">
+                    <p>"После сбоя жесткого диска думал, что потерял все рабочие файлы. Ребята восстановили 95% данных за 2 дня. Спасены важные проекты! Огромное спасибо за оперативность и качество."</p>
+                </div>
+                <div class="review-date">3 недели назад</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- AOS библиотека для анимаций -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+<script>
+    // Инициализация AOS
+    AOS.init({
+        duration: 800,
+        once: true,
+        offset: 100
+    });
+    
+    // Анимация счетчиков
+    document.addEventListener('DOMContentLoaded', function() {
+        const counters = document.querySelectorAll('.stat-number');
+        const speed = 200;
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const counter = entry.target;
+                    const target = +counter.getAttribute('data-count');
+                    let count = 0;
+                    
+                    const updateCount = () => {
+                        if (count < target) {
+                            count += Math.ceil(target / speed);
+                            if (count > target) count = target;
+                            counter.innerText = count;
+                            setTimeout(updateCount, 10);
+                        }
+                    };
+                    
+                    updateCount();
+                    observer.unobserve(counter);
+                }
+            });
+        }, { threshold: 0.5 });
+        
+        counters.forEach(counter => {
+            observer.observe(counter);
+        });
+    });
+</script>
+{% endblock %}

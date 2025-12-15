@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Техно Батя - Компьютерный Центр{% endblock %}</title>
+    
+    <!-- Подключаем стили -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/header.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/footer.css') }}">
+    
+    <!-- Font Awesome иконки -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Шрифт -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Фавикон -->
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
+</head>
+<body>
+    <!-- Верхняя панель -->
+    <div class="top-bar">
+        <div class="container">
+            <div class="top-bar-left">
+                <div class="top-bar-item">
+                    <i class="fas fa-clock"></i>
+                    <span>Пн-Пт: 9:00 - 20:00 | Сб-Вс: 10:00 - 18:00</span>
+                </div>
+                <div class="top-bar-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>Москва, ул. Техническая, 42</span>
+                </div>
+            </div>
+            <div class="top-bar-right">
+                <a href="tel:+74951234567" class="top-bar-item phone">
+                    <i class="fas fa-phone"></i>
+                    <span>+7 (495) 123-45-67</span>
+                </a>
+                <div class="social-mini">
+                    <a href="#" class="social-mini-link"><i class="fab fa-vk"></i></a>
+                    <a href="#" class="social-mini-link"><i class="fab fa-telegram"></i></a>
+                    <a href="#" class="social-mini-link"><i class="fab fa-whatsapp"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Главная навигация -->
+    <nav class="main-nav">
+        <div class="container">
+            <!-- Логотип с вашим изображением -->
+            <div class="nav-brand">
+                <a href="/" class="logo">
+                    <div class="logo-icon">
+                        <img src="{{ url_for('static', filename='images/favicon.ico') }}" alt="Техно Батя" class="logo-image">
+                        <div class="logo-pulse"></div>
+                    </div>
+                    <div class="logo-text">
+                        <span class="logo-title">Техно Батя</span>
+                        <span class="logo-subtitle">Компьютерный Центр</span>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Кнопка мобильного меню -->
+            <button class="menu-toggle" id="menuToggle" aria-label="Меню">
+                <span class="menu-line"></span>
+                <span class="menu-line"></span>
+                <span class="menu-line"></span>
+            </button>
+
+            <!-- Основное меню -->
+            <div class="nav-menu" id="navMenu">
+                <ul class="nav-links">
+                    <li class="nav-item">
+                        <a href="/" class="nav-link active">
+                            <i class="fas fa-home"></i>
+                            <span>Главная</span>
+                            <div class="link-underline"></div>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/about" class="nav-link">
+                            
+                            <span>О нас</span>
+                            <div class="link-underline"></div>
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link">
+                            <i class="fas fa-cogs"></i>
+                            <span>Услуги</span>
+                            <i class="fas fa-chevron-down dropdown-arrow"></i>
+                            <div class="link-underline"></div>
+                        </a>
+                        <div class="dropdown-menu">
+                            <a href="/repair"><i class="fas fa-tools"></i> Ремонт ПК</a>
+                            <a href="/network"><i class="fas fa-network-wired"></i> Сети</a>
+                            <a href="/consulting"><i class="fas fa-user-tie"></i> Консультации</a>
+                            <a href="/software"><i class="fas fa-code"></i> Программы</a>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/reviews" class="nav-link">
+                            
+                            <span>Отзывы</span>
+                            <div class="link-underline"></div>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="/contact" class="nav-link">
+                            <i class="fas fa-address-book"></i>
+                            <span>Контакты</span>
+                            <div class="link-underline"></div>
+                        </a>
+                    </li>
+                </ul>
+
+                <!-- Кнопки действий -->
+<div class="nav-actions">
+    <a href="tel:+74951234567" class="nav-action-btn phone-btn">
+        <i class="fas fa-phone-alt"></i>
+        <span>Позвонить</span>
+    </a>
+    <a href="/contact" class="nav-action-btn consult-btn">
+        <i class="fas fa-comment-dots"></i>
+        <span>Консультация</span>
+    </a>
+    
+    <!-- Переключатель темы -->
+    <button class="theme-toggle" id="themeToggle" aria-label="Переключить тему">
+        <div class="theme-toggle-inner">
+            <div class="theme-icon sun">
+                <i class="fas fa-sun"></i>
+            </div>
+            <div class="theme-icon moon">
+                <i class="fas fa-moon"></i>
+            </div>
+            <div class="theme-toggle-slider"></div>
+        </div>
+    </button>
+</div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Дополнительная панель -->
+    <div class="nav-extra">
+        <div class="container">
+            <div class="nav-extra-content">
+                <div class="nav-extra-item">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Гарантия 1 год</span>
+                </div>
+                <div class="nav-extra-item">
+                    <i class="fas fa-truck"></i>
+                    <span>Бесплатный выезд</span>
+                </div>
+                <div class="nav-extra-item">
+                    <i class="fas fa-award"></i>
+                    <span>Сертифицированные специалисты</span>
+                </div>
+                <div class="nav-extra-item">
+                    <i class="fas fa-history"></i>
+                    <span>Работаем с 2010 года</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Сообщения -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for category, message in messages %}
+                    <div class="flash {{ category }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Основной контент -->
+    <main class="main-content">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Футер (упрощенная версия для начала) -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Техно Батя</h3>
+                    <p>Компьютерный Центр</p>
+                    <p>Профессиональные IT-решения с 2010 года</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Контакты</h4>
+                    <p><i class="fas fa-phone"></i> +7 (495) 123-45-67</p>
+                    <p><i class="fas fa-envelope"></i> info@technobatya.ru</p>
+                    <p><i class="fas fa-map-marker-alt"></i> Москва, ул. Техническая, 42</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Часы работы</h4>
+                    <p>Пн-Пт: 9:00 - 20:00</p>
+                    <p>Сб-Вс: 10:00 - 18:00</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Техно Батя. Все права защищены.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Подключаем скрипты -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/header.js') }}"></script>
+</body>
+</html>
+<!-- Добавьте в конец base.html или в блок content -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+<script>
+    AOS.init({
+        duration: 800,
+        once: true,
+        offset: 100
+    });
+</script>
