@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 # Добавляем текущую директорию в путь Python
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-from app import app, db, Review
+from __init__ import app, db, Review
 
 def add_test_reviews():
     with app.app_context():

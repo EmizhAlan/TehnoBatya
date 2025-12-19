@@ -1,0 +1,1435 @@
+<!-- templates/software.html -->
+{% extends "base.html" %}
+
+{% block title %}Программное обеспечение - ТЕХНО БАТЯ{% endblock %}
+
+{% block content %}
+<!-- Стили для страницы ПО -->
+<style>
+    /* Переменные для светлой темы */
+    :root {
+        /* Цвета фона */
+        --bg-primary: #ffffff;
+        --bg-secondary: #f8f9fa;
+        --bg-tertiary: #e9ecef;
+        --card-bg: #ffffff;
+        --input-bg: #ffffff;
+        
+        /* Цвета текста */
+        --text-primary: #212529;
+        --text-secondary: #495057;
+        --text-tertiary: #6c757d;
+        --input-text: #212529;
+        
+        /* Цвета акцентов */
+        --accent-primary: #118ab2;
+        --accent-primary-rgb: 17, 138, 178;
+        --accent-secondary: #073b4c;
+        --accent-software: #118ab2;
+        --accent-software-rgb: 17, 138, 178;
+        --accent-success: #06d6a0;
+        --accent-warning: #ffd166;
+        --accent-danger: #ef476f;
+        --accent-office: #ff6b6b;
+        --accent-security: #1dd1a1;
+        --accent-creative: #ff9ff3;
+        --accent-dev: #4361ee;
+        
+        /* Границы и тени */
+        --border-color: #dee2e6;
+        --input-border: #ced4da;
+        --shadow-color: rgba(0, 0, 0, 0.1);
+    }
+
+    /* Переменные для темной темы */
+    body.dark-theme {
+        /* Цвета фона */
+        --bg-primary: #121212;
+        --bg-secondary: #1e1e1e;
+        --bg-tertiary: #2d2d2d;
+        --card-bg: #1e1e1e;
+        --input-bg: #2d2d2d;
+        
+        /* Цвета текста */
+        --text-primary: #f8f9fa;
+        --text-secondary: #e9ecef;
+        --text-tertiary: #adb5bd;
+        --input-text: #f8f9fa;
+        
+        /* Цвета акцентов */
+        --accent-primary: #1a9bc2;
+        --accent-primary-rgb: 26, 155, 194;
+        --accent-secondary: #0a4c63;
+        --accent-software: #1a9bc2;
+        --accent-software-rgb: 26, 155, 194;
+        --accent-success: #1ce9a8;
+        --accent-warning: #ffe169;
+        --accent-danger: #ff6b8b;
+        --accent-office: #ff8e8e;
+        --accent-security: #3ae6bc;
+        --accent-creative: #ffb3f6;
+        --accent-dev: #5a7dff;
+        
+        /* Границы и тени */
+        --border-color: #404040;
+        --input-border: #495057;
+        --shadow-color: rgba(0, 0, 0, 0.3);
+    }
+
+    /* Базовые стили для страницы ПО */
+    .software-hero {
+        background: linear-gradient(135deg, var(--accent-software), var(--accent-secondary));
+        color: white;
+        padding: clamp(60px, 12vw, 100px) 0 clamp(40px, 8vw, 60px);
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .software-hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="30" y="30" width="40" height="40" fill="none" stroke="rgba(255, 255, 255, 0.1)" stroke-width="1"/><circle cx="50" cy="50" r="3" fill="rgba(255, 255, 255, 0.2)"/></svg>');
+        background-size: 100px 100px;
+        opacity: 0.3;
+    }
+
+    .software-hero-content {
+        position: relative;
+        z-index: 1;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 0 clamp(20px, 4vw, 40px);
+    }
+
+    .software-hero h1 {
+        font-size: clamp(2rem, 5vw, 3rem);
+        font-weight: 800;
+        margin-bottom: 20px;
+        line-height: 1.2;
+    }
+
+    .software-hero p {
+        font-size: clamp(1rem, 2.5vw, 1.2rem);
+        opacity: 0.9;
+        margin-bottom: 30px;
+        line-height: 1.6;
+    }
+
+    .software-badge {
+        display: inline-block;
+        background: rgba(255, 255, 255, 0.2);
+        padding: clamp(8px, 2vw, 10px) clamp(15px, 4vw, 25px);
+        border-radius: 50px;
+        font-size: clamp(0.9rem, 2vw, 1rem);
+        font-weight: 600;
+        margin-bottom: 30px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    /* Кнопки */
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: clamp(12px, 3vw, 16px) clamp(20px, 4vw, 32px);
+        border-radius: 12px;
+        font-size: clamp(1rem, 2vw, 1.1rem);
+        font-weight: 600;
+        text-decoration: none;
+        border: 2px solid transparent;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, var(--accent-software), var(--accent-secondary));
+        color: white;
+        box-shadow: 0 8px 25px rgba(var(--accent-software-rgb, 17, 138, 178), 0.3);
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 35px rgba(var(--accent-software-rgb, 17, 138, 178), 0.4);
+    }
+
+    .btn-large {
+        padding: clamp(14px, 3vw, 18px) clamp(24px, 5vw, 36px);
+        font-size: clamp(1.1rem, 2.5vw, 1.2rem);
+    }
+
+    /* Категории ПО */
+    .categories-section {
+        padding: clamp(40px, 8vw, 80px) 0;
+        background: var(--bg-secondary);
+    }
+
+    .section-header {
+        text-align: center;
+        margin-bottom: clamp(30px, 6vw, 60px);
+    }
+
+    .section-title {
+        font-size: clamp(1.8rem, 4vw, 2.5rem);
+        font-weight: 700;
+        margin-bottom: 20px;
+        color: var(--text-primary);
+    }
+
+    .section-subtitle {
+        font-size: clamp(1rem, 2vw, 1.2rem);
+        color: var(--text-secondary);
+        max-width: 600px;
+        margin: 0 auto;
+        line-height: 1.6;
+    }
+
+    .categories-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+        gap: clamp(20px, 4vw, 30px);
+    }
+
+    .category-card {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 15px;
+        padding: clamp(20px, 4vw, 30px);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        text-align: center;
+    }
+
+    .category-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px var(--shadow-color);
+    }
+
+    .category-card.office {
+        border-color: var(--accent-office);
+    }
+
+    .category-card.security {
+        border-color: var(--accent-security);
+    }
+
+    .category-card.creative {
+        border-color: var(--accent-creative);
+    }
+
+    .category-card.development {
+        border-color: var(--accent-dev);
+    }
+
+    .category-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 5px;
+        height: 100%;
+    }
+
+    .category-card.office::before {
+        background: linear-gradient(to bottom, var(--accent-office), #ee5a24);
+    }
+
+    .category-card.security::before {
+        background: linear-gradient(to bottom, var(--accent-security), #10ac84);
+    }
+
+    .category-card.creative::before {
+        background: linear-gradient(to bottom, var(--accent-creative), #f368e0);
+    }
+
+    .category-card.development::before {
+        background: linear-gradient(to bottom, var(--accent-dev), #3a0ca3);
+    }
+
+    .category-icon {
+        font-size: clamp(2rem, 5vw, 2.5rem);
+        margin-bottom: 20px;
+    }
+
+    .category-card.office .category-icon {
+        color: var(--accent-office);
+    }
+
+    .category-card.security .category-icon {
+        color: var(--accent-security);
+    }
+
+    .category-card.creative .category-icon {
+        color: var(--accent-creative);
+    }
+
+    .category-card.development .category-icon {
+        color: var(--accent-dev);
+    }
+
+    .category-card h3 {
+        font-size: clamp(1.2rem, 3vw, 1.4rem);
+        font-weight: 600;
+        margin-bottom: 15px;
+        color: var(--text-primary);
+    }
+
+    .category-card p {
+        color: var(--text-secondary);
+        line-height: 1.6;
+        margin-bottom: 20px;
+        font-size: clamp(0.9rem, 2vw, 1rem);
+    }
+
+    .software-list {
+        list-style: none;
+        padding: 0;
+        margin: 20px 0;
+        text-align: left;
+    }
+
+    .software-list li {
+        padding: 8px 0;
+        color: var(--text-secondary);
+        position: relative;
+        padding-left: 25px;
+        font-size: clamp(0.9rem, 2vw, 1rem);
+    }
+
+    .software-list li:before {
+        content: '▶';
+        position: absolute;
+        left: 0;
+        font-size: 0.8rem;
+    }
+
+    .category-card.office .software-list li:before {
+        color: var(--accent-office);
+    }
+
+    .category-card.security .software-list li:before {
+        color: var(--accent-security);
+    }
+
+    .category-card.creative .software-list li:before {
+        color: var(--accent-creative);
+    }
+
+    .category-card.development .software-list li:before {
+        color: var(--accent-dev);
+    }
+
+    .category-price {
+        font-size: clamp(1.1rem, 3vw, 1.3rem);
+        font-weight: 700;
+        margin-top: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .category-card.office .category-price {
+        color: var(--accent-office);
+    }
+
+    .category-card.security .category-price {
+        color: var(--accent-security);
+    }
+
+    .category-card.creative .category-price {
+        color: var(--accent-creative);
+    }
+
+    .category-card.development .category-price {
+        color: var(--accent-dev);
+    }
+
+    .category-price span {
+        font-size: 0.9rem;
+        color: var(--text-tertiary);
+        font-weight: normal;
+    }
+
+    /* Услуги по ПО */
+    .services-section {
+        padding: clamp(40px, 8vw, 80px) 0;
+        background: var(--bg-primary);
+    }
+
+    .services-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr));
+        gap: clamp(20px, 4vw, 30px);
+        margin-top: clamp(30px, 6vw, 50px);
+    }
+
+    .service-item {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 15px;
+        padding: clamp(20px, 4vw, 30px);
+        transition: all 0.3s ease;
+        text-align: center;
+    }
+
+    .service-item:hover {
+        transform: translateY(-5px);
+        border-color: var(--accent-software);
+        box-shadow: 0 10px 30px var(--shadow-color);
+    }
+
+    .service-icon {
+        font-size: clamp(1.8rem, 4vw, 2.2rem);
+        margin-bottom: 20px;
+        color: var(--accent-software);
+    }
+
+    .service-item h3 {
+        font-size: clamp(1.1rem, 2.5vw, 1.3rem);
+        font-weight: 600;
+        margin-bottom: 15px;
+        color: var(--text-primary);
+    }
+
+    .service-item p {
+        color: var(--text-secondary);
+        line-height: 1.6;
+        font-size: clamp(0.9rem, 2vw, 1rem);
+    }
+
+    /* Преимущества */
+    .advantages-section {
+        padding: clamp(40px, 8vw, 80px) 0;
+        background: linear-gradient(135deg, var(--accent-software), var(--accent-secondary));
+        color: white;
+        text-align: center;
+    }
+
+    .advantages-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="1" fill="rgba(255, 255, 255, 0.1)"/></svg>');
+        background-size: 40px 40px;
+    }
+
+    .advantages-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr));
+        gap: clamp(20px, 4vw, 30px);
+        margin-top: clamp(30px, 6vw, 50px);
+        position: relative;
+        z-index: 1;
+    }
+
+    .advantage-card {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 15px;
+        padding: clamp(20px, 4vw, 30px);
+        backdrop-filter: blur(10px);
+        transition: all 0.3s ease;
+    }
+
+    .advantage-card:hover {
+        transform: translateY(-10px);
+        background: rgba(255, 255, 255, 0.15);
+        border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .advantage-icon {
+        font-size: clamp(2rem, 5vw, 2.5rem);
+        margin-bottom: 20px;
+        color: rgba(255, 255, 255, 0.9);
+    }
+
+    .advantage-card h3 {
+        font-size: clamp(1.2rem, 3vw, 1.4rem);
+        font-weight: 600;
+        margin-bottom: 15px;
+    }
+
+    .advantage-card p {
+        opacity: 0.9;
+        line-height: 1.6;
+        font-size: clamp(0.9rem, 2vw, 1rem);
+    }
+
+    /* Форма заявки */
+    .software-form-section {
+        padding: clamp(40px, 8vw, 80px) 0;
+        background: var(--bg-secondary);
+    }
+
+    .software-form-container {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .form-note {
+        background: var(--bg-tertiary);
+        border-left: 4px solid var(--accent-software);
+        padding: clamp(15px, 3vw, 20px);
+        margin-bottom: clamp(20px, 4vw, 40px);
+        border-radius: 8px;
+    }
+
+    .form-note p {
+        color: var(--text-secondary);
+        margin: 0;
+        line-height: 1.6;
+        font-size: clamp(0.9rem, 2vw, 1rem);
+    }
+
+    .form-note i {
+        color: var(--accent-software);
+        margin-right: 10px;
+    }
+
+    .software-form {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 20px;
+        padding: clamp(20px, 4vw, 40px);
+        box-shadow: 0 20px 60px var(--shadow-color);
+    }
+
+    .form-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr));
+        gap: clamp(15px, 3vw, 20px);
+        margin-bottom: 20px;
+    }
+
+    .form-group {
+        margin-bottom: clamp(15px, 4vw, 25px);
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--text-primary);
+        font-weight: 500;
+        font-size: clamp(0.85rem, 2vw, 0.95rem);
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        width: 100%;
+        padding: clamp(12px, 3vw, 16px) clamp(15px, 3vw, 20px);
+        background: var(--input-bg);
+        border: 2px solid var(--input-border);
+        border-radius: 12px;
+        color: var(--input-text);
+        font-size: clamp(0.9rem, 2vw, 1rem);
+        font-family: inherit;
+        transition: all 0.3s ease;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+        outline: none;
+        border-color: var(--accent-software);
+        background: var(--bg-tertiary);
+        box-shadow: 0 0 0 3px rgba(var(--accent-software-rgb, 17, 138, 178), 0.1);
+    }
+
+    .form-group input::placeholder,
+    .form-group textarea::placeholder {
+        color: var(--text-tertiary);
+    }
+
+    .form-group textarea {
+        min-height: clamp(120px, 25vw, 150px);
+        resize: vertical;
+        line-height: 1.5;
+    }
+
+    .form-group select {
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236c757d' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 20px center;
+        background-size: 16px;
+        padding-right: 50px;
+        cursor: pointer;
+    }
+
+    body.dark-theme .form-group select {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox="0 0 24 24" fill='none' stroke='%23f1f5f9' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    }
+
+    .software-checkboxes {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+        margin: 20px 0;
+    }
+
+    .checkbox-group {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px;
+        background: var(--bg-tertiary);
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+    .checkbox-group:hover {
+        background: var(--border-color);
+    }
+
+    .checkbox-group input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+        accent-color: var(--accent-software);
+    }
+
+    .checkbox-group label {
+        margin: 0;
+        cursor: pointer;
+        font-size: 0.9rem;
+    }
+
+    .form-group label input[type="checkbox"] {
+        width: clamp(16px, 3vw, 18px);
+        height: clamp(16px, 3vw, 18px);
+        margin-right: 10px;
+        accent-color: var(--accent-software);
+        vertical-align: middle;
+        cursor: pointer;
+    }
+
+    .form-group label {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        user-select: none;
+        font-size: clamp(0.9rem, 2vw, 1rem);
+    }
+
+    .submit-btn {
+        width: 100%;
+        padding: clamp(15px, 3vw, 18px) clamp(20px, 4vw, 30px);
+        background: linear-gradient(135deg, var(--accent-software), var(--accent-secondary));
+        color: white;
+        border: none;
+        border-radius: 12px;
+        font-size: clamp(1rem, 2vw, 1.1rem);
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        font-family: inherit;
+    }
+
+    .submit-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 40px rgba(var(--accent-software-rgb, 17, 138, 178), 0.4);
+    }
+
+    /* Часто задаваемые вопросы */
+    .faq-section {
+        background: var(--bg-tertiary);
+        padding: clamp(30px, 6vw, 40px);
+        margin: clamp(40px, 8vw, 60px) auto;
+        border-radius: 15px;
+        max-width: 800px;
+    }
+
+    .faq-section h3 {
+        text-align: center;
+        margin-bottom: 30px;
+        color: var(--text-primary);
+        font-size: clamp(1.4rem, 3vw, 1.8rem);
+    }
+
+    .faq-item {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 10px;
+        margin-bottom: 15px;
+        overflow: hidden;
+    }
+
+    .faq-question {
+        padding: clamp(15px, 3vw, 20px);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+        font-weight: 600;
+        color: var(--text-primary);
+        font-size: clamp(0.95rem, 2vw, 1.05rem);
+    }
+
+    .faq-question:hover {
+        background: var(--bg-tertiary);
+    }
+
+    .faq-answer {
+        padding: 0 20px;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+        color: var(--text-secondary);
+        line-height: 1.6;
+        font-size: clamp(0.9rem, 2vw, 1rem);
+    }
+
+    .faq-item.active .faq-answer {
+        padding: 0 20px 20px;
+        max-height: 500px;
+    }
+
+    .faq-toggle {
+        transition: transform 0.3s ease;
+        font-size: 1.2rem;
+        color: var(--accent-software);
+    }
+
+    .faq-item.active .faq-toggle {
+        transform: rotate(180deg);
+    }
+
+    /* Контакты */
+    .emergency-contacts {
+        background: var(--accent-software);
+        color: white;
+        padding: clamp(20px, 4vw, 40px);
+        margin-top: clamp(30px, 6vw, 60px);
+        border-radius: 15px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .emergency-contacts::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="1" fill="rgba(255, 255, 255, 0.1)"/></svg>');
+        background-size: 30px 30px;
+    }
+
+    .emergency-contacts h2 {
+        font-size: clamp(1.4rem, 4vw, 1.8rem);
+        margin-bottom: 20px;
+        position: relative;
+        z-index: 1;
+    }
+
+    .emergency-contacts p {
+        position: relative;
+        z-index: 1;
+        opacity: 0.9;
+        font-size: clamp(0.9rem, 2vw, 1rem);
+    }
+
+    .emergency-phone {
+        font-size: clamp(1.5rem, 5vw, 2rem);
+        font-weight: 700;
+        margin: 20px 0;
+        position: relative;
+        z-index: 1;
+    }
+
+    .emergency-phone a {
+        color: white;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .emergency-phone a:hover {
+        transform: scale(1.05);
+    }
+
+    .emergency-note {
+        opacity: 0.9;
+        font-size: clamp(0.9rem, 2vw, 1.1rem);
+        position: relative;
+        z-index: 1;
+    }
+
+    /* Анимации */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .software-hero-content,
+    .category-card,
+    .service-item,
+    .advantage-card,
+    .software-form {
+        animation: fadeInUp 0.6s ease-out forwards;
+        opacity: 0;
+    }
+
+    .software-hero-content { animation-delay: 0.1s; }
+    .category-card:nth-child(1) { animation-delay: 0.2s; }
+    .category-card:nth-child(2) { animation-delay: 0.3s; }
+    .category-card:nth-child(3) { animation-delay: 0.4s; }
+    .category-card:nth-child(4) { animation-delay: 0.5s; }
+    .service-item:nth-child(1) { animation-delay: 0.6s; }
+    .service-item:nth-child(2) { animation-delay: 0.7s; }
+    .service-item:nth-child(3) { animation-delay: 0.8s; }
+    .service-item:nth-child(4) { animation-delay: 0.9s; }
+    .service-item:nth-child(5) { animation-delay: 1.0s; }
+    .service-item:nth-child(6) { animation-delay: 1.1s; }
+    .advantage-card:nth-child(1) { animation-delay: 1.2s; }
+    .advantage-card:nth-child(2) { animation-delay: 1.3s; }
+    .advantage-card:nth-child(3) { animation-delay: 1.4s; }
+    .advantage-card:nth-child(4) { animation-delay: 1.5s; }
+    .software-form { animation-delay: 1.6s; }
+
+    /* Плавные переходы */
+    .software-hero-content *,
+    .category-card *,
+    .service-item *,
+    .advantage-card *,
+    .software-form * {
+        transition: all 0.3s ease;
+    }
+
+    /* Эффект пульсации для кнопки */
+    @keyframes pulse {
+        0% {
+            box-shadow: 0 0 0 0 rgba(var(--accent-software-rgb, 17, 138, 178), 0.4);
+        }
+        70% {
+            box-shadow: 0 0 0 10px rgba(var(--accent-software-rgb, 17, 138, 178), 0);
+        }
+        100% {
+            box-shadow: 0 0 0 0 rgba(var(--accent-software-rgb, 17, 138, 178), 0);
+        }
+    }
+
+    .submit-btn:focus {
+        animation: pulse 1.5s infinite;
+    }
+
+    /* Плавные переходы между темами */
+    * {
+        transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    }
+
+    /* Адаптивность */
+    @media (max-width: 480px) {
+        .software-checkboxes {
+            grid-template-columns: 1fr;
+        }
+        
+        .checkbox-group {
+            padding: 12px 15px;
+        }
+        
+        .software-list li {
+            padding-left: 20px;
+            font-size: 0.85rem;
+        }
+        
+        .faq-question {
+            padding: 15px;
+            font-size: 0.95rem;
+        }
+    }
+
+    /* Поддержка высокого контраста */
+    @media (prefers-contrast: high) {
+        :root {
+            --text-primary: #000000;
+            --text-secondary: #333333;
+            --border-color: #000000;
+        }
+        
+        body.dark-theme {
+            --text-primary: #ffffff;
+            --text-secondary: #cccccc;
+            --border-color: #ffffff;
+        }
+        
+        .category-card:hover {
+            outline: 2px solid var(--accent-software);
+            outline-offset: 2px;
+        }
+    }
+
+    /* Поддержка уменьшенного движения */
+    @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+        }
+        
+        .software-hero-content,
+        .category-card,
+        .service-item,
+        .advantage-card,
+        .software-form {
+            animation: none;
+            opacity: 1;
+        }
+        
+        .faq-answer {
+            transition: none;
+        }
+    }
+</style>
+
+<!-- Герой секция -->
+<section class="software-hero">
+    <div class="software-hero-content">
+        <div class="software-badge">
+            <i class="fas fa-code"></i> Программные решения
+        </div>
+        <h1>Установка и настройка программ</h1>
+        <p>Профессиональная установка, настройка и обучение работе с программным обеспечением для любых задач. От офисных пакетов до специализированного ПО.</p>
+        <a href="#software-form" class="btn btn-primary btn-large">
+            <i class="fas fa-download"></i> Заказать установку ПО
+        </a>
+    </div>
+</section>
+
+<!-- Категории ПО -->
+<section class="categories-section">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Категории программного обеспечения</h2>
+            <p class="section-subtitle">Мы работаем со всеми типами программ для любых задач</p>
+        </div>
+
+        <div class="categories-grid">
+            <div class="category-card office">
+                <div class="category-icon">
+                    <i class="fas fa-file-excel"></i>
+                </div>
+                <h3>Офисные программы</h3>
+                <p>Установка и настройка офисных пакетов для работы с документами, таблицами и презентациями.</p>
+                <ul class="software-list">
+                    <li>Microsoft Office 365</li>
+                    <li>LibreOffice / OpenOffice</li>
+                    <li>Google Workspace</li>
+                    <li>Почтовые клиенты</li>
+                    <li>Корпоративный мессенджеры</li>
+                </ul>
+                <div class="category-price">
+                    от 1 500 ₽ <span>/ пакет</span>
+                </div>
+            </div>
+
+            <div class="category-card security">
+                <div class="category-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3>Антивирусы и безопасность</h3>
+                <p>Защита компьютеров от вирусов, шпионов и других киберугроз. Настройка комплексной безопасности.</p>
+                <ul class="software-list">
+                    <li>Kaspersky Internet Security</li>
+                    <li>ESET NOD32</li>
+                    <li>Dr.Web Security Space</li>
+                    <li>Malwarebytes</li>
+                    <li>VPN-сервисы</li>
+                </ul>
+                <div class="category-price">
+                    от 2 000 ₽ <span>/ компьютер</span>
+                </div>
+            </div>
+
+            <div class="category-card creative">
+                <div class="category-icon">
+                    <i class="fas fa-paint-brush"></i>
+                </div>
+                <h3>Графические редакторы</h3>
+                <p>Профессиональные программы для дизайна, обработки фото и видео, создания анимации.</p>
+                <ul class="software-list">
+                    <li>Adobe Creative Cloud</li>
+                    <li>CorelDRAW Graphics Suite</li>
+                    <li>Figma / Sketch</li>
+                    <li>DaVinci Resolve</li>
+                    <li>Blender 3D</li>
+                </ul>
+                <div class="category-price">
+                    от 3 000 ₽ <span>/ пакет</span>
+                </div>
+            </div>
+
+            <div class="category-card development">
+                <div class="category-icon">
+                    <i class="fas fa-terminal"></i>
+                </div>
+                <h3>Инструменты разработки</h3>
+                <p>Установка и настройка среды разработки, компиляторов, систем контроля версий и IDE.</p>
+                <ul class="software-list">
+                    <li>Visual Studio Code / Studio</li>
+                    <li>JetBrains IDE</li>
+                    <li>Git / GitHub Desktop</li>
+                    <li>Docker / WSL</li>
+                    <li>Node.js / Python</li>
+                </ul>
+                <div class="category-price">
+                    от 2 500 ₽ <span>/ набор</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Услуги по ПО -->
+<section class="services-section">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Наши услуги по программному обеспечению</h2>
+            <p class="section-subtitle">Комплексный подход к установке и настройке ПО</p>
+        </div>
+
+        <div class="services-grid">
+            <div class="service-item">
+                <div class="service-icon">
+                    <i class="fas fa-cogs"></i>
+                </div>
+                <h3>Установка ПО</h3>
+                <p>Профессиональная установка программ с правильной настройкой параметров и зависимостей.</p>
+            </div>
+
+            <div class="service-item">
+                <div class="service-icon">
+                    <i class="fas fa-sliders-h"></i>
+                </div>
+                <h3>Настройка под задачи</h3>
+                <p>Оптимизация настроек программ под ваши конкретные задачи и рабочие процессы.</p>
+            </div>
+
+            <div class="service-item">
+                <div class="service-icon">
+                    <i class="fas fa-user-graduate"></i>
+                </div>
+                <h3>Обучение работе</h3>
+                <p>Обучение пользователей работе с новым программным обеспечением.</p>
+            </div>
+
+            <div class="service-item">
+                <div class="service-icon">
+                    <i class="fas fa-sync-alt"></i>
+                </div>
+                <h3>Миграция данных</h3>
+                <p>Перенос данных и настроек со старого ПО на новое, включая лицензии.</p>
+            </div>
+
+            <div class="service-item">
+                <div class="service-icon">
+                    <i class="fas fa-tools"></i>
+                </div>
+                <h3>Оптимизация</h3>
+                <p>Оптимизация работы программ, устранение конфликтов, настройка автозапуска.</p>
+            </div>
+
+            <div class="service-item">
+                <div class="service-icon">
+                    <i class="fas fa-headset"></i>
+                </div>
+                <h3>Техподдержка</h3>
+                <p>Круглосуточная техническая поддержка по вопросам работы программ.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Часто задаваемые вопросы -->
+<div class="faq-section">
+    <h3>Часто задаваемые вопросы по ПО</h3>
+    
+    <div class="faq-item">
+        <div class="faq-question">
+            <span>Как происходит процесс установки ПО?</span>
+            <i class="fas fa-chevron-down faq-toggle"></i>
+        </div>
+        <div class="faq-answer">
+            <p>Процесс включает: 1) Анализ требований и совместимости, 2) Подготовку системы, 3) Установку программ, 4) Настройку под ваши задачи, 5) Обучение работе, 6) Тестирование и поддержку.</p>
+        </div>
+    </div>
+    
+    <div class="faq-item">
+        <div class="faq-question">
+            <span>Вы работаете с лицензионным ПО?</span>
+            <i class="fas fa-chevron-down faq-toggle"></i>
+        </div>
+        <div class="faq-answer">
+            <p>Да, мы работаем только с лицензионным программным обеспечением. Помогаем с приобретением лицензий, активацией и регистрацией. Для тестирования можем установить пробные версии.</p>
+        </div>
+    </div>
+    
+    <div class="faq-item">
+        <div class="faq-question">
+            <span>Сколько времени занимает установка ПО?</span>
+            <i class="fas fa-chevron-down faq-toggle"></i>
+        </div>
+        <div class="faq-answer">
+            <p>Время зависит от сложности ПО: простые программы - 30-60 минут, офисные пакеты - 1-2 часа, профессиональные пакеты (Adobe, Autodesk) - 2-4 часа, комплексная установка нескольких программ - 3-6 часов.</p>
+        </div>
+    </div>
+    
+    <div class="faq-item">
+        <div class="faq-question">
+            <span>Что входит в стоимость установки?</span>
+            <i class="fas fa-chevron-down faq-toggle"></i>
+        </div>
+        <div class="faq-answer">
+            <p>В стоимость входит: установка программы, базовая настройка, создание ярлыков, проверка работоспособности, консультация по основным функциям. Дополнительно можно заказать углубленную настройку и обучение.</p>
+        </div>
+    </div>
+    
+    <div class="faq-item">
+        <div class="faq-question">
+            <span>Работаете ли вы удаленно?</span>
+            <i class="fas fa-chevron-down faq-toggle"></i>
+        </div>
+        <div class="faq-answer">
+            <p>Да, большинство услуг по установке ПО мы можем выполнить удаленно через TeamViewer, AnyDesk или другие программы удаленного доступа. Это экономит время и часто дешевле.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Преимущества -->
+<section class="advantages-section">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Почему выбирают нас</h2>
+            <p class="section-subtitle">Профессионализм и качество в каждой установке</p>
+        </div>
+
+        <div class="advantages-grid">
+            <div class="advantage-card">
+                <div class="advantage-icon">
+                    <i class="fas fa-certificate"></i>
+                </div>
+                <h3>Официальные лицензии</h3>
+                <p>Работаем только с лицензионным ПО, помогаем с покупкой и активацией.</p>
+            </div>
+
+            <div class="advantage-card">
+                <div class="advantage-icon">
+                    <i class="fas fa-clock"></i>
+                </div>
+                <h3>Быстрая установка</h3>
+                <p>Устанавливаем ПО в кратчайшие сроки с оптимизацией под ваши задачи.</p>
+            </div>
+
+            <div class="advantage-card">
+                <div class="advantage-icon">
+                    <i class="fas fa-user-check"></i>
+                </div>
+                <h3>Обучение пользователей</h3>
+                <p>Не просто устанавливаем, а обучаем эффективной работе с программами.</p>
+            </div>
+
+            <div class="advantage-card">
+                <div class="advantage-icon">
+                    <i class="fas fa-headset"></i>
+                </div>
+                <h3>Поддержка 24/7</h3>
+                <p>Круглосуточная техническая поддержка по всем вопросам работы ПО.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Форма заявки -->
+<section class="software-form-section" id="software-form">
+    <div class="container">
+        <div class="software-form-container">
+            <div class="section-header">
+                <h2 class="section-title">Заявка на установку ПО</h2>
+                <p class="section-subtitle">Оставьте заявку и наш специалист свяжется с вами для консультации</p>
+            </div>
+
+            <div class="form-note">
+                <p><i class="fas fa-info-circle"></i> Первичная консультация по подбору ПО проводится бесплатно. Удаленная установка доступна по предварительной договоренности.</p>
+            </div>
+
+            <form action="/api/software/request" method="POST" class="software-form" id="softwareRequestForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="name">Ваше имя *</label>
+                        <input type="text" id="name" name="name" placeholder="Иван Иванов" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Телефон *</label>
+                        <input type="tel" id="phone" name="phone" placeholder="+7 (___) ___-__-__" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" placeholder="ivan@example.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="device_count">Количество устройств</label>
+                        <select id="device_count" name="device_count">
+                            <option value="">Выберите количество</option>
+                            <option value="1">1 устройство</option>
+                            <option value="2-5">2-5 устройств</option>
+                            <option value="6-10">6-10 устройств</option>
+                            <option value="10+">Более 10 устройств</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="software_type">Тип программного обеспечения *</label>
+                    <select id="software_type" name="software_type" required>
+                        <option value="">Выберите тип ПО</option>
+                        <option value="office">Офисные программы</option>
+                        <option value="security">Антивирусы и безопасность</option>
+                        <option value="creative">Графические редакторы</option>
+                        <option value="development">Инструменты разработки</option>
+                        <option value="multiple">Несколько типов</option>
+                        <option value="other">Другое</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Какие программы нужны? (можно выбрать несколько)</label>
+                    <div class="software-checkboxes">
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="ms_office" name="software_ms_office">
+                            <label for="ms_office">Microsoft Office</label>
+                        </div>
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="antivirus" name="software_antivirus">
+                            <label for="antivirus">Антивирусы</label>
+                        </div>
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="adobe" name="software_adobe">
+                            <label for="adobe">Adobe Creative Cloud</label>
+                        </div>
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="development" name="software_development">
+                            <label for="development">Инструменты разработки</label>
+                        </div>
+                        <div class="checkbox-group">
+                            <input type="checkbox" id="other_software" name="software_other">
+                            <label for="other_software">Другое ПО</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="installation_type">Тип установки *</label>
+                    <select id="installation_type" name="installation_type" required>
+                        <option value="">Выберите тип установки</option>
+                        <option value="remote">Удаленная установка</option>
+                        <option value="onsite">Выезд специалиста</option>
+                        <option value="both">Не важно</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="problem_description">Описание задачи *</label>
+                    <textarea id="problem_description" name="problem_description" placeholder="Опишите, какие программы нужны, для каких задач, есть ли особые требования или пожелания..." required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" name="need_licenses" id="need_licenses">
+                        Нужна помощь с приобретением лицензий
+                    </label>
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" name="need_training" id="need_training">
+                        Нужно обучение работе с программами
+                    </label>
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" name="agree_terms" id="agree_terms" required>
+                        Я соглашаюсь с политикой конфиденциальности и обработкой персональных данных *
+                    </label>
+                </div>
+
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-download"></i> Заказать установку ПО
+                </button>
+
+                <p style="text-align: center; margin-top: 20px; color: var(--text-tertiary); font-size: 0.9rem;">
+                    * Обязательные для заполнения поля
+                </p>
+            </form>
+
+            <!-- Контакты -->
+            <div class="emergency-contacts">
+                <h2>Срочная помощь с ПО</h2>
+                <p>Если программы не работают или нужна срочная установка</p>
+                <div class="emergency-phone">
+                    <a href="tel:+79996665544">
+                        <i class="fas fa-phone-alt"></i> +7 (999) 666-55-44
+                    </a>
+                </div>
+                <p class="emergency-note">Техподдержка по ПО доступна с 8:00 до 22:00 ежедневно</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- JavaScript -->
+<script>
+    // Обработка формы заявки
+    document.getElementById('softwareRequestForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(this);
+        const submitBtn = this.querySelector('.submit-btn');
+        const originalText = submitBtn.innerHTML;
+        
+        // Показываем индикатор загрузки
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Отправка...';
+        submitBtn.disabled = true;
+        
+        try {
+            const response = await fetch('/api/software/request', {
+                method: 'POST',
+                body: formData
+            });
+            
+            const result = await response.json();
+            
+            if (result.success) {
+                // Успешная отправка
+                alert(result.message);
+                this.reset();
+                
+                // Показываем сообщение об успехе
+                submitBtn.innerHTML = '<i class="fas fa-check"></i> Заявка отправлена!';
+                submitBtn.style.background = 'var(--accent-success)';
+                
+                setTimeout(() => {
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.style.background = '';
+                    submitBtn.disabled = false;
+                }, 2000);
+            } else {
+                // Ошибка
+                alert('Ошибка: ' + result.message);
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        } catch (error) {
+            console.error('Ошибка:', error);
+            alert('Произошла ошибка при отправке формы. Пожалуйста, попробуйте еще раз.');
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+        }
+    });
+
+    // Маска для телефона
+    document.getElementById('phone').addEventListener('input', function(e) {
+        let value = e.target.value.replace(/\D/g, '');
+        if (value.length > 0) {
+            if (value.length <= 1) value = '+7' + value;
+            if (value.length <= 4) value = value.replace(/(\+7)(\d{0,3})/, '$1 ($2');
+            if (value.length <= 7) value = value.replace(/(\+7\s\(\d{3})(\d{0,3})/, '$1) $2');
+            if (value.length <= 9) value = value.replace(/(\+7\s\(\d{3}\)\s\d{3})(\d{0,2})/, '$1-$2');
+            if (value.length <= 11) value = value.replace(/(\+7\s\(\d{3}\)\s\d{3}-\d{2})(\d{0,2})/, '$1-$2');
+        }
+        e.target.value = value;
+    });
+
+    // Обработка выбора типа ПО
+    document.getElementById('software_type').addEventListener('change', function() {
+        const descriptionField = document.getElementById('problem_description');
+        
+        const placeholders = {
+            'office': 'Опишите задачу: работа с документами, таблицами, презентациями, почтой, планирование задач...',
+            'security': 'Опишите требования: защита от вирусов, безопасность данных, родительский контроль, VPN...',
+            'creative': 'Опишите задачу: обработка фото/видео, дизайн, верстка, анимация, 3D-моделирование...',
+            'development': 'Опишите задачу: программирование, веб-разработка, тестирование, работа с базами данных...',
+            'multiple': 'Опишите комплекс задач: какие типы программ нужны, для каких целей, интеграция между ними...',
+            'other': 'Опишите вашу задачу максимально подробно...'
+        };
+        
+        descriptionField.placeholder = placeholders[this.value] || 'Опишите вашу задачу или требования...';
+        
+        // Автоматически отмечаем соответствующие чекбоксы
+        const checkboxes = {
+            'office': 'ms_office',
+            'security': 'antivirus',
+            'creative': 'adobe',
+            'development': 'development'
+        };
+        
+        if (checkboxes[this.value]) {
+            document.getElementById(checkboxes[this.value]).checked = true;
+        }
+    });
+
+    // FAQ аккордеон
+    document.querySelectorAll('.faq-question').forEach(question => {
+        question.addEventListener('click', () => {
+            const item = question.parentElement;
+            const isActive = item.classList.contains('active');
+            
+            // Закрываем все остальные вопросы
+            document.querySelectorAll('.faq-item').forEach(otherItem => {
+                if (otherItem !== item) {
+                    otherItem.classList.remove('active');
+                }
+            });
+            
+            // Открываем/закрываем текущий вопрос
+            if (!isActive) {
+                item.classList.add('active');
+            }
+        });
+    });
+
+    // Показываем/скрываем дополнительные поля при выборе "Другое ПО"
+    document.getElementById('other_software').addEventListener('change', function() {
+        const otherDescription = document.getElementById('other_description');
+        if (!otherDescription) {
+            if (this.checked) {
+                const descriptionField = document.getElementById('problem_description');
+                const currentValue = descriptionField.value;
+                descriptionField.value = currentValue + ' (Дополнительно: укажите названия нужных программ)';
+            }
+        }
+    });
+</script>
+{% endblock %}

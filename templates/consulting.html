@@ -1,0 +1,1330 @@
+<!-- templates/consulting.html -->
+{% extends "base.html" %}
+
+{% block title %}IT Консультации - ТЕХНО БАТЯ{% endblock %}
+
+{% block content %}
+<!-- Стили для страницы консультаций -->
+<style>
+    /* Переменные для светлой темы */
+    :root {
+        /* Цвета фона */
+        --bg-primary: #ffffff;
+        --bg-secondary: #f8f9fa;
+        --bg-tertiary: #e9ecef;
+        --card-bg: #ffffff;
+        --input-bg: #ffffff;
+        
+        /* Цвета текста */
+        --text-primary: #212529;
+        --text-secondary: #495057;
+        --text-tertiary: #6c757d;
+        --input-text: #212529;
+        
+        /* Цвета акцентов */
+        --accent-primary: #7209b7;
+        --accent-primary-rgb: 114, 9, 183;
+        --accent-secondary: #3a0ca3;
+        --accent-consult: #7209b7;
+        --accent-consult-rgb: 114, 9, 183;
+        --accent-success: #06d6a0;
+        --accent-warning: #ffd166;
+        --accent-danger: #ef476f;
+        --accent-business: #4361ee;
+        --accent-personal: #ff6b6b;
+        --accent-technical: #1dd1a1;
+        
+        /* Границы и тени */
+        --border-color: #dee2e6;
+        --input-border: #ced4da;
+        --shadow-color: rgba(0, 0, 0, 0.1);
+    }
+
+    /* Переменные для темной темы */
+    body.dark-theme {
+        /* Цвета фона */
+        --bg-primary: #121212;
+        --bg-secondary: #1e1e1e;
+        --bg-tertiary: #2d2d2d;
+        --card-bg: #1e1e1e;
+        --input-bg: #2d2d2d;
+        
+        /* Цвета текста */
+        --text-primary: #f8f9fa;
+        --text-secondary: #e9ecef;
+        --text-tertiary: #adb5bd;
+        --input-text: #f8f9fa;
+        
+        /* Цвета акцентов */
+        --accent-primary: #9d4edd;
+        --accent-primary-rgb: 157, 78, 221;
+        --accent-secondary: #560bad;
+        --accent-consult: #9d4edd;
+        --accent-consult-rgb: 157, 78, 221;
+        --accent-success: #1ce9a8;
+        --accent-warning: #ffe169;
+        --accent-danger: #ff6b8b;
+        --accent-business: #5a7dff;
+        --accent-personal: #ff8e8e;
+        --accent-technical: #3ae6bc;
+        
+        /* Границы и тени */
+        --border-color: #404040;
+        --input-border: #495057;
+        --shadow-color: rgba(0, 0, 0, 0.3);
+    }
+
+    /* Базовые стили для страницы консультаций */
+    .consulting-hero {
+        background: linear-gradient(135deg, var(--accent-consult), var(--accent-secondary));
+        color: white;
+        padding: clamp(60px, 12vw, 100px) 0 clamp(40px, 8vw, 60px);
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .consulting-hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M20,50 Q50,20 80,50 T140,50" fill="none" stroke="rgba(255, 255, 255, 0.1)" stroke-width="1"/><circle cx="50" cy="50" r="5" fill="rgba(255, 255, 255, 0.2)"/></svg>');
+        background-size: 80px 80px;
+        opacity: 0.3;
+    }
+
+    .consulting-hero-content {
+        position: relative;
+        z-index: 1;
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 0 clamp(20px, 4vw, 40px);
+    }
+
+    .consulting-hero h1 {
+        font-size: clamp(2rem, 5vw, 3rem);
+        font-weight: 800;
+        margin-bottom: 20px;
+        line-height: 1.2;
+    }
+
+    .consulting-hero p {
+        font-size: clamp(1rem, 2.5vw, 1.2rem);
+        opacity: 0.9;
+        margin-bottom: 30px;
+        line-height: 1.6;
+    }
+
+    .consulting-badge {
+        display: inline-block;
+        background: rgba(255, 255, 255, 0.2);
+        padding: clamp(8px, 2vw, 10px) clamp(15px, 4vw, 25px);
+        border-radius: 50px;
+        font-size: clamp(0.9rem, 2vw, 1rem);
+        font-weight: 600;
+        margin-bottom: 30px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    /* Кнопки */
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: clamp(12px, 3vw, 16px) clamp(20px, 4vw, 32px);
+        border-radius: 12px;
+        font-size: clamp(1rem, 2vw, 1.1rem);
+        font-weight: 600;
+        text-decoration: none;
+        border: 2px solid transparent;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .btn-primary {
+        background: linear-gradient(135deg, var(--accent-consult), var(--accent-secondary));
+        color: white;
+        box-shadow: 0 8px 25px rgba(var(--accent-consult-rgb, 114, 9, 183), 0.3);
+    }
+
+    .btn-primary:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 35px rgba(var(--accent-consult-rgb, 114, 9, 183), 0.4);
+    }
+
+    .btn-large {
+        padding: clamp(14px, 3vw, 18px) clamp(24px, 5vw, 36px);
+        font-size: clamp(1.1rem, 2.5vw, 1.2rem);
+    }
+
+    /* Типы консультаций */
+    .consulting-types-section {
+        padding: clamp(40px, 8vw, 80px) 0;
+        background: var(--bg-secondary);
+    }
+
+    .section-header {
+        text-align: center;
+        margin-bottom: clamp(30px, 6vw, 60px);
+    }
+
+    .section-title {
+        font-size: clamp(1.8rem, 4vw, 2.5rem);
+        font-weight: 700;
+        margin-bottom: 20px;
+        color: var(--text-primary);
+    }
+
+    .section-subtitle {
+        font-size: clamp(1rem, 2vw, 1.2rem);
+        color: var(--text-secondary);
+        max-width: 600px;
+        margin: 0 auto;
+        line-height: 1.6;
+    }
+
+    .consulting-types-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+        gap: clamp(20px, 4vw, 30px);
+    }
+
+    .consulting-type-card {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 15px;
+        padding: clamp(20px, 4vw, 30px);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .consulting-type-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 20px 40px var(--shadow-color);
+    }
+
+    .consulting-type-card.business {
+        border-color: var(--accent-business);
+    }
+
+    .consulting-type-card.personal {
+        border-color: var(--accent-personal);
+    }
+
+    .consulting-type-card.technical {
+        border-color: var(--accent-technical);
+    }
+
+    .consulting-type-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 5px;
+        height: 100%;
+    }
+
+    .consulting-type-card.business::before {
+        background: linear-gradient(to bottom, var(--accent-business), var(--accent-secondary));
+    }
+
+    .consulting-type-card.personal::before {
+        background: linear-gradient(to bottom, var(--accent-personal), #ee5a24);
+    }
+
+    .consulting-type-card.technical::before {
+        background: linear-gradient(to bottom, var(--accent-technical), #10ac84);
+    }
+
+    .type-icon {
+        font-size: clamp(2rem, 5vw, 2.5rem);
+        margin-bottom: 20px;
+    }
+
+    .consulting-type-card.business .type-icon {
+        color: var(--accent-business);
+    }
+
+    .consulting-type-card.personal .type-icon {
+        color: var(--accent-personal);
+    }
+
+    .consulting-type-card.technical .type-icon {
+        color: var(--accent-technical);
+    }
+
+    .consulting-type-card h3 {
+        font-size: clamp(1.2rem, 3vw, 1.4rem);
+        font-weight: 600;
+        margin-bottom: 15px;
+        color: var(--text-primary);
+    }
+
+    .consulting-type-card p {
+        color: var(--text-secondary);
+        line-height: 1.6;
+        margin-bottom: 20px;
+    }
+
+    .type-features {
+        list-style: none;
+        padding: 0;
+        margin: 20px 0;
+    }
+
+    .type-features li {
+        padding: 8px 0;
+        color: var(--text-secondary);
+        position: relative;
+        padding-left: 25px;
+        font-size: clamp(0.9rem, 2vw, 1rem);
+    }
+
+    .type-features li:before {
+        content: '✓';
+        position: absolute;
+        left: 0;
+        font-weight: bold;
+    }
+
+    .consulting-type-card.business .type-features li:before {
+        color: var(--accent-business);
+    }
+
+    .consulting-type-card.personal .type-features li:before {
+        color: var(--accent-personal);
+    }
+
+    .consulting-type-card.technical .type-features li:before {
+        color: var(--accent-technical);
+    }
+
+    .type-price {
+        font-size: clamp(1.1rem, 3vw, 1.3rem);
+        font-weight: 700;
+        margin-top: 15px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .consulting-type-card.business .type-price {
+        color: var(--accent-business);
+    }
+
+    .consulting-type-card.personal .type-price {
+        color: var(--accent-personal);
+    }
+
+    .consulting-type-card.technical .type-price {
+        color: var(--accent-technical);
+    }
+
+    .type-price span {
+        font-size: 0.9rem;
+        color: var(--text-tertiary);
+        font-weight: normal;
+    }
+
+    /* Процесс консультации */
+    .consulting-process-section {
+        padding: clamp(40px, 8vw, 80px) 0;
+        background: var(--bg-primary);
+    }
+
+    .process-steps {
+        max-width: 800px;
+        margin: clamp(30px, 6vw, 50px) auto 0;
+    }
+
+    .process-step {
+        display: flex;
+        align-items: center;
+        gap: clamp(20px, 4vw, 30px);
+        margin-bottom: clamp(20px, 4vw, 40px);
+        padding: clamp(20px, 4vw, 25px);
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 15px;
+        transition: all 0.3s ease;
+    }
+
+    .process-step:hover {
+        transform: translateX(10px);
+        border-color: var(--accent-consult);
+    }
+
+    .step-number {
+        width: clamp(50px, 8vw, 60px);
+        height: clamp(50px, 8vw, 60px);
+        background: linear-gradient(135deg, var(--accent-consult), var(--accent-secondary));
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: clamp(1.2rem, 3vw, 1.5rem);
+        font-weight: 700;
+        flex-shrink: 0;
+        box-shadow: 0 10px 25px rgba(var(--accent-consult-rgb, 114, 9, 183), 0.3);
+    }
+
+    .step-content h3 {
+        font-size: clamp(1.1rem, 2.5vw, 1.3rem);
+        font-weight: 600;
+        margin-bottom: 10px;
+        color: var(--text-primary);
+    }
+
+    .step-content p {
+        color: var(--text-secondary);
+        line-height: 1.6;
+        font-size: clamp(0.9rem, 2vw, 1rem);
+    }
+
+    /* Эксперты */
+    .experts-section {
+        padding: clamp(40px, 8vw, 80px) 0;
+        background: linear-gradient(135deg, var(--accent-consult), var(--accent-secondary));
+        color: white;
+        text-align: center;
+    }
+
+    .experts-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="1" fill="rgba(255, 255, 255, 0.1)"/></svg>');
+        background-size: 40px 40px;
+    }
+
+    .experts-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr));
+        gap: clamp(20px, 4vw, 30px);
+        margin-top: clamp(30px, 6vw, 50px);
+        position: relative;
+        z-index: 1;
+    }
+
+    .expert-card {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 15px;
+        padding: clamp(20px, 4vw, 30px);
+        backdrop-filter: blur(10px);
+        transition: all 0.3s ease;
+    }
+
+    .expert-card:hover {
+        transform: translateY(-10px);
+        background: rgba(255, 255, 255, 0.15);
+        border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .expert-avatar {
+        width: clamp(80px, 15vw, 100px);
+        height: clamp(80px, 15vw, 100px);
+        border-radius: 50%;
+        object-fit: cover;
+        margin: 0 auto 20px;
+        border: 3px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .expert-card h3 {
+        font-size: clamp(1.2rem, 3vw, 1.4rem);
+        font-weight: 600;
+        margin-bottom: 10px;
+    }
+
+    .expert-card .expert-role {
+        color: rgba(255, 255, 255, 0.8);
+        font-size: clamp(0.9rem, 2vw, 1rem);
+        margin-bottom: 15px;
+    }
+
+    .expert-card .expert-bio {
+        opacity: 0.9;
+        line-height: 1.6;
+        font-size: clamp(0.85rem, 1.8vw, 0.95rem);
+        margin-bottom: 15px;
+    }
+
+    .expert-specialization {
+        display: inline-block;
+        background: rgba(255, 255, 255, 0.2);
+        padding: 5px 15px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        margin-top: 10px;
+    }
+
+    /* Форма заявки на консультацию */
+    .consulting-form-section {
+        padding: clamp(40px, 8vw, 80px) 0;
+        background: var(--bg-secondary);
+    }
+
+    .consulting-form-container {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .form-note {
+        background: var(--bg-tertiary);
+        border-left: 4px solid var(--accent-consult);
+        padding: clamp(15px, 3vw, 20px);
+        margin-bottom: clamp(20px, 4vw, 40px);
+        border-radius: 8px;
+    }
+
+    .form-note p {
+        color: var(--text-secondary);
+        margin: 0;
+        line-height: 1.6;
+        font-size: clamp(0.9rem, 2vw, 1rem);
+    }
+
+    .form-note i {
+        color: var(--accent-consult);
+        margin-right: 10px;
+    }
+
+    .consulting-form {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 20px;
+        padding: clamp(20px, 4vw, 40px);
+        box-shadow: 0 20px 60px var(--shadow-color);
+    }
+
+    .form-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr));
+        gap: clamp(15px, 3vw, 20px);
+        margin-bottom: 20px;
+    }
+
+    .form-group {
+        margin-bottom: clamp(15px, 4vw, 25px);
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: var(--text-primary);
+        font-weight: 500;
+        font-size: clamp(0.85rem, 2vw, 0.95rem);
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        width: 100%;
+        padding: clamp(12px, 3vw, 16px) clamp(15px, 3vw, 20px);
+        background: var(--input-bg);
+        border: 2px solid var(--input-border);
+        border-radius: 12px;
+        color: var(--input-text);
+        font-size: clamp(0.9rem, 2vw, 1rem);
+        font-family: inherit;
+        transition: all 0.3s ease;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+        outline: none;
+        border-color: var(--accent-consult);
+        background: var(--bg-tertiary);
+        box-shadow: 0 0 0 3px rgba(var(--accent-consult-rgb, 114, 9, 183), 0.1);
+    }
+
+    .form-group input::placeholder,
+    .form-group textarea::placeholder {
+        color: var(--text-tertiary);
+    }
+
+    .form-group textarea {
+        min-height: clamp(120px, 25vw, 150px);
+        resize: vertical;
+        line-height: 1.5;
+    }
+
+    .form-group select {
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236c757d' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 20px center;
+        background-size: 16px;
+        padding-right: 50px;
+        cursor: pointer;
+    }
+
+    body.dark-theme .form-group select {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23f1f5f9' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    }
+
+    .form-group label input[type="checkbox"] {
+        width: clamp(16px, 3vw, 18px);
+        height: clamp(16px, 3vw, 18px);
+        margin-right: 10px;
+        accent-color: var(--accent-consult);
+        vertical-align: middle;
+        cursor: pointer;
+    }
+
+    .form-group label {
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+        user-select: none;
+        font-size: clamp(0.9rem, 2vw, 1rem);
+    }
+
+    .submit-btn {
+        width: 100%;
+        padding: clamp(15px, 3vw, 18px) clamp(20px, 4vw, 30px);
+        background: linear-gradient(135deg, var(--accent-consult), var(--accent-secondary));
+        color: white;
+        border: none;
+        border-radius: 12px;
+        font-size: clamp(1rem, 2vw, 1.1rem);
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        font-family: inherit;
+    }
+
+    .submit-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 40px rgba(var(--accent-consult-rgb, 114, 9, 183), 0.4);
+    }
+
+    .submit-btn:active {
+        transform: translateY(-1px);
+    }
+
+    /* Часто задаваемые вопросы */
+    .faq-section {
+        background: var(--bg-tertiary);
+        padding: clamp(30px, 6vw, 40px);
+        margin: clamp(40px, 8vw, 60px) auto;
+        border-radius: 15px;
+        max-width: 800px;
+    }
+
+    .faq-section h3 {
+        text-align: center;
+        margin-bottom: 30px;
+        color: var(--text-primary);
+        font-size: clamp(1.4rem, 3vw, 1.8rem);
+    }
+
+    .faq-item {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 10px;
+        margin-bottom: 15px;
+        overflow: hidden;
+    }
+
+    .faq-question {
+        padding: clamp(15px, 3vw, 20px);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+        font-weight: 600;
+        color: var(--text-primary);
+        font-size: clamp(0.95rem, 2vw, 1.05rem);
+    }
+
+    .faq-question:hover {
+        background: var(--bg-tertiary);
+    }
+
+    .faq-answer {
+        padding: 0 20px;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+        color: var(--text-secondary);
+        line-height: 1.6;
+        font-size: clamp(0.9rem, 2vw, 1rem);
+    }
+
+    .faq-item.active .faq-answer {
+        padding: 0 20px 20px;
+        max-height: 500px;
+    }
+
+    .faq-toggle {
+        transition: transform 0.3s ease;
+        font-size: 1.2rem;
+        color: var(--accent-consult);
+    }
+
+    .faq-item.active .faq-toggle {
+        transform: rotate(180deg);
+    }
+
+    /* Контакты экстренной помощи */
+    .emergency-contacts {
+        background: var(--accent-consult);
+        color: white;
+        padding: clamp(20px, 4vw, 40px);
+        margin-top: clamp(30px, 6vw, 60px);
+        border-radius: 15px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .emergency-contacts::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="1" fill="rgba(255, 255, 255, 0.1)"/></svg>');
+        background-size: 30px 30px;
+    }
+
+    .emergency-contacts h2 {
+        font-size: clamp(1.4rem, 4vw, 1.8rem);
+        margin-bottom: 20px;
+        position: relative;
+        z-index: 1;
+    }
+
+    .emergency-contacts p {
+        position: relative;
+        z-index: 1;
+        opacity: 0.9;
+        font-size: clamp(0.9rem, 2vw, 1rem);
+    }
+
+    .emergency-phone {
+        font-size: clamp(1.5rem, 5vw, 2rem);
+        font-weight: 700;
+        margin: 20px 0;
+        position: relative;
+        z-index: 1;
+    }
+
+    .emergency-phone a {
+        color: white;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .emergency-phone a:hover {
+        transform: scale(1.05);
+    }
+
+    .emergency-note {
+        opacity: 0.9;
+        font-size: clamp(0.9rem, 2vw, 1.1rem);
+        position: relative;
+        z-index: 1;
+    }
+
+    /* Анимации */
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .consulting-hero-content,
+    .consulting-type-card,
+    .process-step,
+    .expert-card,
+    .consulting-form {
+        animation: fadeInUp 0.6s ease-out forwards;
+        opacity: 0;
+    }
+
+    .consulting-hero-content { animation-delay: 0.1s; }
+    .consulting-type-card:nth-child(1) { animation-delay: 0.2s; }
+    .consulting-type-card:nth-child(2) { animation-delay: 0.3s; }
+    .consulting-type-card:nth-child(3) { animation-delay: 0.4s; }
+    .process-step:nth-child(1) { animation-delay: 0.5s; }
+    .process-step:nth-child(2) { animation-delay: 0.6s; }
+    .process-step:nth-child(3) { animation-delay: 0.7s; }
+    .process-step:nth-child(4) { animation-delay: 0.8s; }
+    .expert-card:nth-child(1) { animation-delay: 0.9s; }
+    .expert-card:nth-child(2) { animation-delay: 1.0s; }
+    .expert-card:nth-child(3) { animation-delay: 1.1s; }
+    .consulting-form { animation-delay: 1.2s; }
+
+    /* Плавные переходы для всех элементов */
+    .consulting-hero-content *,
+    .consulting-type-card *,
+    .process-step *,
+    .expert-card *,
+    .consulting-form * {
+        transition: all 0.3s ease;
+    }
+
+    /* Эффект пульсации для кнопки */
+    @keyframes pulse {
+        0% {
+            box-shadow: 0 0 0 0 rgba(var(--accent-consult-rgb, 114, 9, 183), 0.4);
+        }
+        70% {
+            box-shadow: 0 0 0 10px rgba(var(--accent-consult-rgb, 114, 9, 183), 0);
+        }
+        100% {
+            box-shadow: 0 0 0 0 rgba(var(--accent-consult-rgb, 114, 9, 183), 0);
+        }
+    }
+
+    .submit-btn:focus {
+        animation: pulse 1.5s infinite;
+    }
+
+    /* Плавные переходы между темами */
+    * {
+        transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    }
+
+    /* Улучшенная поддержка тем для всех элементов */
+    input, textarea, select {
+        background-color: var(--input-bg) !important;
+        color: var(--input-text) !important;
+        border-color: var(--input-border) !important;
+    }
+
+    /* Стили для выпадающих списков в темной теме */
+    body.dark-theme select {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23f1f5f9' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+    }
+
+    /* Адаптивность для очень маленьких экранов */
+    @media (max-width: 480px) {
+        .process-step {
+            flex-direction: column;
+            text-align: center;
+            gap: 15px;
+        }
+        
+        .step-number {
+            width: 70px;
+            height: 70px;
+            font-size: 1.4rem;
+        }
+        
+        .type-features li {
+            padding-left: 20px;
+            font-size: 0.9rem;
+        }
+        
+        .faq-question {
+            padding: 15px;
+            font-size: 0.95rem;
+        }
+    }
+
+    /* Поддержка высокого контраста */
+    @media (prefers-contrast: high) {
+        :root {
+            --text-primary: #000000;
+            --text-secondary: #333333;
+            --border-color: #000000;
+        }
+        
+        body.dark-theme {
+            --text-primary: #ffffff;
+            --text-secondary: #cccccc;
+            --border-color: #ffffff;
+        }
+        
+        .consulting-type-card:hover {
+            outline: 2px solid var(--accent-consult);
+            outline-offset: 2px;
+        }
+    }
+
+    /* Поддержка уменьшенного движения */
+    @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+        }
+        
+        .consulting-hero-content,
+        .consulting-type-card,
+        .process-step,
+        .expert-card,
+        .consulting-form {
+            animation: none;
+            opacity: 1;
+        }
+        
+        .faq-answer {
+            transition: none;
+        }
+    }
+</style>
+
+<!-- Герой секция -->
+<section class="consulting-hero">
+    <div class="consulting-hero-content">
+        <div class="consulting-badge">
+            <i class="fas fa-user-tie"></i> Профессиональные консультации
+        </div>
+        <h1>IT Консультации и экспертиза</h1>
+        <p>Профессиональные консультации по выбору оборудования, внедрению технологий, цифровой трансформации и оптимизации IT-инфраструктуры.</p>
+        <a href="#consulting-form" class="btn btn-primary btn-large">
+            <i class="fas fa-calendar-check"></i> Записаться на консультацию
+        </a>
+    </div>
+</section>
+
+<!-- Типы консультаций -->
+<section class="consulting-types-section">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Наши направления консультаций</h2>
+            <p class="section-subtitle">Комплексные решения для бизнеса и частных клиентов</p>
+        </div>
+
+        <div class="consulting-types-grid">
+            <div class="consulting-type-card business">
+                <div class="type-icon">
+                    <i class="fas fa-briefcase"></i>
+                </div>
+                <h3>Бизнес-консультации</h3>
+                <p>Стратегия цифровизации, выбор IT-решений, автоматизация бизнес-процессов, внедрение CRM и ERP систем.</p>
+                <ul class="type-features">
+                    <li>Анализ текущей IT-инфраструктуры</li>
+                    <li>Разработка IT-стратегии</li>
+                    <li>Подбор программного обеспечения</li>
+                    <li>Автоматизация бизнес-процессов</li>
+                    <li>Обучение сотрудников</li>
+                </ul>
+                <div class="type-price">
+                    от 5 000 ₽ <span>/ час</span>
+                </div>
+            </div>
+
+            <div class="consulting-type-card personal">
+                <div class="type-icon">
+                    <i class="fas fa-user"></i>
+                </div>
+                <h3>Персональные консультации</h3>
+                <p>Помощь в выборе техники, настройке домашней сети, обучение работе с программами, кибербезопасность.</p>
+                <ul class="type-features">
+                    <li>Подбор компьютера и комплектующих</li>
+                    <li>Настройка домашней сети</li>
+                    <li>Обучение работе с программами</li>
+                    <li>Защита от киберугроз</li>
+                    <li>Оптимизация работы устройств</li>
+                </ul>
+                <div class="type-price">
+                    от 2 000 ₽ <span>/ час</span>
+                </div>
+            </div>
+
+            <div class="consulting-type-card technical">
+                <div class="type-icon">
+                    <i class="fas fa-cogs"></i>
+                </div>
+                <h3>Техническая экспертиза</h3>
+                <p>Оценка IT-инфраструктуры, аудит безопасности, анализ производительности, рекомендации по оптимизации.</p>
+                <ul class="type-features">
+                    <li>Технический аудит инфраструктуры</li>
+                    <li>Анализ безопасности сети</li>
+                    <li>Оценка производительности систем</li>
+                    <li>Рекомендации по модернизации</li>
+                    <li>Составление технической документации</li>
+                </ul>
+                <div class="type-price">
+                    от 10 000 ₽ <span>/ проект</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Процесс консультации -->
+<section class="consulting-process-section">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Как проходит консультация</h2>
+            <p class="section-subtitle">Прозрачный процесс от обращения до результата</p>
+        </div>
+
+        <div class="process-steps">
+            <div class="process-step">
+                <div class="step-number">01</div>
+                <div class="step-content">
+                    <h3>Первичная консультация</h3>
+                    <p>Бесплатная 15-минутная консультация для понимания ваших задач и потребностей.</p>
+                </div>
+            </div>
+
+            <div class="process-step">
+                <div class="step-number">02</div>
+                <div class="step-content">
+                    <h3>Анализ и планирование</h3>
+                    <p>Детальный анализ ситуации, разработка плана решения и оценка стоимости.</p>
+                </div>
+            </div>
+
+            <div class="process-step">
+                <div class="step-number">03</div>
+                <div class="step-content">
+                    <h3>Проведение консультации</h3>
+                    <p>Профессиональная консультация с разбором ваших вопросов и предоставлением решений.</p>
+                </div>
+            </div>
+
+            <div class="process-step">
+                <div class="step-number">04</div>
+                <div class="step-content">
+                    <h3>Поддержка и отчетность</h3>
+                    <p>Предоставление письменных рекомендаций и дальнейшая поддержка по вопросам.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Часто задаваемые вопросы -->
+<div class="faq-section">
+    <h3>Часто задаваемые вопросы</h3>
+    
+    <div class="faq-item">
+        <div class="faq-question">
+            <span>Как выбрать подходящий тип консультации?</span>
+            <i class="fas fa-chevron-down faq-toggle"></i>
+        </div>
+        <div class="faq-answer">
+            <p>На бесплатной первичной консультации мы поможем определить, какой тип консультации подходит именно вам. Бизнес-консультации ориентированы на компании, персональные — на частных лиц, техническая экспертиза — на комплексную оценку IT-инфраструктуры.</p>
+        </div>
+    </div>
+    
+    <div class="faq-item">
+        <div class="faq-question">
+            <span>Сколько длится консультация?</span>
+            <i class="fas fa-chevron-down faq-toggle"></i>
+        </div>
+        <div class="faq-answer">
+            <p>Стандартная консультация длится 1 час. При необходимости можно заказать расширенную консультацию на 2 часа или несколько сессий. Первичная 15-минутная консультация проводится бесплатно.</p>
+        </div>
+    </div>
+    
+    <div class="faq-item">
+        <div class="faq-question">
+            <span>Получу ли я письменные рекомендации?</span>
+            <i class="fas fa-chevron-down faq-toggle"></i>
+        </div>
+        <div class="faq-answer">
+            <p>Да, после каждой платной консультации мы предоставляем письменный отчет с подробными рекомендациями, планом действий и техническими спецификациями (при необходимости).</p>
+        </div>
+    </div>
+    
+    <div class="faq-item">
+        <div class="faq-question">
+            <span>Можно ли получить консультацию онлайн?</span>
+            <i class="fas fa-chevron-down faq-toggle"></i>
+        </div>
+        <div class="faq-answer">
+            <p>Да, мы проводим консультации как офлайн в нашем офисе, так и онлайн через Zoom, Skype или другие удобные для вас платформы.</p>
+        </div>
+    </div>
+    
+    <div class="faq-item">
+        <div class="faq-question">
+            <span>Предоставляете ли вы гарантии?</span>
+            <i class="fas fa-chevron-down faq-toggle"></i>
+        </div>
+        <div class="faq-answer">
+            <p>Мы гарантируем качество предоставляемых рекомендаций. Если рекомендации окажутся неэффективными, мы проведем дополнительную консультацию бесплатно для корректировки решений.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Эксперты -->
+<section class="experts-section">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Наши эксперты</h2>
+            <p class="section-subtitle">Профессионалы с многолетним опытом в IT-индустрии</p>
+        </div>
+
+        <div class="experts-grid">
+            <div class="expert-card">
+                <img src="https://i.pravatar.cc/150?img=1" alt="Александр Петров" class="expert-avatar">
+                <h3>Александр Петров</h3>
+                <div class="expert-role">Senior IT Consultant</div>
+                <p class="expert-bio">15 лет опыта в IT-консалтинге. Специализация: цифровая трансформация, внедрение ERP-систем, бизнес-аналитика.</p>
+                <div class="expert-specialization">Бизнес-консультации</div>
+            </div>
+
+            <div class="expert-card">
+                <img src="https://i.pravatar.cc/150?img=5" alt="Мария Иванова" class="expert-avatar">
+                <h3>Мария Иванова</h3>
+                <div class="expert-role">Technical Expert</div>
+                <p class="expert-bio">12 лет опыта в системном администрировании и сетевой безопасности. Сертифицированный специалист Cisco, Microsoft.</p>
+                <div class="expert-specialization">Техническая экспертиза</div>
+            </div>
+
+            <div class="expert-card">
+                <img src="https://i.pravatar.cc/150?img=8" alt="Дмитрий Смирнов" class="expert-avatar">
+                <h3>Дмитрий Смирнов</h3>
+                <div class="expert-role">Personal IT Coach</div>
+                <p class="expert-bio">10 лет опыта обучения и консультирования частных клиентов. Специализация: домашние сети, кибербезопасность, обучение.</p>
+                <div class="expert-specialization">Персональные консультации</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Форма заявки на консультацию -->
+<section class="consulting-form-section" id="consulting-form">
+    <div class="container">
+        <div class="consulting-form-container">
+            <div class="section-header">
+                <h2 class="section-title">Запись на консультацию</h2>
+                <p class="section-subtitle">Оставьте заявку и наш эксперт свяжется с вами для бесплатной первичной консультации</p>
+            </div>
+
+            <div class="form-note">
+                <p><i class="fas fa-info-circle"></i> Первичная 15-минутная консультация проводится бесплатно. Вы сможете задать все вопросы и определиться с форматом сотрудничества.</p>
+            </div>
+
+            <form action="/api/consulting/request" method="POST" class="consulting-form" id="consultingRequestForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="name">Ваше имя *</label>
+                        <input type="text" id="name" name="name" placeholder="Иван Иванов" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Телефон *</label>
+                        <input type="tel" id="phone" name="phone" placeholder="+7 (___) ___-__-__" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="email">Email *</label>
+                        <input type="email" id="email" name="email" placeholder="ivan@example.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="company">Компания / Организация</label>
+                        <input type="text" id="company" name="company" placeholder="Название компании (если есть)">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="consultation_type">Тип консультации *</label>
+                    <select id="consultation_type" name="consultation_type" required>
+                        <option value="">Выберите тип консультации</option>
+                        <option value="business">Бизнес-консультация</option>
+                        <option value="personal">Персональная консультация</option>
+                        <option value="technical">Техническая экспертиза</option>
+                        <option value="not_sure">Не знаю, нужна помощь в выборе</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="preferred_date">Предпочтительная дата и время</label>
+                    <input type="text" id="preferred_date" name="preferred_date" placeholder="Например: завтра после 18:00, в среду утром">
+                </div>
+
+                <div class="form-group">
+                    <label for="format">Формат консультации *</label>
+                    <select id="format" name="format" required>
+                        <option value="">Выберите формат</option>
+                        <option value="online">Онлайн (Zoom/Skype)</option>
+                        <option value="offline">Очно в офисе</option>
+                        <option value="both">Не важно</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="problem_description">Опишите вашу задачу или вопрос *</label>
+                    <textarea id="problem_description" name="problem_description" placeholder="Подробно опишите, с какой задачей или проблемой вы столкнулись, что хотите решить..." required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" name="receive_newsletter" id="receive_newsletter">
+                        Хочу получать полезные материалы и советы по IT
+                    </label>
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" name="agree_terms" id="agree_terms" required>
+                        Я соглашаюсь с политикой конфиденциальности и обработкой персональных данных *
+                    </label>
+                </div>
+
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-calendar-check"></i> Записаться на консультацию
+                </button>
+
+                <p style="text-align: center; margin-top: 20px; color: var(--text-tertiary); font-size: 0.9rem;">
+                    * Обязательные для заполнения поля
+                </p>
+            </form>
+
+            <!-- Контакты экстренной помощи -->
+            <div class="emergency-contacts">
+                <h2>Срочная консультация</h2>
+                <p>Если нужна срочная помощь или консультация прямо сейчас</p>
+                <div class="emergency-phone">
+                    <a href="tel:+79997776655">
+                        <i class="fas fa-phone-alt"></i> +7 (999) 777-66-55
+                    </a>
+                </div>
+                <p class="emergency-note">Консультанты доступны с 9:00 до 21:00 ежедневно</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- JavaScript -->
+<script>
+    // Обработка формы заявки
+    document.getElementById('consultingRequestForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(this);
+        const submitBtn = this.querySelector('.submit-btn');
+        const originalText = submitBtn.innerHTML;
+        
+        // Показываем индикатор загрузки
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Отправка...';
+        submitBtn.disabled = true;
+        
+        try {
+            const response = await fetch('/api/consulting/request', {
+                method: 'POST',
+                body: formData
+            });
+            
+            const result = await response.json();
+            
+            if (result.success) {
+                // Успешная отправка
+                alert(result.message);
+                this.reset();
+                
+                // Показываем сообщение об успехе
+                submitBtn.innerHTML = '<i class="fas fa-check"></i> Заявка отправлена!';
+                submitBtn.style.background = 'var(--accent-success)';
+                
+                setTimeout(() => {
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.style.background = '';
+                    submitBtn.disabled = false;
+                }, 2000);
+            } else {
+                // Ошибка
+                alert('Ошибка: ' + result.message);
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        } catch (error) {
+            console.error('Ошибка:', error);
+            alert('Произошла ошибка при отправке формы. Пожалуйста, попробуйте еще раз.');
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+        }
+    });
+
+    // Маска для телефона
+    document.getElementById('phone').addEventListener('input', function(e) {
+        let value = e.target.value.replace(/\D/g, '');
+        if (value.length > 0) {
+            if (value.length <= 1) value = '+7' + value;
+            if (value.length <= 4) value = value.replace(/(\+7)(\d{0,3})/, '$1 ($2');
+            if (value.length <= 7) value = value.replace(/(\+7\s\(\d{3})(\d{0,3})/, '$1) $2');
+            if (value.length <= 9) value = value.replace(/(\+7\s\(\d{3}\)\s\d{3})(\d{0,2})/, '$1-$2');
+            if (value.length <= 11) value = value.replace(/(\+7\s\(\d{3}\)\s\d{3}-\d{2})(\d{0,2})/, '$1-$2');
+        }
+        e.target.value = value;
+    });
+
+    // Обработка выбора типа консультации
+    document.getElementById('consultation_type').addEventListener('change', function() {
+        const descriptionField = document.getElementById('problem_description');
+        
+        const placeholders = {
+            'business': 'Опишите бизнес-задачу: автоматизация процессов, внедрение CRM/ERP, цифровизация, подбор IT-решений...',
+            'personal': 'Опишите вашу задачу: подбор компьютера, настройка домашней сети, обучение программам, безопасность...',
+            'technical': 'Опишите техническую задачу: аудит инфраструктуры, оценка безопасности, анализ производительности...',
+            'not_sure': 'Опишите ситуацию, и мы поможем определить, какая консультация вам нужна...'
+        };
+        
+        descriptionField.placeholder = placeholders[this.value] || 'Опишите вашу задачу или вопрос...';
+    });
+
+    // FAQ аккордеон
+    document.querySelectorAll('.faq-question').forEach(question => {
+        question.addEventListener('click', () => {
+            const item = question.parentElement;
+            const isActive = item.classList.contains('active');
+            
+            // Закрываем все остальные вопросы
+            document.querySelectorAll('.faq-item').forEach(otherItem => {
+                if (otherItem !== item) {
+                    otherItem.classList.remove('active');
+                }
+            });
+            
+            // Открываем/закрываем текущий вопрос
+            if (!isActive) {
+                item.classList.add('active');
+            }
+        });
+    });
+
+    // Предзаполнение даты и времени
+    document.getElementById('preferred_date').addEventListener('focus', function() {
+        if (!this.value) {
+            const now = new Date();
+            const tomorrow = new Date(now);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            
+            const days = ['воскресенье', 'понедельник', 'вторник', 'среду', 'четверг', 'пятницу', 'субботу'];
+            const dayName = days[tomorrow.getDay()];
+            
+            this.value = `завтра после 18:00, или в ${dayName} утром`;
+        }
+    });
+</script>
+{% endblock %}

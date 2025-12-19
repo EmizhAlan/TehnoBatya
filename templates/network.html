@@ -1,0 +1,1320 @@
+<!-- templates/network.html -->
+{% extends "base.html" %}
+
+{% block title %}Сети и подключение - ТЕХНО БАТЯ{% endblock %}
+
+{% block content %}
+<!-- Стили для страницы сетей -->
+<style>
+    /* Переменные для светлой темы */
+:root {
+    /* Цвета фона */
+    --bg-primary: #ffffff;
+    --bg-secondary: #f8f9fa;
+    --bg-tertiary: #e9ecef;
+    --card-bg: #ffffff;
+    --input-bg: #ffffff;
+    
+    /* Цвета текста */
+    --text-primary: #212529;
+    --text-secondary: #495057;
+    --text-tertiary: #6c757d;
+    --input-text: #212529;
+    
+    /* Цвета акцентов */
+    --accent-primary: #4361ee;
+    --accent-primary-rgb: 67, 97, 238;
+    --accent-secondary: #3a0ca3;
+    --accent-info: #4361ee;
+    --accent-info-rgb: 67, 97, 238;
+    --accent-success: #06d6a0;
+    --accent-warning: #ffd166;
+    --accent-danger: #ef476f;
+    
+    /* Границы и тени */
+    --border-color: #dee2e6;
+    --input-border: #ced4da;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+    
+    /* Дополнительные цвета для сетей */
+    --wifi-color: #ff6b6b;
+    --wifi-color-rgb: 255, 107, 107;
+    --cable-color: #48dbfb;
+    --cable-color-rgb: 72, 219, 251;
+    --router-color: #1dd1a1;
+    --router-color-rgb: 29, 209, 161;
+    --security-color: #ff9ff3;
+    --security-color-rgb: 255, 159, 243;
+}
+
+/* Переменные для темной темы */
+body.dark-theme {
+    /* Цвета фона */
+    --bg-primary: #121212;
+    --bg-secondary: #1e1e1e;
+    --bg-tertiary: #2d2d2d;
+    --card-bg: #1e1e1e;
+    --input-bg: #2d2d2d;
+    
+    /* Цвета текста */
+    --text-primary: #f8f9fa;
+    --text-secondary: #e9ecef;
+    --text-tertiary: #adb5bd;
+    --input-text: #f8f9fa;
+    
+    /* Цвета акцентов */
+    --accent-primary: #5a7dff;
+    --accent-primary-rgb: 90, 125, 255;
+    --accent-secondary: #4a0dff;
+    --accent-info: #5a7dff;
+    --accent-info-rgb: 90, 125, 255;
+    --accent-success: #1ce9a8;
+    --accent-warning: #ffe169;
+    --accent-danger: #ff6b8b;
+    
+    /* Границы и тени */
+    --border-color: #404040;
+    --input-border: #495057;
+    --shadow-color: rgba(0, 0, 0, 0.3);
+    
+    /* Дополнительные цвета для сетей */
+    --wifi-color: #ff8e8e;
+    --wifi-color-rgb: 255, 142, 142;
+    --cable-color: #64e6ff;
+    --cable-color-rgb: 100, 230, 255;
+    --router-color: #3ae6bc;
+    --router-color-rgb: 58, 230, 188;
+    --security-color: #ffb3f6;
+    --security-color-rgb: 255, 179, 246;
+}
+
+/* Базовые стили для страницы сетей */
+.network-hero {
+    background: linear-gradient(135deg, var(--accent-info), var(--accent-secondary));
+    color: white;
+    padding: 100px 0 60px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.network-hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="45" y="10" width="10" height="80" fill="rgba(255, 255, 255, 0.1)"/><rect x="10" y="45" width="80" height="10" fill="rgba(255, 255, 255, 0.1)"/></svg>');
+    background-size: 60px 60px;
+}
+
+.network-hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.network-hero h1 {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    margin-bottom: 20px;
+    line-height: 1.2;
+}
+
+.network-hero p {
+    font-size: clamp(1rem, 2.5vw, 1.2rem);
+    opacity: 0.9;
+    margin-bottom: 30px;
+    line-height: 1.6;
+}
+
+.network-badge {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 10px 25px;
+    border-radius: 50px;
+    font-size: clamp(0.9rem, 2vw, 1rem);
+    font-weight: 600;
+    margin-bottom: 30px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Кнопки */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: clamp(12px, 3vw, 16px) clamp(20px, 4vw, 32px);
+    border-radius: 12px;
+    font-size: clamp(1rem, 2vw, 1.1rem);
+    font-weight: 600;
+    text-decoration: none;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--accent-info), var(--accent-secondary));
+    color: white;
+    box-shadow: 0 8px 25px rgba(var(--accent-info-rgb, 67, 97, 238), 0.3);
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px rgba(var(--accent-info-rgb, 67, 97, 238), 0.4);
+}
+
+/* Услуги сетей */
+.services-section {
+    padding: clamp(40px, 8vw, 80px) 0;
+    background: var(--bg-secondary);
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: clamp(30px, 6vw, 60px);
+}
+
+.section-title {
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: var(--text-primary);
+}
+
+.section-subtitle {
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+    gap: clamp(20px, 4vw, 30px);
+}
+
+.service-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 15px;
+    padding: clamp(20px, 4vw, 30px);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.service-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px var(--shadow-color);
+    border-color: var(--accent-info);
+}
+
+.service-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 5px;
+    height: 100%;
+    background: linear-gradient(to bottom, var(--accent-info), var(--accent-secondary));
+}
+
+.service-card.wifi::before {
+    background: linear-gradient(to bottom, var(--wifi-color), rgb(var(--wifi-color-rgb, 255, 107, 107), 0.7));
+}
+
+.service-card.cable::before {
+    background: linear-gradient(to bottom, var(--cable-color), rgb(var(--cable-color-rgb, 72, 219, 251), 0.7));
+}
+
+.service-card.router::before {
+    background: linear-gradient(to bottom, var(--router-color), rgb(var(--router-color-rgb, 29, 209, 161), 0.7));
+}
+
+.service-card.security::before {
+    background: linear-gradient(to bottom, var(--security-color), rgb(var(--security-color-rgb, 255, 159, 243), 0.7));
+}
+
+.service-icon {
+    font-size: clamp(2rem, 5vw, 2.5rem);
+    margin-bottom: 20px;
+    color: var(--accent-info);
+}
+
+.service-card.wifi .service-icon {
+    color: var(--wifi-color);
+}
+
+.service-card.cable .service-icon {
+    color: var(--cable-color);
+}
+
+.service-card.router .service-icon {
+    color: var(--router-color);
+}
+
+.service-card.security .service-icon {
+    color: var(--security-color);
+}
+
+.service-card h3 {
+    font-size: clamp(1.2rem, 3vw, 1.4rem);
+    font-weight: 600;
+    margin-bottom: 15px;
+    color: var(--text-primary);
+}
+
+.service-card p {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 20px;
+}
+
+.service-features {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+}
+
+.service-features li {
+    padding: 8px 0;
+    color: var(--text-secondary);
+    position: relative;
+    padding-left: 25px;
+}
+
+.service-features li:before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--accent-success);
+    font-weight: bold;
+}
+
+.service-price {
+    font-size: clamp(1.1rem, 3vw, 1.3rem);
+    font-weight: 700;
+    color: var(--accent-info);
+    margin-top: 15px;
+}
+
+.service-card.wifi .service-price {
+    color: var(--wifi-color);
+}
+
+.service-card.cable .service-price {
+    color: var(--cable-color);
+}
+
+.service-card.router .service-price {
+    color: var(--router-color);
+}
+
+.service-card.security .service-price {
+    color: var(--security-color);
+}
+
+/* Процесс работы */
+.process-section {
+    padding: clamp(40px, 8vw, 80px) 0;
+    background: var(--bg-primary);
+}
+
+.process-steps {
+    max-width: 800px;
+    margin: clamp(30px, 6vw, 50px) auto 0;
+}
+
+.process-step {
+    display: flex;
+    align-items: center;
+    gap: clamp(20px, 4vw, 30px);
+    margin-bottom: clamp(20px, 4vw, 40px);
+    padding: clamp(20px, 4vw, 25px);
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 15px;
+    transition: all 0.3s ease;
+}
+
+.process-step:hover {
+    transform: translateX(10px);
+    border-color: var(--accent-info);
+}
+
+.step-number {
+    width: clamp(50px, 8vw, 60px);
+    height: clamp(50px, 8vw, 60px);
+    background: linear-gradient(135deg, var(--accent-info), var(--accent-secondary));
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: clamp(1.2rem, 3vw, 1.5rem);
+    font-weight: 700;
+    flex-shrink: 0;
+    box-shadow: 0 10px 25px rgba(var(--accent-info-rgb, 67, 97, 238), 0.3);
+}
+
+.step-content h3 {
+    font-size: clamp(1.1rem, 2.5vw, 1.3rem);
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: var(--text-primary);
+}
+
+.step-content p {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    font-size: clamp(0.9rem, 2vw, 1rem);
+}
+
+/* Преимущества */
+.advantages-section {
+    padding: clamp(40px, 8vw, 80px) 0;
+    background: linear-gradient(135deg, var(--accent-info), var(--accent-secondary));
+    color: white;
+    text-align: center;
+}
+
+.advantages-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="1" fill="rgba(255, 255, 255, 0.1)"/></svg>');
+    background-size: 40px 40px;
+}
+
+.advantages-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr));
+    gap: clamp(20px, 4vw, 30px);
+    margin-top: clamp(30px, 6vw, 50px);
+    position: relative;
+    z-index: 1;
+}
+
+.advantage-card {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 15px;
+    padding: clamp(20px, 4vw, 30px);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+.advantage-card:hover {
+    transform: translateY(-10px);
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.advantage-icon {
+    font-size: clamp(2rem, 5vw, 2.5rem);
+    margin-bottom: 20px;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.advantage-card h3 {
+    font-size: clamp(1.2rem, 3vw, 1.4rem);
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+.advantage-card p {
+    opacity: 0.9;
+    line-height: 1.6;
+    font-size: clamp(0.9rem, 2vw, 1rem);
+}
+
+/* Форма заявки */
+.network-form-section {
+    padding: clamp(40px, 8vw, 80px) 0;
+    background: var(--bg-secondary);
+}
+
+.network-form-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.form-note {
+    background: var(--bg-tertiary);
+    border-left: 4px solid var(--accent-info);
+    padding: clamp(15px, 3vw, 20px);
+    margin-bottom: clamp(20px, 4vw, 40px);
+    border-radius: 8px;
+}
+
+.form-note p {
+    color: var(--text-secondary);
+    margin: 0;
+    line-height: 1.6;
+    font-size: clamp(0.9rem, 2vw, 1rem);
+}
+
+.form-note i {
+    color: var(--accent-info);
+    margin-right: 10px;
+}
+
+.network-form {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: clamp(20px, 4vw, 40px);
+    box-shadow: 0 20px 60px var(--shadow-color);
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr));
+    gap: clamp(15px, 3vw, 20px);
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: clamp(15px, 4vw, 25px);
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--text-primary);
+    font-weight: 500;
+    font-size: clamp(0.85rem, 2vw, 0.95rem);
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: clamp(12px, 3vw, 16px) clamp(15px, 3vw, 20px);
+    background: var(--input-bg);
+    border: 2px solid var(--input-border);
+    border-radius: 12px;
+    color: var(--input-text);
+    font-size: clamp(0.9rem, 2vw, 1rem);
+    font-family: inherit;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--accent-info);
+    background: var(--bg-tertiary);
+    box-shadow: 0 0 0 3px rgba(var(--accent-info-rgb, 67, 97, 238), 0.1);
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: var(--text-tertiary);
+}
+
+.form-group textarea {
+    min-height: clamp(100px, 20vw, 120px);
+    resize: vertical;
+    line-height: 1.5;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: clamp(15px, 3vw, 18px) clamp(20px, 4vw, 30px);
+    background: linear-gradient(135deg, var(--accent-info), var(--accent-secondary));
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: clamp(1rem, 2vw, 1.1rem);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-family: inherit;
+}
+
+.submit-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 40px rgba(var(--accent-info-rgb, 67, 97, 238), 0.4);
+}
+
+/* Тестирование сети */
+.speed-test-section {
+    background: var(--bg-tertiary);
+    padding: clamp(20px, 4vw, 40px);
+    margin: clamp(30px, 6vw, 60px) auto;
+    border-radius: 15px;
+    max-width: 800px;
+    border: 2px dashed var(--border-color);
+}
+
+.speed-test-section h3 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: var(--text-primary);
+    font-size: clamp(1.2rem, 3vw, 1.5rem);
+}
+
+.speed-test-results {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(150px, 100%), 1fr));
+    gap: clamp(15px, 3vw, 20px);
+    margin-bottom: 30px;
+}
+
+.speed-test-item {
+    background: var(--card-bg);
+    padding: clamp(15px, 3vw, 20px);
+    border-radius: 10px;
+    text-align: center;
+}
+
+.speed-test-item h4 {
+    margin-bottom: 10px;
+    color: var(--text-secondary);
+    font-size: clamp(0.8rem, 2vw, 0.9rem);
+}
+
+.speed-value {
+    font-size: clamp(1.4rem, 4vw, 1.8rem);
+    font-weight: 700;
+    color: var(--accent-info);
+}
+
+.speed-unit {
+    font-size: clamp(0.8rem, 2vw, 0.9rem);
+    color: var(--text-tertiary);
+}
+
+.test-btn {
+    width: 100%;
+    padding: clamp(12px, 3vw, 15px);
+    background: linear-gradient(135deg, var(--accent-info), var(--accent-secondary));
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: clamp(0.9rem, 2vw, 1rem);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.test-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(var(--accent-info-rgb, 67, 97, 238), 0.3);
+}
+
+/* Контакты экстренной помощи */
+.emergency-contacts {
+    background: var(--accent-info);
+    color: white;
+    padding: clamp(20px, 4vw, 40px);
+    margin-top: clamp(30px, 6vw, 60px);
+    border-radius: 15px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.emergency-contacts::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="1" fill="rgba(255, 255, 255, 0.1)"/></svg>');
+    background-size: 30px 30px;
+}
+
+.emergency-contacts h2 {
+    font-size: clamp(1.4rem, 4vw, 1.8rem);
+    margin-bottom: 20px;
+    position: relative;
+    z-index: 1;
+}
+
+.emergency-contacts p {
+    position: relative;
+    z-index: 1;
+    opacity: 0.9;
+    font-size: clamp(0.9rem, 2vw, 1rem);
+}
+
+.emergency-phone {
+    font-size: clamp(1.5rem, 5vw, 2rem);
+    font-weight: 700;
+    margin: 20px 0;
+    position: relative;
+    z-index: 1;
+}
+
+.emergency-phone a {
+    color: white;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.emergency-phone a:hover {
+    transform: scale(1.05);
+}
+
+.emergency-note {
+    opacity: 0.9;
+    font-size: clamp(0.9rem, 2vw, 1.1rem);
+    position: relative;
+    z-index: 1;
+}
+
+/* Анимации */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.network-hero-content,
+.service-card,
+.process-step,
+.advantage-card,
+.network-form {
+    animation: fadeInUp 0.6s ease-out forwards;
+    opacity: 0;
+}
+
+/* Эффект пульсации для кнопки */
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(var(--accent-info-rgb, 67, 97, 238), 0.4);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(var(--accent-info-rgb, 67, 97, 238), 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(var(--accent-info-rgb, 67, 97, 238), 0);
+    }
+}
+
+.submit-btn:focus {
+    animation: pulse 1.5s infinite;
+}
+
+/* Анимация спидометра */
+@keyframes speedometer {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.testing .speed-value::after {
+    content: ' ▸';
+    animation: speedometer 1s linear infinite;
+    display: inline-block;
+}
+
+/* Плавные переходы между темами */
+* {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Улучшенная поддержка тем для всех элементов */
+input, textarea, select {
+    background-color: var(--input-bg) !important;
+    color: var(--input-text) !important;
+    border-color: var(--input-border) !important;
+}
+
+
+
+/* Стили для чекбоксов */
+.form-group label input[type="checkbox"] {
+    width: clamp(16px, 3vw, 18px);
+    height: clamp(16px, 3vw, 18px);
+    margin-right: 10px;
+    accent-color: var(--accent-info);
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+.form-group label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+    font-size: clamp(0.9rem, 2vw, 1rem);
+}
+
+/* Адаптивность для очень маленьких экранов */
+@media (max-width: 480px) {
+    .process-step {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+    }
+    
+    .step-number {
+        width: 70px;
+        height: 70px;
+        font-size: 1.4rem;
+    }
+    
+    .service-features li {
+        padding-left: 20px;
+        font-size: 0.9rem;
+    }
+}
+
+/* Поддержка высокого контраста */
+@media (prefers-contrast: high) {
+    :root {
+        --text-primary: #000000;
+        --text-secondary: #333333;
+        --border-color: #000000;
+    }
+    
+    body.dark-theme {
+        --text-primary: #ffffff;
+        --text-secondary: #cccccc;
+        --border-color: #ffffff;
+    }
+    
+    .service-card:hover {
+        outline: 2px solid var(--accent-info);
+        outline-offset: 2px;
+    }
+}
+
+/* Поддержка уменьшенного движения */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    
+    .network-hero-content,
+    .service-card,
+    .process-step,
+    .advantage-card,
+    .network-form {
+        animation: none;
+        opacity: 1;
+    }
+}
+</style>
+
+<!-- Герой секция -->
+<section class="network-hero">
+    <div class="network-hero-content">
+        <div class="network-badge">
+            <i class="fas fa-network-wired"></i> Профессиональные сетевые решения
+        </div>
+        <h1>Настройка и ремонт сетей</h1>
+        <p>Профессиональная настройка Wi-Fi, проводных сетей, маршрутизаторов и сетевого оборудования. Обеспечим стабильное и быстрое подключение.</p>
+        <a href="#network-form" class="btn btn-primary btn-large">
+            <i class="fas fa-wifi"></i> Заказать настройку
+        </a>
+    </div>
+</section>
+
+<!-- Услуги сетей -->
+<section class="services-section">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Наши сетевые услуги</h2>
+            <p class="section-subtitle">Комплексные решения для домашних и офисных сетей</p>
+        </div>
+
+        <div class="services-grid">
+            <div class="service-card wifi">
+                <div class="service-icon">
+                    <i class="fas fa-wifi"></i>
+                </div>
+                <h3>Настройка Wi-Fi сети</h3>
+                <p>Оптимизация покрытия, настройка роутера, устранение "мертвых зон"</p>
+                <ul class="service-features">
+                    <li>Оптимизация сигнала Wi-Fi</li>
+                    <li>Настройка безопасности сети</li>
+                    <li>Устранение помех</li>
+                    <li>Гостевой доступ</li>
+                </ul>
+                <div class="service-price">от 1 500 ₽</div>
+            </div>
+
+            <div class="service-card cable">
+                <div class="service-icon">
+                    <i class="fas fa-ethernet"></i>
+                </div>
+                <h3>Проводные сети</h3>
+                <p>Проектирование и монтаж локальных сетей, обжим кабелей, настройка коммутаторов</p>
+                <ul class="service-features">
+                    <li>Обжим и прокладка кабелей</li>
+                    <li>Настройка коммутаторов</li>
+                    <li>Тестирование линии</li>
+                    <li>Документация сети</li>
+                </ul>
+                <div class="service-price">от 2 500 ₽</div>
+            </div>
+
+            <div class="service-card router">
+                <div class="service-icon">
+                    <i class="fas fa-router"></i>
+                </div>
+                <h3>Настройка маршрутизаторов</h3>
+                <p>Профессиональная настройка любых роутеров, VPN, фаерволов, QoS</p>
+                <ul class="service-features">
+                    <li>Настройка любого роутера</li>
+                    <li>VPN и безопасность</li>
+                    <li>Приоритизация трафика</li>
+                    <li>Родительский контроль</li>
+                </ul>
+                <div class="service-price">от 2 000 ₽</div>
+            </div>
+
+            <div class="service-card security">
+                <div class="service-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3>Защита сети</h3>
+                <p>Настройка безопасности, фаерволов, мониторинг угроз, защита от взлома</p>
+                <ul class="service-features">
+                    <li>Защита от взлома Wi-Fi</li>
+                    <li>Настройка фаервола</li>
+                    <li>Мониторинг сети</li>
+                    <li>Резервное копирование</li>
+                </ul>
+                <div class="service-price">от 3 000 ₽</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Процесс работы -->
+<section class="process-section">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Как мы работаем</h2>
+            <p class="section-subtitle">Поэтапный подход к решению сетевых проблем</p>
+        </div>
+
+        <div class="process-steps">
+            <div class="process-step">
+                <div class="step-number">01</div>
+                <div class="step-content">
+                    <h3>Анализ и диагностика</h3>
+                    <p>Выезжаем на объект, анализируем текущую ситуацию, проводим замеры скорости и качества сигнала.</p>
+                </div>
+            </div>
+
+            <div class="process-step">
+                <div class="step-number">02</div>
+                <div class="step-content">
+                    <h3>Планирование решения</h3>
+                    <p>Разрабатываем оптимальное решение, подбираем оборудование, составляем смету работ.</p>
+                </div>
+            </div>
+
+            <div class="process-step">
+                <div class="step-number">03</div>
+                <div class="step-content">
+                    <h3>Реализация</h3>
+                    <p>Монтируем оборудование, настраиваем сеть, оптимизируем параметры для максимальной производительности.</p>
+                </div>
+            </div>
+
+            <div class="process-step">
+                <div class="step-number">04</div>
+                <div class="step-content">
+                    <h3>Тестирование и настройка</h3>
+                    <p>Тщательно тестируем сеть во всех точках, настраиваем оборудование клиентов.</p>
+                </div>
+            </div>
+
+            <div class="process-step">
+                <div class="step-number">05</div>
+                <div class="step-content">
+                    <h3>Обучение и гарантия</h3>
+                    <p>Обучаем пользователей, предоставляем гарантию 1 год на все работы и настройки.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Тестирование скорости -->
+<div class="speed-test-section">
+    <h3>Проверьте скорость вашего интернета</h3>
+    <div class="speed-test-results">
+        <div class="speed-test-item">
+            <h4>Скачивание</h4>
+            <div class="speed-value" id="download-speed">0</div>
+            <div class="speed-unit">Мбит/с</div>
+        </div>
+        <div class="speed-test-item">
+            <h4>Загрузка</h4>
+            <div class="speed-value" id="upload-speed">0</div>
+            <div class="speed-unit">Мбит/с</div>
+        </div>
+        <div class="speed-test-item">
+            <h4>Пинг</h4>
+            <div class="speed-value" id="ping-value">0</div>
+            <div class="speed-unit">мс</div>
+        </div>
+        <div class="speed-test-item">
+            <h4>Стабильность</h4>
+            <div class="speed-value" id="stability-value">0</div>
+            <div class="speed-unit">%</div>
+        </div>
+    </div>
+    <button class="test-btn" id="start-speed-test">
+        <i class="fas fa-play"></i> Начать тест скорости
+    </button>
+</div>
+
+<!-- Преимущества -->
+<section class="advantages-section">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Почему выбирают нас</h2>
+            <p class="section-subtitle">Профессионализм и качество в каждой детали</p>
+        </div>
+
+        <div class="advantages-grid">
+            <div class="advantage-card">
+                <div class="advantage-icon">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <h3>Быстрое подключение</h3>
+                <p>Настраиваем сети любой сложности в кратчайшие сроки</p>
+            </div>
+
+            <div class="advantage-card">
+                <div class="advantage-icon">
+                    <i class="fas fa-user-shield"></i>
+                </div>
+                <h3>Безопасность</h3>
+                <p>Защищаем вашу сеть от внешних угроз и взлома</p>
+            </div>
+
+            <div class="advantage-card">
+                <div class="advantage-icon">
+                    <i class="fas fa-headset"></i>
+                </div>
+                <h3>Круглосуточная поддержка</h3>
+                <p>Готовы помочь в любое время дня и ночи</p>
+            </div>
+
+            <div class="advantage-card">
+                <div class="advantage-icon">
+                    <i class="fas fa-certificate"></i>
+                </div>
+                <h3>Гарантия до 3 месяцев</h3>
+                <p>Даем гарантию на все выполненные работы</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Форма заявки -->
+<section class="network-form-section" id="network-form">
+    <div class="container">
+        <div class="network-form-container">
+            <div class="section-header">
+                <h2 class="section-title">Заявка на настройку сети</h2>
+                <p class="section-subtitle">Оставьте заявку и наш специалист свяжется с вами в течение 15 минут</p>
+            </div>
+
+            <div class="form-note">
+                <p><i class="fas fa-info-circle"></i> Первичная консультация и диагностика проводятся бесплатно.</p>
+            </div>
+
+            <form action="/api/network/request" method="POST" class="network-form" id="networkRequestForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="name">Ваше имя *</label>
+                        <input type="text" id="name" name="name" placeholder="Иван Иванов" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Телефон *</label>
+                        <input type="tel" id="phone" name="phone" placeholder="+7 (___) ___-__-__" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="network_type">Тип сети *</label>
+                        <select id="network_type" name="network_type" required>
+                            <option value="">Выберите тип сети</option>
+                            <option value="home_wifi">Домашний Wi-Fi</option>
+                            <option value="office_network">Офисная сеть</option>
+                            <option value="cable">Проводная сеть</option>
+                            <option value="vpn">VPN настройка</option>
+                            <option value="security">Защита сети</option>
+                            <option value="other">Другое</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="equipment">Оборудование</label>
+                        <input type="text" id="equipment" name="equipment" placeholder="Например: TP-Link, Asus, D-Link">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="problem_type">Тип проблемы *</label>
+                    <select id="problem_type" name="problem_type" required>
+                        <option value="">Выберите проблему</option>
+                        <option value="no_internet">Нет интернета</option>
+                        <option value="slow_speed">Медленная скорость</option>
+                        <option value="weak_signal">Слабый сигнал Wi-Fi</option>
+                        <option value="configuration">Настройка оборудования</option>
+                        <option value="security_issue">Проблемы безопасности</option>
+                        <option value="new_network">Создание новой сети</option>
+                        <option value="other">Другая проблема</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="problem_description">Описание проблемы *</label>
+                    <textarea id="problem_description" name="problem_description" placeholder="Опишите вашу проблему: площадь помещения, количество устройств, текущая скорость интернета..." required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" name="call_specialist" id="call_specialist">
+                        Нужен выезд специалиста (бесплатно при заказе от 2 000 ₽)
+                    </label>
+                </div>
+
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-network-wired"></i> Вызвать специалиста
+                </button>
+
+                <p style="text-align: center; margin-top: 20px; color: var(--text-tertiary); font-size: 0.9rem;">
+                    Нажимая кнопку, вы соглашаетесь с политикой конфиденциальности
+                </p>
+            </form>
+
+            <!-- Контакты экстренной помощи -->
+            <div class="emergency-contacts">
+                <h2>Экстренная помощь по сетям</h2>
+                <p>Если пропал интернет или срочно нужна помощь с сетью</p>
+                <div class="emergency-phone">
+                    <a href="tel:+79998887766">
+                        <i class="fas fa-phone-alt"></i> +7 (999) 888-77-66
+                    </a>
+                </div>
+                <p class="emergency-note">Круглосуточная поддержка по сетевым вопросам</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- JavaScript -->
+<script>
+    // Обработка формы заявки
+    document.getElementById('networkRequestForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(this);
+        const submitBtn = this.querySelector('.submit-btn');
+        const originalText = submitBtn.innerHTML;
+        
+        // Показываем индикатор загрузки
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Отправка...';
+        submitBtn.disabled = true;
+        
+        try {
+            const response = await fetch('/api/network/request', {
+                method: 'POST',
+                body: formData
+            });
+            
+            const result = await response.json();
+            
+            if (result.success) {
+                // Успешная отправка
+                alert(result.message);
+                this.reset();
+                
+                // Показываем сообщение об успехе
+                submitBtn.innerHTML = '<i class="fas fa-check"></i> Отправлено!';
+                submitBtn.style.background = 'var(--accent-success)';
+                
+                setTimeout(() => {
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.style.background = '';
+                    submitBtn.disabled = false;
+                }, 2000);
+            } else {
+                // Ошибка
+                alert('Ошибка: ' + result.message);
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        } catch (error) {
+            console.error('Ошибка:', error);
+            alert('Произошла ошибка при отправке формы. Пожалуйста, попробуйте еще раз.');
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+        }
+    });
+
+    // Маска для телефона
+    document.getElementById('phone').addEventListener('input', function(e) {
+        let value = e.target.value.replace(/\D/g, '');
+        if (value.length > 0) {
+            if (value.length <= 1) value = '+7' + value;
+            if (value.length <= 4) value = value.replace(/(\+7)(\d{0,3})/, '$1 ($2');
+            if (value.length <= 7) value = value.replace(/(\+7\s\(\d{3})(\d{0,3})/, '$1) $2');
+            if (value.length <= 9) value = value.replace(/(\+7\s\(\d{3}\)\s\d{3})(\d{0,2})/, '$1-$2');
+            if (value.length <= 11) value = value.replace(/(\+7\s\(\d{3}\)\s\d{3}-\d{2})(\d{0,2})/, '$1-$2');
+        }
+        e.target.value = value;
+    });
+
+    // Тест скорости интернета
+    document.getElementById('start-speed-test').addEventListener('click', async function() {
+        const testBtn = this;
+        const originalText = testBtn.innerHTML;
+        const downloadEl = document.getElementById('download-speed');
+        const uploadEl = document.getElementById('upload-speed');
+        const pingEl = document.getElementById('ping-value');
+        const stabilityEl = document.getElementById('stability-value');
+        
+        // Блокируем кнопку
+        testBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Тестирование...';
+        testBtn.disabled = true;
+        
+        // Сбрасываем значения
+        downloadEl.textContent = '0';
+        uploadEl.textContent = '0';
+        pingEl.textContent = '0';
+        stabilityEl.textContent = '0';
+        
+        // Добавляем класс для анимации
+        downloadEl.classList.add('testing');
+        uploadEl.classList.add('testing');
+        pingEl.classList.add('testing');
+        stabilityEl.classList.add('testing');
+        
+        try {
+            // Имитация теста скорости (в реальном приложении здесь будет работа с WebRTC или другим API)
+            await new Promise(resolve => setTimeout(resolve, 1000));
+            
+            // Сначала пинг
+            const ping = Math.floor(Math.random() * 50) + 10;
+            pingEl.textContent = ping;
+            
+            // Затем скорость скачивания
+            await new Promise(resolve => setTimeout(resolve, 800));
+            const downloadSpeed = Math.floor(Math.random() * 90) + 10;
+            animateValue(downloadEl, 0, downloadSpeed, 1000);
+            
+            // Скорость загрузки
+            await new Promise(resolve => setTimeout(resolve, 800));
+            const uploadSpeed = Math.floor(downloadSpeed * 0.3) + 5;
+            animateValue(uploadEl, 0, uploadSpeed, 1000);
+            
+            // Стабильность
+            await new Promise(resolve => setTimeout(resolve, 800));
+            const stability = Math.floor(Math.random() * 20) + 80;
+            animateValue(stabilityEl, 0, stability, 1000);
+            
+            // Убираем анимацию
+            setTimeout(() => {
+                downloadEl.classList.remove('testing');
+                uploadEl.classList.remove('testing');
+                pingEl.classList.remove('testing');
+                stabilityEl.classList.remove('testing');
+                
+                testBtn.innerHTML = '<i class="fas fa-redo"></i> Повторить тест';
+                testBtn.disabled = false;
+            }, 1000);
+            
+        } catch (error) {
+            console.error('Ошибка теста скорости:', error);
+            alert('Произошла ошибка при тестировании скорости. Проверьте подключение к интернету.');
+            
+            testBtn.innerHTML = originalText;
+            testBtn.disabled = false;
+            downloadEl.classList.remove('testing');
+            uploadEl.classList.remove('testing');
+            pingEl.classList.remove('testing');
+            stabilityEl.classList.remove('testing');
+        }
+    });
+
+    // Функция анимации изменения значения
+    function animateValue(element, start, end, duration) {
+        const startTime = performance.now();
+        const step = (currentTime) => {
+            const elapsed = currentTime - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+            const current = Math.floor(progress * (end - start) + start);
+            element.textContent = current;
+            
+            if (progress < 1) {
+                requestAnimationFrame(step);
+            } else {
+                element.textContent = end;
+            }
+        };
+        requestAnimationFrame(step);
+    }
+
+    // Обработка выбора типа сети
+    document.getElementById('network_type').addEventListener('change', function() {
+        const descriptionField = document.getElementById('problem_description');
+        const equipmentField = document.getElementById('equipment');
+        
+        const placeholders = {
+            'home_wifi': 'Опишите проблему: площадь квартиры/дома, толщина стен, текущее расположение роутера, количество устройств...',
+            'office_network': 'Опишите задачу: количество рабочих мест, этажность помещения, требуемые сервисы (принтеры, серверы)...',
+            'cable': 'Опишите задачу: длина кабельных линий, количество точек подключения, тип помещений...',
+            'vpn': 'Опишите задачу: для каких целей нужен VPN, количество пользователей, тип устройств...',
+            'security': 'Опишите задачу: были ли попытки взлома, что именно нужно защитить, количество устройств в сети...',
+            'other': 'Опишите вашу задачу максимально подробно...'
+        };
+        
+        const equipmentPlaceholders = {
+            'home_wifi': 'Например: TP-Link Archer C7, Asus RT-AC68U',
+            'office_network': 'Например: Cisco, MikroTik, Ubiquiti',
+            'cable': 'Например: D-Link, HP, кабель UTP Cat5e/6',
+            'vpn': 'Например: роутер с поддержкой OpenVPN',
+            'security': 'Например: межсетевой экран, антивирус',
+            'other': 'Какое оборудование используется'
+        };
+        
+        descriptionField.placeholder = placeholders[this.value] || 'Опишите вашу проблему...';
+        equipmentField.placeholder = equipmentPlaceholders[this.value] || 'Например: TP-Link, Asus, D-Link';
+    });
+</script>
+{% endblock %}
