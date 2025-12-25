@@ -1,11 +1,517 @@
-<!-- templates/network.html -->
 {% extends "base.html" %}
 
-{% block title %}Сети и подключение - ТЕХНО БАТЯ{% endblock %}
+{% block title %}Ремонт компьютеров и ноутбуков - ТЕХНО БАТЯ{% endblock %}
 
 {% block content %}
-<!-- Стили для страницы сетей -->
+<!-- Стили для страницы ремонта ПК и ноутбуков -->
 <style>
+    // Конфигурация API
+const API_CONFIG = {
+    PC_REPAIR_ENDPOINT: '/api/pc-repair/request',
+    METHODS: {
+        POST: 'POST'
+    },
+    RESPONSE_TIMEOUT: 10000
+};
+
+// Утилиты для работы с DOM
+const DOMUtils = {
+    getElement: (selector) => document.querySelector(selector),
+    getElements: (selector) => document.querySelectorAll(selector),
+    
+    showLoading: (element, loadingText = 'Отправка...') => {
+        const originalHTML = element.innerHTML;
+        const originalDisabled = element.disabled;
+        
+        element.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${loadingText}`;
+        element.disabled = true;
+        
+        return {
+            restore: () => {
+                element.innerHTML = originalHTML;
+                element.disabled = originalDisabled;
+            }
+        };
+    },
+    
+    showSuccess: (element, successText = 'Отправлено!', duration = 2000) => {
+        const originalHTML = element.innerHTML;
+        const originalBackground = element.style.background;
+        
+        element.innerHTML = `<i class="fas fa-check"></i> ${successText}`;
+        element.style.background = 'var(--accent-success)';
+        
+        return new Promise(resolve => {
+            setTimeout(() => {
+                element.innerHTML = originalHTML;
+                element.style.background = originalBackground;
+                resolve();
+            }, duration);
+        });
+    }
+};
+
+// Форматер телефонных номеров
+const PhoneFormatter = {
+    format: (value) => {
+        const numbers = value.replace(/\D/g, '');
+        
+        if (numbers.length === 0) return '';
+        
+        let formatted = '+7';
+        if (numbers.length > 1) {
+            const firstThree = numbers.substring(1, 4);
+            const secondThree = numbers.substring(4, 7);
+            const firstTwo = numbers.substring(7, 9);
+            const lastTwo = numbers.substring(9, 11);
+            
+            if (firstThree) formatted += ` (${firstThree}`;
+            if (secondThree) formatted += `) ${secondThree}`;
+            if (firstTwo) formatted += `-${firstTwo}`;
+            if (lastTwo) formatted += `-${lastTwo}`;
+        }
+        
+        return formatted;
+    },
+    
+    getRawNumber: (formatted) => {
+        return formatted.replace(/\D/g, '');
+    }
+};
+
+// Конфигурация плейсхолдеров
+const PLACEHOLDER_CONFIG = {
+    DEVICE_TYPE: {
+        desktop: 'Опишите проблему: характеристики компьютера, когда появилась проблема, предшествующие события...',
+        laptop: 'Опишите проблему: модель ноутбука, возраст, как проявляется проблема...',
+        monitor: 'Опишите проблему: размер монитора, есть ли изображение, какие артефакты...',
+        printer: 'Опишите проблему: модель принтера, что именно не работает, ошибки на дисплее...',
+        other: 'Опишите ваше устройство и проблему максимально подробно...'
+    },
+    
+    BRAND_PLACEHOLDER: {
+        desktop: 'Например: самосборка, Dell, HP',
+        laptop: 'Например: Asus, Lenovo, Acer',
+        monitor: 'Например: Samsung, LG, Dell',
+        printer: 'Например: HP, Canon, Epson',
+        other: 'Производитель устройства'
+    },
+    
+    PROBLEM_DETAILS: {
+        not_turning_on: 'Опишите подробно: реагирует ли на кнопку включения, горят ли индикаторы, были ли скачки напряжения...',
+        overheating: 'Опишите: как давно начался перегрев, выключается ли сам, какие программы запущены, чистили ли систему охлаждения...',
+        bsod: 'Опишите: код ошибки если есть, при каких действиях появляется, как часто возникает...',
+        slow: 'Опишите: какие программы тормозят, давно ли проблема, пытались ли чистить систему, характеристики компьютера...',
+        no_display: 'Опишите: есть ли изображение при запуске, слышны ли звуки работы системы, проверяли ли монитор...',
+        virus: 'Опишите: какие симптомы заражения, какие антивирусы использовали, что пытались удалить...',
+        data_recovery: 'Опишите: что случилось с данными, тип накопителя, важность данных, пытались ли восстановить...',
+        other: 'Опишите вашу проблему максимально подробно...'
+    }
+};
+
+// Класс для работы с формой ремонта
+class PCRepairForm {
+    constructor(formId) {
+        this.form = DOMUtils.getElement(formId);
+        this.submitBtn = this.form.querySelector('.submit-btn');
+        this.phoneInput = DOMUtils.getElement('#phone');
+        this.deviceTypeSelect = DOMUtils.getElement('#device_type');
+        this.problemTypeSelect = DOMUtils.getElement('#problem_type');
+        this.descriptionField = DOMUtils.getElement('#problem_description');
+        this.brandField = DOMUtils.getElement('#brand');
+        
+        this.init();
+    }
+    
+    init() {
+        this.bindEvents();
+        this.updatePlaceholders();
+    }
+    
+    bindEvents() {
+        // Обработка отправки формы
+        this.form.addEventListener('submit', this.handleSubmit.bind(this));
+        
+        // Маска для телефона
+        this.phoneInput.addEventListener('input', this.handlePhoneInput.bind(this));
+        
+        // Динамические плейсхолдеры
+        this.deviceTypeSelect.addEventListener('change', () => this.updatePlaceholders());
+        this.problemTypeSelect.addEventListener('change', () => this.updateProblemDescription());
+    }
+    
+    async handleSubmit(event) {
+        event.preventDefault();
+        
+        if (!this.validateForm()) {
+            return;
+        }
+        
+        const loader = DOMUtils.showLoading(this.submitBtn);
+        
+        try {
+            const formData = new FormData(this.form);
+            formData.set('phone', PhoneFormatter.getRawNumber(formData.get('phone')));
+            
+            const response = await this.sendRequest(formData);
+            
+            if (response.success) {
+                await this.handleSuccess();
+            } else {
+                this.handleError(response.message || 'Произошла ошибка при отправке формы');
+            }
+        } catch (error) {
+            this.handleError(error.message || 'Ошибка соединения с сервером');
+        } finally {
+            loader.restore();
+        }
+    }
+    
+    validateForm() {
+        const requiredFields = this.form.querySelectorAll('[required]');
+        let isValid = true;
+        
+        requiredFields.forEach(field => {
+            if (!field.value.trim()) {
+                field.classList.add('error');
+                isValid = false;
+                
+                // Удаляем класс ошибки при вводе
+                field.addEventListener('input', () => {
+                    field.classList.remove('error');
+                }, { once: true });
+            }
+        });
+        
+        if (!isValid) {
+            alert('Пожалуйста, заполните все обязательные поля');
+        }
+        
+        return isValid;
+    }
+    
+    async sendRequest(formData) {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), API_CONFIG.RESPONSE_TIMEOUT);
+        
+        try {
+            const response = await fetch(API_CONFIG.PC_REPAIR_ENDPOINT, {
+                method: API_CONFIG.METHODS.POST,
+                body: formData,
+                signal: controller.signal
+            });
+            
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
+            return await response.json();
+        } finally {
+            clearTimeout(timeoutId);
+        }
+    }
+    
+    async handleSuccess() {
+        await DOMUtils.showSuccess(this.submitBtn);
+        
+        // Показываем уведомление
+        this.showNotification('Спасибо! Ваша заявка на ремонт принята. Мастер свяжется с вами в течение 15 минут.', 'success');
+        
+        // Сбрасываем форму с задержкой для визуального эффекта
+        setTimeout(() => {
+            this.form.reset();
+            this.updatePlaceholders();
+        }, 500);
+    }
+    
+    handleError(message) {
+        this.showNotification(`Ошибка: ${message}`, 'error');
+    }
+    
+    showNotification(message, type = 'info') {
+        // Создаем элемент уведомления
+        const notification = document.createElement('div');
+        notification.className = `notification notification-${type}`;
+        notification.innerHTML = `
+            <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+            <span>${message}</span>
+            <button class="notification-close"><i class="fas fa-times"></i></button>
+        `;
+        
+        // Стили для уведомления
+        notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: ${type === 'success' ? 'var(--accent-success)' : 'var(--accent-danger)'};
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 10000;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            animation: slideIn 0.3s ease-out;
+        `;
+        
+        document.body.appendChild(notification);
+        
+        // Обработка закрытия
+        const closeBtn = notification.querySelector('.notification-close');
+        closeBtn.onclick = () => {
+            notification.style.animation = 'slideOut 0.3s ease-out forwards';
+            setTimeout(() => notification.remove(), 300);
+        };
+        
+        // Автоматическое закрытие
+        setTimeout(() => {
+            if (notification.parentNode) {
+                notification.style.animation = 'slideOut 0.3s ease-out forwards';
+                setTimeout(() => notification.remove(), 300);
+            }
+        }, 5000);
+    }
+    
+    handlePhoneInput(event) {
+        event.target.value = PhoneFormatter.format(event.target.value);
+    }
+    
+    updatePlaceholders() {
+        const deviceType = this.deviceTypeSelect.value;
+        
+        if (deviceType) {
+            this.descriptionField.placeholder = 
+                PLACEHOLDER_CONFIG.DEVICE_TYPE[deviceType] || 
+                'Опишите вашу проблему...';
+            
+            this.brandField.placeholder = 
+                PLACEHOLDER_CONFIG.BRAND_PLACEHOLDER[deviceType] || 
+                'Например: HP, Dell, Asus';
+        }
+        
+        this.updateProblemDescription();
+    }
+    
+    updateProblemDescription() {
+        const problemType = this.problemTypeSelect.value;
+        
+        if (problemType && !this.deviceTypeSelect.value) {
+            this.descriptionField.placeholder = 
+                PLACEHOLDER_CONFIG.PROBLEM_DETAILS[problemType] || 
+                'Опишите вашу проблему...';
+        }
+    }
+}
+
+// Класс для работы с диагностикой
+class DiagnosticSystem {
+    constructor(buttonId) {
+        this.button = DOMUtils.getElement(buttonId);
+        this.init();
+    }
+    
+    init() {
+        this.button.addEventListener('click', this.handleDiagnosticRequest.bind(this));
+    }
+    
+    async handleDiagnosticRequest() {
+        const loader = DOMUtils.showLoading(this.button, 'Отправка запроса...');
+        
+        try {
+            // Здесь можно добавить реальный запрос к API
+            await this.simulateDiagnosticRequest();
+            
+            this.showDiagnosticModal();
+        } catch (error) {
+            alert('Произошла ошибка при отправке запроса. Пожалуйста, попробуйте еще раз.');
+        } finally {
+            loader.restore();
+        }
+    }
+    
+    simulateDiagnosticRequest() {
+        return new Promise(resolve => {
+            setTimeout(resolve, 1500);
+        });
+    }
+    
+    showDiagnosticModal() {
+        const modal = document.createElement('div');
+        modal.className = 'diagnostic-modal';
+        modal.innerHTML = `
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3><i class="fas fa-search"></i> Запрос отправлен</h3>
+                    <button class="modal-close"><i class="fas fa-times"></i></button>
+                </div>
+                <div class="modal-body">
+                    <div class="success-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <h4>Спасибо за ваш запрос!</h4>
+                    <p>Наш специалист свяжется с вами в ближайшее время для уточнения деталей и записи на бесплатную диагностику.</p>
+                    <div class="modal-actions">
+                        <button class="btn btn-primary" id="close-modal">Хорошо</button>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        // Добавляем стили для модального окна
+        modal.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            animation: fadeIn 0.3s ease-out;
+        `;
+        
+        const modalContent = modal.querySelector('.modal-content');
+        modalContent.style.cssText = `
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            animation: slideUp 0.3s ease-out;
+        `;
+        
+        document.body.appendChild(modal);
+        
+        // Обработка закрытия модального окна
+        const closeModal = () => {
+            modal.style.animation = 'fadeOut 0.3s ease-out forwards';
+            setTimeout(() => modal.remove(), 300);
+        };
+        
+        modal.querySelector('.modal-close').onclick = closeModal;
+        modal.querySelector('#close-modal').onclick = closeModal;
+        modal.onclick = (e) => {
+            if (e.target === modal) closeModal();
+        };
+    }
+}
+
+// Инициализация при загрузке страницы
+document.addEventListener('DOMContentLoaded', () => {
+    // Инициализация формы ремонта
+    const repairForm = new PCRepairForm('#pcRepairRequestForm');
+    
+    // Инициализация системы диагностики
+    const diagnosticSystem = new DiagnosticSystem('#start-diagnostic');
+    
+    // Добавляем CSS анимации
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        @keyframes slideOut {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(100%); opacity: 0; }
+        }
+        
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        .notification-close {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            padding: 0;
+            font-size: 14px;
+            opacity: 0.8;
+            transition: opacity 0.2s;
+        }
+        
+        .notification-close:hover {
+            opacity: 1;
+        }
+        
+        input.error {
+            border-color: var(--accent-danger) !important;
+            animation: shake 0.5s;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+        
+        .success-icon {
+            text-align: center;
+            font-size: 4rem;
+            color: var(--accent-success);
+            margin: 20px 0;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .modal-header h3 {
+            margin: 0;
+            color: var(--text-primary);
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            color: var(--text-tertiary);
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        
+        .modal-close:hover {
+            color: var(--text-primary);
+        }
+        
+        .modal-body h4 {
+            text-align: center;
+            margin: 20px 0 10px;
+            color: var(--text-primary);
+        }
+        
+        .modal-body p {
+            text-align: center;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+        
+        .modal-actions {
+            text-align: center;
+        }
+    `;
+    document.head.appendChild(style);
+});
     /* Переменные для светлой темы */
 :root {
     /* Цвета фона */
@@ -36,15 +542,17 @@
     --input-border: #ced4da;
     --shadow-color: rgba(0, 0, 0, 0.1);
     
-    /* Дополнительные цвета для сетей */
-    --wifi-color: #ff6b6b;
-    --wifi-color-rgb: 255, 107, 107;
-    --cable-color: #48dbfb;
-    --cable-color-rgb: 72, 219, 251;
-    --router-color: #1dd1a1;
-    --router-color-rgb: 29, 209, 161;
-    --security-color: #ff9ff3;
-    --security-color-rgb: 255, 159, 243;
+    /* Дополнительные цвета для ПК и ноутбуков */
+    --pc-color: #4361ee;
+    --pc-color-rgb: 67, 97, 238;
+    --laptop-color: #7209b7;
+    --laptop-color-rgb: 114, 9, 183;
+    --hardware-color: #f72585;
+    --hardware-color-rgb: 247, 37, 133;
+    --software-color: #4cc9f0;
+    --software-color-rgb: 76, 201, 240;
+    --data-color: #06d6a0;
+    --data-color-rgb: 6, 214, 160;
 }
 
 /* Переменные для темной темы */
@@ -77,20 +585,22 @@ body.dark-theme {
     --input-border: #495057;
     --shadow-color: rgba(0, 0, 0, 0.3);
     
-    /* Дополнительные цвета для сетей */
-    --wifi-color: #ff8e8e;
-    --wifi-color-rgb: 255, 142, 142;
-    --cable-color: #64e6ff;
-    --cable-color-rgb: 100, 230, 255;
-    --router-color: #3ae6bc;
-    --router-color-rgb: 58, 230, 188;
-    --security-color: #ffb3f6;
-    --security-color-rgb: 255, 179, 246;
+    /* Дополнительные цвета для ПК и ноутбуков */
+    --pc-color: #5a7dff;
+    --pc-color-rgb: 90, 125, 255;
+    --laptop-color: #9d4edd;
+    --laptop-color-rgb: 157, 78, 221;
+    --hardware-color: #ff6b9d;
+    --hardware-color-rgb: 255, 107, 157;
+    --software-color: #64e6ff;
+    --software-color-rgb: 100, 230, 255;
+    --data-color: #1ce9a8;
+    --data-color-rgb: 28, 233, 168;
 }
 
-/* Базовые стили для страницы сетей */
-.network-hero {
-    background: linear-gradient(135deg, var(--accent-info), var(--accent-secondary));
+/* Базовые стили для страницы */
+.pc-repair-hero {
+    background: linear-gradient(135deg, var(--pc-color), var(--laptop-color));
     color: white;
     padding: 100px 0 60px;
     text-align: center;
@@ -98,18 +608,18 @@ body.dark-theme {
     overflow: hidden;
 }
 
-.network-hero::before {
+.pc-repair-hero::before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="45" y="10" width="10" height="80" fill="rgba(255, 255, 255, 0.1)"/><rect x="10" y="45" width="80" height="10" fill="rgba(255, 255, 255, 0.1)"/></svg>');
-    background-size: 60px 60px;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="20" y="20" width="60" height="60" rx="5" fill="rgba(255, 255, 255, 0.1)"/><rect x="40" y="10" width="20" height="10" fill="rgba(255, 255, 255, 0.1)"/></svg>');
+    background-size: 80px 80px;
 }
 
-.network-hero-content {
+.pc-repair-hero-content {
     position: relative;
     z-index: 1;
     max-width: 800px;
@@ -117,21 +627,21 @@ body.dark-theme {
     padding: 0 20px;
 }
 
-.network-hero h1 {
+.pc-repair-hero h1 {
     font-size: clamp(2rem, 5vw, 3rem);
     font-weight: 800;
     margin-bottom: 20px;
     line-height: 1.2;
 }
 
-.network-hero p {
+.pc-repair-hero p {
     font-size: clamp(1rem, 2.5vw, 1.2rem);
     opacity: 0.9;
     margin-bottom: 30px;
     line-height: 1.6;
 }
 
-.network-badge {
+.pc-repair-badge {
     display: inline-block;
     background: rgba(255, 255, 255, 0.2);
     padding: 10px 25px;
@@ -160,17 +670,17 @@ body.dark-theme {
 }
 
 .btn-primary {
-    background: linear-gradient(135deg, var(--accent-info), var(--accent-secondary));
+    background: linear-gradient(135deg, var(--pc-color), var(--laptop-color));
     color: white;
-    box-shadow: 0 8px 25px rgba(var(--accent-info-rgb, 67, 97, 238), 0.3);
+    box-shadow: 0 8px 25px rgba(var(--pc-color-rgb, 67, 97, 238), 0.3);
 }
 
 .btn-primary:hover {
     transform: translateY(-3px);
-    box-shadow: 0 15px 35px rgba(var(--accent-info-rgb, 67, 97, 238), 0.4);
+    box-shadow: 0 15px 35px rgba(var(--pc-color-rgb, 67, 97, 238), 0.4);
 }
 
-/* Услуги сетей */
+/* Услуги ремонта ПК и ноутбуков */
 .services-section {
     padding: clamp(40px, 8vw, 80px) 0;
     background: var(--bg-secondary);
@@ -215,7 +725,6 @@ body.dark-theme {
 .service-card:hover {
     transform: translateY(-10px);
     box-shadow: 0 20px 40px var(--shadow-color);
-    border-color: var(--accent-info);
 }
 
 .service-card::before {
@@ -228,20 +737,24 @@ body.dark-theme {
     background: linear-gradient(to bottom, var(--accent-info), var(--accent-secondary));
 }
 
-.service-card.wifi::before {
-    background: linear-gradient(to bottom, var(--wifi-color), rgb(var(--wifi-color-rgb, 255, 107, 107), 0.7));
+.service-card.pc::before {
+    background: linear-gradient(to bottom, var(--pc-color), rgb(var(--pc-color-rgb, 67, 97, 238), 0.7));
 }
 
-.service-card.cable::before {
-    background: linear-gradient(to bottom, var(--cable-color), rgb(var(--cable-color-rgb, 72, 219, 251), 0.7));
+.service-card.laptop::before {
+    background: linear-gradient(to bottom, var(--laptop-color), rgb(var(--laptop-color-rgb, 114, 9, 183), 0.7));
 }
 
-.service-card.router::before {
-    background: linear-gradient(to bottom, var(--router-color), rgb(var(--router-color-rgb, 29, 209, 161), 0.7));
+.service-card.hardware::before {
+    background: linear-gradient(to bottom, var(--hardware-color), rgb(var(--hardware-color-rgb, 247, 37, 133), 0.7));
 }
 
-.service-card.security::before {
-    background: linear-gradient(to bottom, var(--security-color), rgb(var(--security-color-rgb, 255, 159, 243), 0.7));
+.service-card.software::before {
+    background: linear-gradient(to bottom, var(--software-color), rgb(var(--software-color-rgb, 76, 201, 240), 0.7));
+}
+
+.service-card.data::before {
+    background: linear-gradient(to bottom, var(--data-color), rgb(var(--data-color-rgb, 6, 214, 160), 0.7));
 }
 
 .service-icon {
@@ -250,20 +763,24 @@ body.dark-theme {
     color: var(--accent-info);
 }
 
-.service-card.wifi .service-icon {
-    color: var(--wifi-color);
+.service-card.pc .service-icon {
+    color: var(--pc-color);
 }
 
-.service-card.cable .service-icon {
-    color: var(--cable-color);
+.service-card.laptop .service-icon {
+    color: var(--laptop-color);
 }
 
-.service-card.router .service-icon {
-    color: var(--router-color);
+.service-card.hardware .service-icon {
+    color: var(--hardware-color);
 }
 
-.service-card.security .service-icon {
-    color: var(--security-color);
+.service-card.software .service-icon {
+    color: var(--software-color);
+}
+
+.service-card.data .service-icon {
+    color: var(--data-color);
 }
 
 .service-card h3 {
@@ -307,26 +824,77 @@ body.dark-theme {
     margin-top: 15px;
 }
 
-.service-card.wifi .service-price {
-    color: var(--wifi-color);
+.service-card.pc .service-price {
+    color: var(--pc-color);
 }
 
-.service-card.cable .service-price {
-    color: var(--cable-color);
+.service-card.laptop .service-price {
+    color: var(--laptop-color);
 }
 
-.service-card.router .service-price {
-    color: var(--router-color);
+.service-card.hardware .service-price {
+    color: var(--hardware-color);
 }
 
-.service-card.security .service-price {
-    color: var(--security-color);
+.service-card.software .service-price {
+    color: var(--software-color);
 }
 
-/* Процесс работы */
-.process-section {
+.service-card.data .service-price {
+    color: var(--data-color);
+}
+
+/* Распространенные проблемы */
+.common-problems {
     padding: clamp(40px, 8vw, 80px) 0;
     background: var(--bg-primary);
+}
+
+.problems-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+    gap: clamp(20px, 4vw, 30px);
+    margin-top: clamp(30px, 6vw, 50px);
+}
+
+.problem-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 15px;
+    padding: clamp(20px, 4vw, 25px);
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.problem-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px var(--shadow-color);
+    border-color: var(--accent-info);
+}
+
+.problem-icon {
+    font-size: clamp(2rem, 5vw, 2.2rem);
+    color: var(--accent-info);
+    margin-bottom: 15px;
+}
+
+.problem-card h4 {
+    font-size: clamp(1.1rem, 2.5vw, 1.3rem);
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: var(--text-primary);
+}
+
+.problem-card p {
+    color: var(--text-secondary);
+    line-height: 1.5;
+    font-size: clamp(0.9rem, 2vw, 1rem);
+}
+
+/* Процесс ремонта */
+.process-section {
+    padding: clamp(40px, 8vw, 80px) 0;
+    background: var(--bg-secondary);
 }
 
 .process-steps {
@@ -354,7 +922,7 @@ body.dark-theme {
 .step-number {
     width: clamp(50px, 8vw, 60px);
     height: clamp(50px, 8vw, 60px);
-    background: linear-gradient(135deg, var(--accent-info), var(--accent-secondary));
+    background: linear-gradient(135deg, var(--pc-color), var(--laptop-color));
     color: white;
     border-radius: 50%;
     display: flex;
@@ -363,7 +931,7 @@ body.dark-theme {
     font-size: clamp(1.2rem, 3vw, 1.5rem);
     font-weight: 700;
     flex-shrink: 0;
-    box-shadow: 0 10px 25px rgba(var(--accent-info-rgb, 67, 97, 238), 0.3);
+    box-shadow: 0 10px 25px rgba(var(--pc-color-rgb, 67, 97, 238), 0.3);
 }
 
 .step-content h3 {
@@ -382,7 +950,7 @@ body.dark-theme {
 /* Преимущества */
 .advantages-section {
     padding: clamp(40px, 8vw, 80px) 0;
-    background: linear-gradient(135deg, var(--accent-info), var(--accent-secondary));
+    background: linear-gradient(135deg, var(--pc-color), var(--laptop-color));
     color: white;
     text-align: center;
 }
@@ -441,19 +1009,19 @@ body.dark-theme {
 }
 
 /* Форма заявки */
-.network-form-section {
+.pc-form-section {
     padding: clamp(40px, 8vw, 80px) 0;
     background: var(--bg-secondary);
 }
 
-.network-form-container {
+.pc-form-container {
     max-width: 800px;
     margin: 0 auto;
 }
 
 .form-note {
     background: var(--bg-tertiary);
-    border-left: 4px solid var(--accent-info);
+    border-left: 4px solid var(--pc-color);
     padding: clamp(15px, 3vw, 20px);
     margin-bottom: clamp(20px, 4vw, 40px);
     border-radius: 8px;
@@ -467,11 +1035,11 @@ body.dark-theme {
 }
 
 .form-note i {
-    color: var(--accent-info);
+    color: var(--pc-color);
     margin-right: 10px;
 }
 
-.network-form {
+.pc-repair-form {
     background: var(--card-bg);
     border: 1px solid var(--border-color);
     border-radius: 20px;
@@ -516,9 +1084,9 @@ body.dark-theme {
 .form-group select:focus,
 .form-group textarea:focus {
     outline: none;
-    border-color: var(--accent-info);
+    border-color: var(--pc-color);
     background: var(--bg-tertiary);
-    box-shadow: 0 0 0 3px rgba(var(--accent-info-rgb, 67, 97, 238), 0.1);
+    box-shadow: 0 0 0 3px rgba(var(--pc-color-rgb, 67, 97, 238), 0.1);
 }
 
 .form-group input::placeholder,
@@ -535,7 +1103,7 @@ body.dark-theme {
 .submit-btn {
     width: 100%;
     padding: clamp(15px, 3vw, 18px) clamp(20px, 4vw, 30px);
-    background: linear-gradient(135deg, var(--accent-info), var(--accent-secondary));
+    background: linear-gradient(135deg, var(--pc-color), var(--laptop-color));
     color: white;
     border: none;
     border-radius: 12px;
@@ -552,11 +1120,11 @@ body.dark-theme {
 
 .submit-btn:hover {
     transform: translateY(-3px);
-    box-shadow: 0 15px 40px rgba(var(--accent-info-rgb, 67, 97, 238), 0.4);
+    box-shadow: 0 15px 40px rgba(var(--pc-color-rgb, 67, 97, 238), 0.4);
 }
 
-/* Тестирование сети */
-.speed-test-section {
+/* Диагностика ПК */
+.diagnostic-section {
     background: var(--bg-tertiary);
     padding: clamp(20px, 4vw, 40px);
     margin: clamp(30px, 6vw, 60px) auto;
@@ -565,48 +1133,54 @@ body.dark-theme {
     border: 2px dashed var(--border-color);
 }
 
-.speed-test-section h3 {
+.diagnostic-section h3 {
     text-align: center;
     margin-bottom: 30px;
     color: var(--text-primary);
     font-size: clamp(1.2rem, 3vw, 1.5rem);
 }
 
-.speed-test-results {
+.diagnostic-checklist {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(150px, 100%), 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(180px, 100%), 1fr));
     gap: clamp(15px, 3vw, 20px);
     margin-bottom: 30px;
 }
 
-.speed-test-item {
+.checklist-item {
     background: var(--card-bg);
     padding: clamp(15px, 3vw, 20px);
     border-radius: 10px;
     text-align: center;
+    transition: all 0.3s ease;
 }
 
-.speed-test-item h4 {
+.checklist-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px var(--shadow-color);
+}
+
+.checklist-icon {
+    font-size: clamp(1.5rem, 4vw, 1.8rem);
+    color: var(--pc-color);
     margin-bottom: 10px;
-    color: var(--text-secondary);
-    font-size: clamp(0.8rem, 2vw, 0.9rem);
 }
 
-.speed-value {
-    font-size: clamp(1.4rem, 4vw, 1.8rem);
-    font-weight: 700;
-    color: var(--accent-info);
+.checklist-item h4 {
+    font-size: clamp(0.9rem, 2vw, 1rem);
+    color: var(--text-primary);
+    margin-bottom: 5px;
 }
 
-.speed-unit {
+.checklist-item p {
     font-size: clamp(0.8rem, 2vw, 0.9rem);
     color: var(--text-tertiary);
 }
 
-.test-btn {
+.diagnostic-btn {
     width: 100%;
     padding: clamp(12px, 3vw, 15px);
-    background: linear-gradient(135deg, var(--accent-info), var(--accent-secondary));
+    background: linear-gradient(135deg, var(--pc-color), var(--laptop-color));
     color: white;
     border: none;
     border-radius: 10px;
@@ -616,14 +1190,14 @@ body.dark-theme {
     transition: all 0.3s ease;
 }
 
-.test-btn:hover {
+.diagnostic-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 25px rgba(var(--accent-info-rgb, 67, 97, 238), 0.3);
+    box-shadow: 0 10px 25px rgba(var(--pc-color-rgb, 67, 97, 238), 0.3);
 }
 
 /* Контакты экстренной помощи */
 .emergency-contacts {
-    background: var(--accent-info);
+    background: var(--pc-color);
     color: white;
     padding: clamp(20px, 4vw, 40px);
     margin-top: clamp(30px, 6vw, 60px);
@@ -698,11 +1272,12 @@ body.dark-theme {
     }
 }
 
-.network-hero-content,
+.pc-repair-hero-content,
 .service-card,
+.problem-card,
 .process-step,
 .advantage-card,
-.network-form {
+.pc-repair-form {
     animation: fadeInUp 0.6s ease-out forwards;
     opacity: 0;
 }
@@ -710,30 +1285,18 @@ body.dark-theme {
 /* Эффект пульсации для кнопки */
 @keyframes pulse {
     0% {
-        box-shadow: 0 0 0 0 rgba(var(--accent-info-rgb, 67, 97, 238), 0.4);
+        box-shadow: 0 0 0 0 rgba(var(--pc-color-rgb, 67, 97, 238), 0.4);
     }
     70% {
-        box-shadow: 0 0 0 10px rgba(var(--accent-info-rgb, 67, 97, 238), 0);
+        box-shadow: 0 0 0 10px rgba(var(--pc-color-rgb, 67, 97, 238), 0);
     }
     100% {
-        box-shadow: 0 0 0 0 rgba(var(--accent-info-rgb, 67, 97, 238), 0);
+        box-shadow: 0 0 0 0 rgba(var(--pc-color-rgb, 67, 97, 238), 0);
     }
 }
 
 .submit-btn:focus {
     animation: pulse 1.5s infinite;
-}
-
-/* Анимация спидометра */
-@keyframes speedometer {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-.testing .speed-value::after {
-    content: ' ▸';
-    animation: speedometer 1s linear infinite;
-    display: inline-block;
 }
 
 /* Плавные переходы между темами */
@@ -748,14 +1311,12 @@ input, textarea, select {
     border-color: var(--input-border) !important;
 }
 
-
-
 /* Стили для чекбоксов */
 .form-group label input[type="checkbox"] {
     width: clamp(16px, 3vw, 18px);
     height: clamp(16px, 3vw, 18px);
     margin-right: 10px;
-    accent-color: var(--accent-info);
+    accent-color: var(--pc-color);
     vertical-align: middle;
     cursor: pointer;
 }
@@ -818,11 +1379,11 @@ input, textarea, select {
         transition-duration: 0.01ms !important;
     }
     
-    .network-hero-content,
+    .pc-repair-hero-content,
     .service-card,
     .process-step,
     .advantage-card,
-    .network-form {
+    .pc-repair-form {
         animation: none;
         opacity: 1;
     }
@@ -830,170 +1391,203 @@ input, textarea, select {
 </style>
 
 <!-- Герой секция -->
-<section class="network-hero">
-    <div class="network-hero-content">
-        <div class="network-badge">
-            <i class="fas fa-network-wired"></i> Профессиональные сетевые решения
+<section class="pc-repair-hero">
+    <div class="pc-repair-hero-content">
+        <div class="pc-repair-badge">
+            <i class="fas fa-desktop"></i> Профессиональный ремонт компьютеров и ноутбуков
         </div>
-        <h1>Настройка и ремонт сетей</h1>
-        <p>Профессиональная настройка Wi-Fi, проводных сетей, маршрутизаторов и сетевого оборудования. Обеспечим стабильное и быстрое подключение.</p>
-        <a href="#network-form" class="btn btn-primary btn-large">
-            <i class="fas fa-wifi"></i> Заказать настройку
+        <h1>Ремонт ПК и ноутбуков любой сложности</h1>
+        <p>Быстрое восстановление работоспособности компьютеров, ноутбуков и периферии. Работаем с любыми брендами и моделями.</p>
+        <a href="#pc-form" class="btn btn-primary btn-large">
+            <i class="fas fa-tools"></i> Вызвать мастера
         </a>
     </div>
 </section>
 
-<!-- Услуги сетей -->
+<!-- Услуги ремонта ПК и ноутбуков -->
 <section class="services-section">
     <div class="container">
         <div class="section-header">
-            <h2 class="section-title">Наши сетевые услуги</h2>
-            <p class="section-subtitle">Комплексные решения для домашних и офисных сетей</p>
+            <h2 class="section-title">Наши услуги по ремонту</h2>
+            <p class="section-subtitle">Комплексные решения для домашних и офисных компьютеров</p>
         </div>
 
         <div class="services-grid">
-            <div class="service-card wifi">
+            <div class="service-card pc">
                 <div class="service-icon">
-                    <i class="fas fa-wifi"></i>
+                    <i class="fas fa-desktop"></i>
                 </div>
-                <h3>Настройка Wi-Fi сети</h3>
-                <p>Оптимизация покрытия, настройка роутера, устранение "мертвых зон"</p>
+                <h3>Ремонт компьютеров</h3>
+                <p>Диагностика и ремонт системных блоков, замена комплектующих, сборка ПК под заказ</p>
                 <ul class="service-features">
-                    <li>Оптимизация сигнала Wi-Fi</li>
-                    <li>Настройка безопасности сети</li>
-                    <li>Устранение помех</li>
-                    <li>Гостевой доступ</li>
+                    <li>Диагностика неисправностей</li>
+                    <li>Замена блока питания</li>
+                    <li>Ремонт материнской платы</li>
+                    <li>Чистка от пыли</li>
+                </ul>
+                <div class="service-price">от 1 000 ₽</div>
+            </div>
+
+            <div class="service-card laptop">
+                <div class="service-icon">
+                    <i class="fas fa-laptop"></i>
+                </div>
+                <h3>Ремонт ноутбуков</h3>
+                <p>Ремонт любых ноутбуков: от замены матрицы до микросхемного ремонта материнской платы</p>
+                <ul class="service-features">
+                    <li>Замена экрана ноутбука</li>
+                    <li>Ремонт клавиатуры</li>
+                    <li>Чистка системы охлаждения</li>
+                    <li>Замена термопасты</li>
                 </ul>
                 <div class="service-price">от 1 500 ₽</div>
             </div>
 
-            <div class="service-card cable">
+            <div class="service-card hardware">
                 <div class="service-icon">
-                    <i class="fas fa-ethernet"></i>
+                    <i class="fas fa-microchip"></i>
                 </div>
-                <h3>Проводные сети</h3>
-                <p>Проектирование и монтаж локальных сетей, обжим кабелей, настройка коммутаторов</p>
+                <h3>Аппаратный ремонт</h3>
+                <p>Ремонт на компонентном уровне: замена чипов, восстановление BGA пайки, ремонт видеокарт</p>
                 <ul class="service-features">
-                    <li>Обжим и прокладка кабелей</li>
-                    <li>Настройка коммутаторов</li>
-                    <li>Тестирование линии</li>
-                    <li>Документация сети</li>
-                </ul>
-                <div class="service-price">от 2 500 ₽</div>
-            </div>
-
-            <div class="service-card router">
-                <div class="service-icon">
-                    <i class="fas fa-router"></i>
-                </div>
-                <h3>Настройка маршрутизаторов</h3>
-                <p>Профессиональная настройка любых роутеров, VPN, фаерволов, QoS</p>
-                <ul class="service-features">
-                    <li>Настройка любого роутера</li>
-                    <li>VPN и безопасность</li>
-                    <li>Приоритизация трафика</li>
-                    <li>Родительский контроль</li>
-                </ul>
-                <div class="service-price">от 2 000 ₽</div>
-            </div>
-
-            <div class="service-card security">
-                <div class="service-icon">
-                    <i class="fas fa-shield-alt"></i>
-                </div>
-                <h3>Защита сети</h3>
-                <p>Настройка безопасности, фаерволов, мониторинг угроз, защита от взлома</p>
-                <ul class="service-features">
-                    <li>Защита от взлома Wi-Fi</li>
-                    <li>Настройка фаервола</li>
-                    <li>Мониторинг сети</li>
-                    <li>Резервное копирование</li>
+                    <li>Ремонт видеокарт</li>
+                    <li>BGA пайка чипов</li>
+                    <li>Замена северного/южного моста</li>
+                    <li>Ремонт процессоров</li>
                 </ul>
                 <div class="service-price">от 3 000 ₽</div>
             </div>
+
+            <div class="service-card software">
+                <div class="service-icon">
+                    <i class="fas fa-code"></i>
+                </div>
+                <h3>Программный ремонт</h3>
+                <p>Установка и настройка ОС, восстановление данных, удаление вирусов, оптимизация</p>
+                <ul class="service-features">
+                    <li>Установка Windows</li>
+                    <li>Удаление вирусов</li>
+                    <li>Настройка драйверов</li>
+                    <li>Оптимизация системы</li>
+                </ul>
+                <div class="service-price">от 800 ₽</div>
+            </div>
+
+            <div class="service-card data">
+                <div class="service-icon">
+                    <i class="fas fa-database"></i>
+                </div>
+                <h3>Восстановление данных</h3>
+                <p>Восстановление удаленных файлов с жестких дисков, SSD, флешек и карт памяти</p>
+                <ul class="service-features">
+                    <li>Восстановление HDD/SSD</li>
+                    <li>Ремонт флешек</li>
+                    <li>Восстановление RAID массивов</li>
+                    <li>Спасение данных после форматирования</li>
+                </ul>
+                <div class="service-price">от 2 000 ₽</div>
+            </div>
         </div>
     </div>
 </section>
 
-<!-- Процесс работы -->
-<section class="process-section">
+<!-- Распространенные проблемы -->
+<section class="common-problems">
     <div class="container">
         <div class="section-header">
-            <h2 class="section-title">Как мы работаем</h2>
-            <p class="section-subtitle">Поэтапный подход к решению сетевых проблем</p>
+            <h2 class="section-title">Распространенные проблемы</h2>
+            <p class="section-subtitle">С какими неисправностями мы чаще всего сталкиваемся</p>
         </div>
 
-        <div class="process-steps">
-            <div class="process-step">
-                <div class="step-number">01</div>
-                <div class="step-content">
-                    <h3>Анализ и диагностика</h3>
-                    <p>Выезжаем на объект, анализируем текущую ситуацию, проводим замеры скорости и качества сигнала.</p>
+        <div class="problems-grid">
+            <div class="problem-card">
+                <div class="problem-icon">
+                    <i class="fas fa-ban"></i>
                 </div>
+                <h4>Не включается</h4>
+                <p>Компьютер или ноутбук не реагирует на кнопку включения</p>
             </div>
 
-            <div class="process-step">
-                <div class="step-number">02</div>
-                <div class="step-content">
-                    <h3>Планирование решения</h3>
-                    <p>Разрабатываем оптимальное решение, подбираем оборудование, составляем смету работ.</p>
+            <div class="problem-card">
+                <div class="problem-icon">
+                    <i class="fas fa-thermometer-half"></i>
                 </div>
+                <h4>Перегревается</h4>
+                <p>Система перезагружается или выключается из-за перегрева</p>
             </div>
 
-            <div class="process-step">
-                <div class="step-number">03</div>
-                <div class="step-content">
-                    <h3>Реализация</h3>
-                    <p>Монтируем оборудование, настраиваем сеть, оптимизируем параметры для максимальной производительности.</p>
+            <div class="problem-card">
+                <div class="problem-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
                 </div>
+                <h4>Синий экран</h4>
+                <p>Появляется синий экран смерти (BSOD) с ошибками</p>
             </div>
 
-            <div class="process-step">
-                <div class="step-number">04</div>
-                <div class="step-content">
-                    <h3>Тестирование и настройка</h3>
-                    <p>Тщательно тестируем сеть во всех точках, настраиваем оборудование клиентов.</p>
+            <div class="problem-card">
+                <div class="problem-icon">
+                    <i class="fas fa-tachometer-alt"></i>
                 </div>
+                <h4>Тормозит</h4>
+                <p>Система работает медленно, программы зависают</p>
             </div>
 
-            <div class="process-step">
-                <div class="step-number">05</div>
-                <div class="step-content">
-                    <h3>Обучение и гарантия</h3>
-                    <p>Обучаем пользователей, предоставляем гарантию 1 год на все работы и настройки.</p>
+            <div class="problem-card">
+                <div class="problem-icon">
+                    <i class="fas fa-virus"></i>
                 </div>
+                <h4>Вирусы</h4>
+                <p>Заражение системы вредоносным ПО, реклама</p>
+            </div>
+
+            <div class="problem-card">
+                <div class="problem-icon">
+                    <i class="fas fa-hdd"></i>
+                </div>
+                <h4>Шумит жесткий диск</h4>
+                <p>Посторонние звуки из системного блока</p>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Тестирование скорости -->
-<div class="speed-test-section">
-    <h3>Проверьте скорость вашего интернета</h3>
-    <div class="speed-test-results">
-        <div class="speed-test-item">
-            <h4>Скачивание</h4>
-            <div class="speed-value" id="download-speed">0</div>
-            <div class="speed-unit">Мбит/с</div>
+
+
+<!-- Диагностика ПК -->
+<div class="diagnostic-section">
+    <h3>Проверьте состояние вашего компьютера</h3>
+    <div class="diagnostic-checklist">
+        <div class="checklist-item">
+            <div class="checklist-icon">
+                <i class="fas fa-thermometer-half"></i>
+            </div>
+            <h4>Температура</h4>
+            <p>Проверка перегрева</p>
         </div>
-        <div class="speed-test-item">
-            <h4>Загрузка</h4>
-            <div class="speed-value" id="upload-speed">0</div>
-            <div class="speed-unit">Мбит/с</div>
+        <div class="checklist-item">
+            <div class="checklist-icon">
+                <i class="fas fa-hdd"></i>
+            </div>
+            <h4>Жесткий диск</h4>
+            <p>Состояние HDD/SSD</p>
         </div>
-        <div class="speed-test-item">
-            <h4>Пинг</h4>
-            <div class="speed-value" id="ping-value">0</div>
-            <div class="speed-unit">мс</div>
+        <div class="checklist-item">
+            <div class="checklist-icon">
+                <i class="fas fa-memory"></i>
+            </div>
+            <h4>Оперативная память</h4>
+            <p>Тест на ошибки</p>
         </div>
-        <div class="speed-test-item">
-            <h4>Стабильность</h4>
-            <div class="speed-value" id="stability-value">0</div>
-            <div class="speed-unit">%</div>
+        <div class="checklist-item">
+            <div class="checklist-icon">
+                <i class="fas fa-virus"></i>
+            </div>
+            <h4>Вирусы</h4>
+            <p>Проверка безопасности</p>
         </div>
     </div>
-    <button class="test-btn" id="start-speed-test">
-        <i class="fas fa-play"></i> Начать тест скорости
+    <button class="diagnostic-btn" id="start-diagnostic">
+        <i class="fas fa-search"></i> Запросить бесплатную диагностику
     </button>
 </div>
 
@@ -1010,16 +1604,16 @@ input, textarea, select {
                 <div class="advantage-icon">
                     <i class="fas fa-bolt"></i>
                 </div>
-                <h3>Быстрое подключение</h3>
-                <p>Настраиваем сети любой сложности в кратчайшие сроки</p>
+                <h3>Срочный ремонт</h3>
+                <p>Многие ремонты выполняем в день обращения</p>
             </div>
 
             <div class="advantage-card">
                 <div class="advantage-icon">
                     <i class="fas fa-user-shield"></i>
                 </div>
-                <h3>Безопасность</h3>
-                <p>Защищаем вашу сеть от внешних угроз и взлома</p>
+                <h3>Гарантия 1 год</h3>
+                <p>Даем официальную гарантию на все виды работ</p>
             </div>
 
             <div class="advantage-card">
@@ -1032,29 +1626,29 @@ input, textarea, select {
 
             <div class="advantage-card">
                 <div class="advantage-icon">
-                    <i class="fas fa-certificate"></i>
+                    <i class="fas fa-tools"></i>
                 </div>
-                <h3>Гарантия до 3 месяцев</h3>
-                <p>Даем гарантию на все выполненные работы</p>
+                <h3>Современное оборудование</h3>
+                <p>Работаем на профессиональном оборудовании</p>
             </div>
         </div>
     </div>
 </section>
 
 <!-- Форма заявки -->
-<section class="network-form-section" id="network-form">
+<section class="pc-form-section" id="pc-form">
     <div class="container">
-        <div class="network-form-container">
+        <div class="pc-form-container">
             <div class="section-header">
-                <h2 class="section-title">Заявка на настройку сети</h2>
+                <h2 class="section-title">Заявка на ремонт ПК/ноутбука</h2>
                 <p class="section-subtitle">Оставьте заявку и наш специалист свяжется с вами в течение 15 минут</p>
             </div>
 
             <div class="form-note">
-                <p><i class="fas fa-info-circle"></i> Первичная консультация и диагностика проводятся бесплатно.</p>
+                <p><i class="fas fa-info-circle"></i> Диагностика проводится бесплатно при последующем ремонте.</p>
             </div>
 
-            <form action="/api/network/request" method="POST" class="network-form" id="networkRequestForm">
+            <form action="/api/pc-repair/request" method="POST" class="pc-repair-form" id="pcRepairRequestForm">
                 <div class="form-row">
                     <div class="form-group">
                         <label for="name">Ваше имя *</label>
@@ -1069,21 +1663,20 @@ input, textarea, select {
 
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="network_type">Тип сети *</label>
-                        <select id="network_type" name="network_type" required>
-                            <option value="">Выберите тип сети</option>
-                            <option value="home_wifi">Домашний Wi-Fi</option>
-                            <option value="office_network">Офисная сеть</option>
-                            <option value="cable">Проводная сеть</option>
-                            <option value="vpn">VPN настройка</option>
-                            <option value="security">Защита сети</option>
-                            <option value="other">Другое</option>
+                        <label for="device_type">Тип устройства *</label>
+                        <select id="device_type" name="device_type" required>
+                            <option value="">Выберите устройство</option>
+                            <option value="desktop">Стационарный компьютер</option>
+                            <option value="laptop">Ноутбук</option>
+                            <option value="monitor">Монитор</option>
+                            <option value="printer">Принтер/сканер</option>
+                            <option value="other">Другое устройство</option>
                         </select>
                     </div>
 
                     <div class="form-group">
-                        <label for="equipment">Оборудование</label>
-                        <input type="text" id="equipment" name="equipment" placeholder="Например: TP-Link, Asus, D-Link">
+                        <label for="brand">Бренд</label>
+                        <input type="text" id="brand" name="brand" placeholder="Например: HP, Dell, Asus">
                     </div>
                 </div>
 
@@ -1091,30 +1684,31 @@ input, textarea, select {
                     <label for="problem_type">Тип проблемы *</label>
                     <select id="problem_type" name="problem_type" required>
                         <option value="">Выберите проблему</option>
-                        <option value="no_internet">Нет интернета</option>
-                        <option value="slow_speed">Медленная скорость</option>
-                        <option value="weak_signal">Слабый сигнал Wi-Fi</option>
-                        <option value="configuration">Настройка оборудования</option>
-                        <option value="security_issue">Проблемы безопасности</option>
-                        <option value="new_network">Создание новой сети</option>
+                        <option value="not_turning_on">Не включается</option>
+                        <option value="overheating">Перегревается</option>
+                        <option value="bsod">Синий экран (BSOD)</option>
+                        <option value="slow">Тормозит/медленно работает</option>
+                        <option value="no_display">Нет изображения</option>
+                        <option value="virus">Вирусы/вредоносное ПО</option>
+                        <option value="data_recovery">Восстановление данных</option>
                         <option value="other">Другая проблема</option>
                     </select>
                 </div>
 
                 <div class="form-group">
                     <label for="problem_description">Описание проблемы *</label>
-                    <textarea id="problem_description" name="problem_description" placeholder="Опишите вашу проблему: площадь помещения, количество устройств, текущая скорость интернета..." required></textarea>
+                    <textarea id="problem_description" name="problem_description" placeholder="Опишите проблему: что произошло, когда появилась, предшествующие события..." required></textarea>
                 </div>
 
                 <div class="form-group">
                     <label>
-                        <input type="checkbox" name="call_specialist" id="call_specialist">
-                        Нужен выезд специалиста (бесплатно при заказе от 2 000 ₽)
+                        <input type="checkbox" name="urgent_repair" id="urgent_repair">
+                        Нужен срочный ремонт (выполняем в течение 24 часов)
                     </label>
                 </div>
 
                 <button type="submit" class="submit-btn">
-                    <i class="fas fa-network-wired"></i> Вызвать специалиста
+                    <i class="fas fa-tools"></i> Вызвать мастера по ПК
                 </button>
 
                 <p style="text-align: center; margin-top: 20px; color: var(--text-tertiary); font-size: 0.9rem;">
@@ -1124,14 +1718,14 @@ input, textarea, select {
 
             <!-- Контакты экстренной помощи -->
             <div class="emergency-contacts">
-                <h2>Экстренная помощь по сетям</h2>
-                <p>Если пропал интернет или срочно нужна помощь с сетью</p>
+                <h2>Экстренная помощь по компьютерам</h2>
+                <p>Если срочно нужна помощь с компьютером или ноутбуком</p>
                 <div class="emergency-phone">
                     <a href="tel:+79998887766">
                         <i class="fas fa-phone-alt"></i> +7 (999) 888-77-66
                     </a>
                 </div>
-                <p class="emergency-note">Круглосуточная поддержка по сетевым вопросам</p>
+                <p class="emergency-note">Круглосуточная поддержка по ремонту техники</p>
             </div>
         </div>
     </div>
@@ -1140,7 +1734,7 @@ input, textarea, select {
 <!-- JavaScript -->
 <script>
     // Обработка формы заявки
-    document.getElementById('networkRequestForm').addEventListener('submit', async function(e) {
+    document.getElementById('pcRepairRequestForm').addEventListener('submit', async function(e) {
         e.preventDefault();
         
         const formData = new FormData(this);
@@ -1152,7 +1746,7 @@ input, textarea, select {
         submitBtn.disabled = true;
         
         try {
-            const response = await fetch('/api/network/request', {
+            const response = await fetch('/api/pc-repair/request', {
                 method: 'POST',
                 body: formData
             });
@@ -1161,7 +1755,7 @@ input, textarea, select {
             
             if (result.success) {
                 // Успешная отправка
-                alert(result.message);
+                alert('Спасибо! Ваша заявка на ремонт принята. Мастер свяжется с вами в течение 15 минут.');
                 this.reset();
                 
                 // Показываем сообщение об успехе
@@ -1200,121 +1794,75 @@ input, textarea, select {
         e.target.value = value;
     });
 
-    // Тест скорости интернета
-    document.getElementById('start-speed-test').addEventListener('click', async function() {
-        const testBtn = this;
-        const originalText = testBtn.innerHTML;
-        const downloadEl = document.getElementById('download-speed');
-        const uploadEl = document.getElementById('upload-speed');
-        const pingEl = document.getElementById('ping-value');
-        const stabilityEl = document.getElementById('stability-value');
+    // Обработка кнопки диагностики
+    document.getElementById('start-diagnostic').addEventListener('click', async function() {
+        const diagnosticBtn = this;
+        const originalText = diagnosticBtn.innerHTML;
         
         // Блокируем кнопку
-        testBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Тестирование...';
-        testBtn.disabled = true;
-        
-        // Сбрасываем значения
-        downloadEl.textContent = '0';
-        uploadEl.textContent = '0';
-        pingEl.textContent = '0';
-        stabilityEl.textContent = '0';
-        
-        // Добавляем класс для анимации
-        downloadEl.classList.add('testing');
-        uploadEl.classList.add('testing');
-        pingEl.classList.add('testing');
-        stabilityEl.classList.add('testing');
+        diagnosticBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Отправка запроса...';
+        diagnosticBtn.disabled = true;
         
         try {
-            // Имитация теста скорости (в реальном приложении здесь будет работа с WebRTC или другим API)
-            await new Promise(resolve => setTimeout(resolve, 1000));
+            // Имитация отправки запроса
+            await new Promise(resolve => setTimeout(resolve, 1500));
             
-            // Сначала пинг
-            const ping = Math.floor(Math.random() * 50) + 10;
-            pingEl.textContent = ping;
+            // Успешная отправка
+            alert('Запрос на бесплатную диагностику отправлен! Наш специалист свяжется с вами для уточнения деталей.');
             
-            // Затем скорость скачивания
-            await new Promise(resolve => setTimeout(resolve, 800));
-            const downloadSpeed = Math.floor(Math.random() * 90) + 10;
-            animateValue(downloadEl, 0, downloadSpeed, 1000);
-            
-            // Скорость загрузки
-            await new Promise(resolve => setTimeout(resolve, 800));
-            const uploadSpeed = Math.floor(downloadSpeed * 0.3) + 5;
-            animateValue(uploadEl, 0, uploadSpeed, 1000);
-            
-            // Стабильность
-            await new Promise(resolve => setTimeout(resolve, 800));
-            const stability = Math.floor(Math.random() * 20) + 80;
-            animateValue(stabilityEl, 0, stability, 1000);
-            
-            // Убираем анимацию
-            setTimeout(() => {
-                downloadEl.classList.remove('testing');
-                uploadEl.classList.remove('testing');
-                pingEl.classList.remove('testing');
-                stabilityEl.classList.remove('testing');
-                
-                testBtn.innerHTML = '<i class="fas fa-redo"></i> Повторить тест';
-                testBtn.disabled = false;
-            }, 1000);
+            diagnosticBtn.innerHTML = originalText;
+            diagnosticBtn.disabled = false;
             
         } catch (error) {
-            console.error('Ошибка теста скорости:', error);
-            alert('Произошла ошибка при тестировании скорости. Проверьте подключение к интернету.');
+            console.error('Ошибка:', error);
+            alert('Произошла ошибка при отправке запроса. Пожалуйста, попробуйте еще раз.');
             
-            testBtn.innerHTML = originalText;
-            testBtn.disabled = false;
-            downloadEl.classList.remove('testing');
-            uploadEl.classList.remove('testing');
-            pingEl.classList.remove('testing');
-            stabilityEl.classList.remove('testing');
+            diagnosticBtn.innerHTML = originalText;
+            diagnosticBtn.disabled = false;
         }
     });
 
-    // Функция анимации изменения значения
-    function animateValue(element, start, end, duration) {
-        const startTime = performance.now();
-        const step = (currentTime) => {
-            const elapsed = currentTime - startTime;
-            const progress = Math.min(elapsed / duration, 1);
-            const current = Math.floor(progress * (end - start) + start);
-            element.textContent = current;
-            
-            if (progress < 1) {
-                requestAnimationFrame(step);
-            } else {
-                element.textContent = end;
-            }
-        };
-        requestAnimationFrame(step);
-    }
-
-    // Обработка выбора типа сети
-    document.getElementById('network_type').addEventListener('change', function() {
+    // Обработка выбора типа устройства
+    document.getElementById('device_type').addEventListener('change', function() {
         const descriptionField = document.getElementById('problem_description');
-        const equipmentField = document.getElementById('equipment');
+        const brandField = document.getElementById('brand');
         
         const placeholders = {
-            'home_wifi': 'Опишите проблему: площадь квартиры/дома, толщина стен, текущее расположение роутера, количество устройств...',
-            'office_network': 'Опишите задачу: количество рабочих мест, этажность помещения, требуемые сервисы (принтеры, серверы)...',
-            'cable': 'Опишите задачу: длина кабельных линий, количество точек подключения, тип помещений...',
-            'vpn': 'Опишите задачу: для каких целей нужен VPN, количество пользователей, тип устройств...',
-            'security': 'Опишите задачу: были ли попытки взлома, что именно нужно защитить, количество устройств в сети...',
-            'other': 'Опишите вашу задачу максимально подробно...'
+            'desktop': 'Опишите проблему: характеристики компьютера, когда появилась проблема, предшествующие события...',
+            'laptop': 'Опишите проблему: модель ноутбука, возраст, как проявляется проблема...',
+            'monitor': 'Опишите проблему: размер монитора, есть ли изображение, какие артефакты...',
+            'printer': 'Опишите проблему: модель принтера, что именно не работает, ошибки на дисплее...',
+            'other': 'Опишите ваше устройство и проблему максимально подробно...'
         };
         
-        const equipmentPlaceholders = {
-            'home_wifi': 'Например: TP-Link Archer C7, Asus RT-AC68U',
-            'office_network': 'Например: Cisco, MikroTik, Ubiquiti',
-            'cable': 'Например: D-Link, HP, кабель UTP Cat5e/6',
-            'vpn': 'Например: роутер с поддержкой OpenVPN',
-            'security': 'Например: межсетевой экран, антивирус',
-            'other': 'Какое оборудование используется'
+        const brandPlaceholders = {
+            'desktop': 'Например: самосборка, Dell, HP',
+            'laptop': 'Например: Asus, Lenovo, Acer',
+            'monitor': 'Например: Samsung, LG, Dell',
+            'printer': 'Например: HP, Canon, Epson',
+            'other': 'Производитель устройства'
         };
         
         descriptionField.placeholder = placeholders[this.value] || 'Опишите вашу проблему...';
-        equipmentField.placeholder = equipmentPlaceholders[this.value] || 'Например: TP-Link, Asus, D-Link';
+        brandField.placeholder = brandPlaceholders[this.value] || 'Например: HP, Dell, Asus';
+    });
+
+    // Обработка выбора типа проблемы
+    document.getElementById('problem_type').addEventListener('change', function() {
+        const descriptionField = document.getElementById('problem_description');
+        
+        const problemDetails = {
+            'not_turning_on': 'Опишите подробно: реагирует ли на кнопку включения, горят ли индикаторы, были ли скачки напряжения...',
+            'overheating': 'Опишите: как давно начался перегрев, выключается ли сам, какие программы запущены, чистили ли систему охлаждения...',
+            'bsod': 'Опишите: код ошибки если есть, при каких действиях появляется, как часто возникает...',
+            'slow': 'Опишите: какие программы тормозят, давно ли проблема, пытались ли чистить систему, характеристики компьютера...',
+            'no_display': 'Опишите: есть ли изображение при запуске, слышны ли звуки работы системы, проверяли ли монитор...',
+            'virus': 'Опишите: какие симптомы заражения, какие антивирусы использовали, что пытались удалить...',
+            'data_recovery': 'Опишите: что случилось с данными, тип накопителя, важность данных, пытались ли восстановить...',
+            'other': 'Опишите вашу проблему максимально подробно...'
+        };
+        
+        descriptionField.placeholder = problemDetails[this.value] || 'Опишите вашу проблему...';
     });
 </script>
 {% endblock %}

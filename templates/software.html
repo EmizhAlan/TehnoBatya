@@ -34,6 +34,8 @@
         --accent-security: #1dd1a1;
         --accent-creative: #ff9ff3;
         --accent-dev: #4361ee;
+        --accent-repair: #f72585;
+        --accent-consulting: #7209b7;
         
         /* Границы и тени */
         --border-color: #dee2e6;
@@ -69,6 +71,8 @@
         --accent-security: #3ae6bc;
         --accent-creative: #ffb3f6;
         --accent-dev: #5a7dff;
+        --accent-repair: #ff6b9d;
+        --accent-consulting: #9d4edd;
         
         /* Границы и тени */
         --border-color: #404040;
@@ -466,6 +470,175 @@
         font-size: clamp(0.9rem, 2vw, 1rem);
     }
 
+    /* Другие наши услуги */
+    .other-services-section {
+        padding: clamp(60px, 10vw, 80px) 0;
+        background: linear-gradient(135deg, var(--bg-tertiary), var(--bg-secondary));
+    }
+
+    .other-services-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+        gap: clamp(25px, 4vw, 35px);
+        margin-top: clamp(30px, 6vw, 50px);
+    }
+
+    .other-service-card {
+        background: var(--card-bg);
+        border-radius: 20px;
+        padding: clamp(25px, 4vw, 35px);
+        text-align: center;
+        transition: all 0.4s ease;
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        border: 2px solid transparent;
+    }
+
+    .other-service-card:hover {
+        transform: translateY(-15px);
+        box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+    }
+
+    .other-service-card.repair:hover {
+        border-color: var(--accent-repair);
+    }
+
+    .other-service-card.household:hover {
+        border-color: var(--accent-primary);
+    }
+
+    .other-service-card.consulting:hover {
+        border-color: var(--accent-consulting);
+    }
+
+    .other-service-card.pc:hover {
+        border-color: var(--accent-dev);
+    }
+
+    .other-service-icon {
+        width: 80px;
+        height: 80px;
+        margin: 0 auto 25px;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2.2rem;
+        transition: all 0.3s ease;
+    }
+
+    .other-service-card.repair .other-service-icon {
+        background: linear-gradient(135deg, rgba(var(--accent-repair-rgb, 247, 37, 133), 0.1), rgba(var(--accent-repair-rgb, 247, 37, 133), 0.2));
+        color: var(--accent-repair);
+    }
+
+    .other-service-card.household .other-service-icon {
+        background: linear-gradient(135deg, rgba(var(--accent-primary-rgb, 67, 97, 238), 0.1), rgba(var(--accent-primary-rgb, 67, 97, 238), 0.2));
+        color: var(--accent-primary);
+    }
+
+    .other-service-card.consulting .other-service-icon {
+        background: linear-gradient(135deg, rgba(var(--accent-consulting-rgb, 114, 9, 183), 0.1), rgba(var(--accent-consulting-rgb, 114, 9, 183), 0.2));
+        color: var(--accent-consulting);
+    }
+
+    .other-service-card.pc .other-service-icon {
+        background: linear-gradient(135deg, rgba(var(--accent-dev-rgb, 67, 97, 238), 0.1), rgba(var(--accent-dev-rgb, 67, 97, 238), 0.2));
+        color: var(--accent-dev);
+    }
+
+    .other-service-card h3 {
+        font-size: 1.4rem;
+        font-weight: 700;
+        margin-bottom: 15px;
+        color: var(--text-primary);
+    }
+
+    .other-service-card p {
+        color: var(--text-secondary);
+        line-height: 1.6;
+        margin-bottom: 25px;
+        font-size: 0.95rem;
+    }
+
+    .other-service-features {
+        list-style: none;
+        padding: 0;
+        margin: 20px 0;
+        text-align: left;
+    }
+
+    .other-service-features li {
+        padding: 8px 0;
+        color: var(--text-secondary);
+        position: relative;
+        padding-left: 25px;
+        font-size: 0.9rem;
+    }
+
+    .other-service-features li:before {
+        content: '✓';
+        position: absolute;
+        left: 0;
+        font-weight: bold;
+        font-size: 0.9rem;
+    }
+
+    .other-service-card.repair .other-service-features li:before {
+        color: var(--accent-repair);
+    }
+
+    .other-service-card.household .other-service-features li:before {
+        color: var(--accent-primary);
+    }
+
+    .other-service-card.consulting .other-service-features li:before {
+        color: var(--accent-consulting);
+    }
+
+    .other-service-card.pc .other-service-features li:before {
+        color: var(--accent-dev);
+    }
+
+    .other-service-link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 12px 24px;
+        border-radius: 10px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        margin-top: 15px;
+    }
+
+    .other-service-card.repair .other-service-link {
+        background: linear-gradient(135deg, var(--accent-repair), #d0006f);
+        color: white;
+    }
+
+    .other-service-card.household .other-service-link {
+        background: linear-gradient(135deg, var(--accent-primary), #2a4dff);
+        color: white;
+    }
+
+    .other-service-card.consulting .other-service-link {
+        background: linear-gradient(135deg, var(--accent-consulting), #4a0dff);
+        color: white;
+    }
+
+    .other-service-card.pc .other-service-link {
+        background: linear-gradient(135deg, var(--accent-dev), #3a0ca3);
+        color: white;
+    }
+
+    .other-service-link:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+
     /* Форма заявки */
     .software-form-section {
         padding: clamp(40px, 8vw, 80px) 0;
@@ -568,9 +741,7 @@
         cursor: pointer;
     }
 
-    body.dark-theme .form-group select {
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox="0 0 24 24" fill='none' stroke='%23f1f5f9' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-    }
+ 
 
     .software-checkboxes {
         display: grid;
@@ -790,6 +961,7 @@
     .category-card,
     .service-item,
     .advantage-card,
+    .other-service-card,
     .software-form {
         animation: fadeInUp 0.6s ease-out forwards;
         opacity: 0;
@@ -810,13 +982,18 @@
     .advantage-card:nth-child(2) { animation-delay: 1.3s; }
     .advantage-card:nth-child(3) { animation-delay: 1.4s; }
     .advantage-card:nth-child(4) { animation-delay: 1.5s; }
-    .software-form { animation-delay: 1.6s; }
+    .other-service-card:nth-child(1) { animation-delay: 1.6s; }
+    .other-service-card:nth-child(2) { animation-delay: 1.7s; }
+    .other-service-card:nth-child(3) { animation-delay: 1.8s; }
+    .other-service-card:nth-child(4) { animation-delay: 1.9s; }
+    .software-form { animation-delay: 2.0s; }
 
     /* Плавные переходы */
     .software-hero-content *,
     .category-card *,
     .service-item *,
     .advantage-card *,
+    .other-service-card *,
     .software-form * {
         transition: all 0.3s ease;
     }
@@ -838,11 +1015,6 @@
         animation: pulse 1.5s infinite;
     }
 
-    /* Плавные переходы между темами */
-    * {
-        transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-    }
-
     /* Адаптивность */
     @media (max-width: 480px) {
         .software-checkboxes {
@@ -862,25 +1034,15 @@
             padding: 15px;
             font-size: 0.95rem;
         }
-    }
-
-    /* Поддержка высокого контраста */
-    @media (prefers-contrast: high) {
-        :root {
-            --text-primary: #000000;
-            --text-secondary: #333333;
-            --border-color: #000000;
+        
+        .other-service-icon {
+            width: 70px;
+            height: 70px;
+            font-size: 2rem;
         }
         
-        body.dark-theme {
-            --text-primary: #ffffff;
-            --text-secondary: #cccccc;
-            --border-color: #ffffff;
-        }
-        
-        .category-card:hover {
-            outline: 2px solid var(--accent-software);
-            outline-offset: 2px;
+        .other-service-card {
+            padding: 20px;
         }
     }
 
@@ -898,6 +1060,7 @@
         .category-card,
         .service-item,
         .advantage-card,
+        .other-service-card,
         .software-form {
             animation: none;
             opacity: 1;
@@ -1161,6 +1324,90 @@
                 </div>
                 <h3>Поддержка 24/7</h3>
                 <p>Круглосуточная техническая поддержка по всем вопросам работы ПО.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Другие наши услуги -->
+<section class="other-services-section">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Другие наши услуги</h2>
+            <p class="section-subtitle">Помимо программного обеспечения, мы предоставляем полный спектр IT-услуг</p>
+        </div>
+
+        <div class="other-services-grid">
+            <div class="other-service-card repair">
+                <div class="other-service-icon">
+                    <i class="fas fa-mobile-alt"></i>
+                </div>
+                <h3>Ремонт смартфонов</h3>
+                <p>Профессиональный ремонт iPhone, Samsung, Xiaomi и других брендов. Замена экранов, аккумуляторов, динамиков и других компонентов.</p>
+                <ul class="other-service-features">
+                    <li>Замена дисплеев любой сложности</li>
+                    <li>Ремонт после падения и воды</li>
+                    <li>Замена аккумуляторов</li>
+                    <li>Восстановление данных</li>
+                    <li>Гарантия на все работы</li>
+                </ul>
+                <a href="/repair" class="other-service-link">
+                    <i class="fas fa-tools"></i> Подробнее о ремонте
+                </a>
+            </div>
+
+            <div class="other-service-card household">
+                <div class="other-service-icon">
+                    <i class="fas fa-home"></i>
+                </div>
+                <h3>Ремонт бытовой техники</h3>
+                <p>Качественный ремонт холодильников, стиральных машин, плит, кондиционеров и другой бытовой техники с гарантией.</p>
+                <ul class="other-service-features">
+                    <li>Ремонт на дому или в сервисе</li>
+                    <li>Оригинальные запчасти</li>
+                    <li>Диагностика бесплатно</li>
+                    <li>Гарантия до 2 лет</li>
+                    <li>Выезд в день обращения</li>
+                </ul>
+                <a href="/household-repair" class="other-service-link">
+                    <i class="fas fa-tools"></i> Подробнее о ремонте техники
+                </a>
+            </div>
+
+            <div class="other-service-card consulting">
+                <div class="other-service-icon">
+                    <i class="fas fa-user-tie"></i>
+                </div>
+                <h3>IT Консультации</h3>
+                <p>Профессиональные консультации по выбору оборудования, внедрению технологий и оптимизации IT-инфраструктуры.</p>
+                <ul class="other-service-features">
+                    <li>Бизнес-консультации</li>
+                    <li>Персональные консультации</li>
+                    <li>Техническая экспертиза</li>
+                    <li>Аудит безопасности</li>
+                    <li>Обучение пользователей</li>
+                </ul>
+                <a href="/consulting" class="other-service-link">
+                    <i class="fas fa-calendar-check"></i> Записаться на консультацию
+                </a>
+            </div>
+
+            <div class="other-service-card pc">
+                <div class="other-service-icon">
+                    <i class="fas fa-desktop"></i>
+                </div>
+                <h3>Ремонт компьютеров</h3>
+                <p>Ремонт компьютеров и ноутбуков любой сложности. От замены комплектующих до микросхемного ремонта материнских плат.</p>
+                <ul class="other-service-features">
+                    <li>Диагностика и ремонт ПК</li>
+                    <li>Ремонт ноутбуков</li>
+                    <li>Восстановление данных</li>
+                    <li>Аппаратный ремонт</li>
+                    <li>Гарантия 1 год</li>
+                </ul>
+                <a href="/pc-repair" class="other-service-link">
+                    <i class="fas fa-laptop"></i> Подробнее о ремонте ПК
+                </a>
             </div>
         </div>
     </div>

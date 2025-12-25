@@ -5,57 +5,19 @@
 {% block content %}
 <!-- Стили для страницы ремонта ТВ -->
 <style>
-    /* Цветовая палитра на основе картины - СВЕТЛАЯ ТЕМА */
+    /* Используем вашу CSS систему */
     :root {
-        --primary: #2C4C3B;      /* Темно-зеленый */
-        --secondary: #9A4B35;    /* Терракотовый */
-        --accent: #C19A6B;       /* Золотисто-охристый */
-        --bg-primary: #F5F1E8;   /* Слоновая кость */
-        --bg-secondary: #F8F4EA; /* Светлый бежевый */
-        --bg-tertiary: #FDF8F2;  /* Кремовый */
-        --text-primary: #3E2723; /* Темно-коричневый */
-        --text-secondary: #8B7355;/* Теплый коричневый */
-        --text-tertiary: #A5907E;/* Светло-коричневый */
-        --border: #D4C5B8;       /* Светлый коричневый для границ */
-        --card-bg: #FFFFFF;      /* Белый для карточек */
-        --input-bg: #FFFFFF;     /* Белый для инпутов */
-        --input-border: #D4C5B8; /* Граница инпутов */
-        --input-text: #3E2723;   /* Текст в инпутах */
-        --shadow: rgba(139, 115, 85, 0.1);
+        /* Настраиваем цвета под ремонт телевизоров */
+        --accent-primary: #3b82f6;
+        --accent-primary-rgb: 59, 130, 246;
+        --accent-secondary: #8b5cf6;
+        --accent-secondary-rgb: 139, 92, 246;
     }
 
-    /* ТЕМНАЯ ТЕМА */
-    body.dark-theme {
-        --primary: #C19A6B;      /* Золотисто-охристый */
-        --secondary: #9A4B35;    /* Терракотовый */
-        --accent: #2C4C3B;       /* Темно-зеленый */
-        --bg-primary: #1A1A1A;   /* Почти черный */
-        --bg-secondary: #2D2D2D; /* Темно-серый */
-        --bg-tertiary: #252525;  /* Темный для элементов */
-        --text-primary: #E5E5E5; /* Почти белый */
-        --text-secondary: #A5907E;/* Светлый коричнево-серый */
-        --text-tertiary: #8B7D6B;/* Светло-серо-коричневый */
-        --border: #4A4035;       /* Темный коричневый для границ */
-        --card-bg: #2D2D2D;      /* Темный для карточек */
-        --input-bg: #333333;     /* Темный для инпутов */
-        --input-border: #4A4035; /* Граница инпутов */
-        --input-text: #E5E5E5;   /* Текст в инпутах */
-        --shadow: rgba(0, 0, 0, 0.3);
-    }
-
-    /* Основные стили страницы */
-    body {
-        background-color: var(--bg-primary);
-        color: var(--text-primary);
-        transition: background-color 0.3s, color 0.3s;
-    }
-
-    /* Стили для страницы ремонта ТВ */
+    /* Герой секция для ТВ */
     .repair-tv-hero {
-        background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
-        color: var(--bg-primary);
-        padding: 120px 0 70px;
-        text-align: center;
+        padding: 140px 0 80px;
+        background: var(--hero-bg);
         position: relative;
         overflow: hidden;
     }
@@ -67,53 +29,35 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="45" y="20" width="10" height="60" fill="rgba(245, 241, 232, 0.1)"/><rect x="20" y="45" width="60" height="10" fill="rgba(245, 241, 232, 0.1)"/></svg>');
-        background-size: 100px 100px;
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="45" y="20" width="10" height="60" fill="rgba(59, 130, 246, 0.1)"/><rect x="20" y="45" width="60" height="10" fill="rgba(139, 92, 246, 0.1)"/></svg>');
+        background-size: 120px 120px;
         opacity: 0.1;
+        z-index: 0;
     }
 
     .repair-tv-hero-content {
         position: relative;
         z-index: 1;
-        max-width: 900px;
+        max-width: 1000px;
         margin: 0 auto;
         padding: 0 20px;
-    }
-
-    .repair-tv-hero h1 {
-        font-size: 3.2rem;
-        font-weight: 800;
-        margin-bottom: 20px;
-        line-height: 1.1;
-        text-shadow: 0 2px 10px rgba(0,0,0,0.3);
-        color: var(--bg-primary);
-    }
-
-    .repair-tv-hero p {
-        font-size: 1.3rem;
-        opacity: 0.9;
-        margin-bottom: 35px;
-        line-height: 1.6;
-        max-width: 700px;
-        margin-left: auto;
-        margin-right: auto;
-        color: var(--bg-primary);
+        text-align: center;
     }
 
     .repair-tv-badge {
         display: inline-flex;
         align-items: center;
-        gap: 10px;
-        background: rgba(193, 154, 107, 0.2);
-        padding: 12px 28px;
+        gap: 12px;
+        background: rgba(var(--accent-primary-rgb), 0.15);
+        padding: 14px 32px;
         border-radius: 50px;
         font-size: 1.1rem;
         font-weight: 600;
-        margin-bottom: 35px;
+        margin-bottom: 30px;
         backdrop-filter: blur(10px);
-        border: 1px solid rgba(193, 154, 107, 0.3);
+        border: 1px solid rgba(var(--accent-primary-rgb), 0.3);
+        color: var(--accent-primary);
         animation: pulseBadge 2s infinite;
-        color: var(--bg-primary);
     }
 
     @keyframes pulseBadge {
@@ -121,119 +65,76 @@
         50% { transform: scale(1.05); }
     }
 
+    .repair-tv-hero h1 {
+        font-size: 3.5rem;
+        font-weight: 800;
+        margin-bottom: 24px;
+        line-height: 1.1;
+        background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .repair-tv-hero p {
+        font-size: 1.3rem;
+        color: var(--text-secondary);
+        margin-bottom: 40px;
+        line-height: 1.6;
+        max-width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
     .tv-brands {
         display: flex;
         justify-content: center;
         flex-wrap: wrap;
-        gap: 20px;
-        margin-top: 40px;
+        gap: 15px;
+        margin-top: 50px;
     }
 
     .tv-brand {
-        background: rgba(255, 255, 255, 0.15);
+        background: var(--card-bg);
         padding: 12px 25px;
         border-radius: 30px;
         font-weight: 500;
-        backdrop-filter: blur(5px);
-        border: 1px solid rgba(255, 255, 255, 0.3);
+        color: var(--text-secondary);
+        border: 1px solid var(--border-color);
         transition: all 0.3s ease;
-        color: var(--bg-primary);
+        font-size: 0.95rem;
     }
 
     .tv-brand:hover {
-        background: rgba(255, 255, 255, 0.25);
+        background: var(--accent-primary);
+        color: white;
         transform: translateY(-3px);
-    }
-
-    /* Кнопки */
-    .btn {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 12px;
-        padding: 18px 36px;
-        border-radius: 12px;
-        font-size: 1.1rem;
-        font-weight: 600;
-        text-decoration: none;
-        border: 2px solid transparent;
-        cursor: pointer;
-        transition: all 0.3s ease;
-    }
-
-    .btn-primary {
-        background: linear-gradient(135deg, var(--secondary) 0%, #7a3a26 100%);
-        color: var(--bg-primary);
-        box-shadow: 0 8px 25px rgba(154, 75, 53, 0.4);
-        border: 1px solid rgba(193, 154, 107, 0.3);
-    }
-
-    .btn-primary:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 15px 35px rgba(154, 75, 53, 0.5);
-        background: linear-gradient(135deg, #a85a40 0%, var(--secondary) 100%);
-    }
-
-    .btn-large {
-        padding: 20px 45px;
-        font-size: 1.2rem;
+        box-shadow: 0 8px 25px rgba(var(--accent-primary-rgb), 0.3);
+        border-color: var(--accent-primary);
     }
 
     /* Проблемы и решения */
     .tv-problems-section {
-        padding: 90px 0;
+        padding: 100px 0;
         background: var(--bg-secondary);
-    }
-
-    .section-header {
-        text-align: center;
-        margin-bottom: 70px;
-    }
-
-    .section-title {
-        font-size: 2.7rem;
-        font-weight: 800;
-        margin-bottom: 20px;
-        color: var(--text-primary);
-        position: relative;
-        display: inline-block;
-    }
-
-    .section-title::after {
-        content: '';
-        position: absolute;
-        bottom: -10px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 100px;
-        height: 4px;
-        background: linear-gradient(90deg, var(--secondary), var(--accent));
-        border-radius: 2px;
-    }
-
-    .section-subtitle {
-        font-size: 1.25rem;
-        color: var(--text-secondary);
-        max-width: 700px;
-        margin: 0 auto;
-        line-height: 1.6;
     }
 
     .tv-problems-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-        gap: 35px;
+        gap: 30px;
+        margin-top: 50px;
     }
 
     .tv-problem-card {
         background: var(--card-bg);
-        border: 1px solid var(--border);
-        border-radius: 18px;
+        border: 1px solid var(--border-color);
+        border-radius: 20px;
         padding: 35px 30px;
         transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         position: relative;
         overflow: hidden;
-        box-shadow: 0 10px 30px var(--shadow);
+        box-shadow: 0 10px 30px var(--shadow-color);
     }
 
     .tv-problem-card::before {
@@ -243,32 +144,32 @@
         left: 0;
         width: 6px;
         height: 100%;
-        background: linear-gradient(to bottom, var(--secondary), var(--accent));
+        background: linear-gradient(to bottom, var(--accent-primary), var(--accent-secondary));
     }
 
     .tv-problem-card:hover {
-        transform: translateY(-15px);
-        box-shadow: 0 25px 50px rgba(154, 75, 53, 0.15);
-        border-color: var(--secondary);
+        transform: translateY(-10px);
+        box-shadow: 0 25px 50px var(--shadow-color);
+        border-color: var(--accent-primary);
     }
 
     .tv-problem-icon {
         width: 70px;
         height: 70px;
-        background: linear-gradient(135deg, rgba(154, 75, 53, 0.1), rgba(193, 154, 107, 0.1));
+        background: rgba(var(--accent-primary-rgb), 0.1);
         border-radius: 18px;
         display: flex;
         align-items: center;
         justify-content: center;
         margin-bottom: 25px;
         font-size: 2rem;
-        color: var(--secondary);
+        color: var(--accent-primary);
         transition: all 0.3s ease;
     }
 
     .tv-problem-card:hover .tv-problem-icon {
-        background: linear-gradient(135deg, var(--secondary), var(--accent));
-        color: var(--bg-primary);
+        background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+        color: white;
         transform: rotateY(180deg);
     }
 
@@ -290,7 +191,7 @@
     .tv-problem-price {
         font-size: 1.5rem;
         font-weight: 800;
-        color: var(--secondary);
+        color: var(--accent-primary);
         margin-top: 15px;
         display: flex;
         align-items: center;
@@ -306,57 +207,44 @@
 
     /* Особенности ремонта ТВ */
     .tv-features-section {
-        padding: 90px 0;
+        padding: 100px 0;
         background: var(--bg-primary);
         position: relative;
         overflow: hidden;
     }
 
-    .tv-features-section::before {
-        content: '';
-        position: absolute;
-        top: -100px;
-        right: -100px;
-        width: 300px;
-        height: 300px;
-        background: radial-gradient(circle, rgba(154, 75, 53, 0.1) 0%, transparent 70%);
-        border-radius: 50%;
-    }
-
     .tv-features-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: 35px;
-        margin-top: 60px;
-        position: relative;
-        z-index: 1;
+        gap: 30px;
+        margin-top: 50px;
     }
 
     .tv-feature-card {
         background: var(--card-bg);
-        border: 1px solid var(--border);
-        border-radius: 18px;
+        border: 1px solid var(--border-color);
+        border-radius: 20px;
         padding: 40px 30px;
         text-align: center;
         transition: all 0.3s ease;
-        box-shadow: 0 10px 30px var(--shadow);
+        box-shadow: 0 10px 30px var(--shadow-color);
     }
 
     .tv-feature-card:hover {
         transform: translateY(-10px);
-        box-shadow: 0 20px 40px rgba(154, 75, 53, 0.15);
-        border-color: var(--secondary);
+        box-shadow: 0 25px 50px var(--shadow-color);
+        border-color: var(--accent-primary);
     }
 
     .tv-feature-icon {
         font-size: 3rem;
-        color: var(--secondary);
+        color: var(--accent-primary);
         margin-bottom: 25px;
         opacity: 0.9;
     }
 
     .tv-feature-card h3 {
-        font-size: 1.3rem;
+        font-size: 1.4rem;
         font-weight: 700;
         margin-bottom: 15px;
         color: var(--text-primary);
@@ -365,19 +253,19 @@
     .tv-feature-card p {
         color: var(--text-secondary);
         line-height: 1.6;
-        font-size: 1rem;
+        font-size: 1.05rem;
         margin: 0;
     }
 
     /* Процесс ремонта ТВ */
     .tv-process-section {
-        padding: 90px 0;
-        background: linear-gradient(135deg, rgba(44, 76, 59, 0.05), rgba(62, 39, 35, 0.05));
+        padding: 100px 0;
+        background: var(--bg-secondary);
     }
 
     .tv-process-timeline {
         max-width: 900px;
-        margin: 60px auto 0;
+        margin: 50px auto 0;
         position: relative;
     }
 
@@ -389,15 +277,15 @@
         bottom: 0;
         width: 2px;
         background: linear-gradient(to bottom, 
-            rgba(44, 76, 59, 0.3), 
-            rgba(154, 75, 53, 0.3));
+            rgba(var(--accent-primary-rgb), 0.3), 
+            rgba(var(--accent-secondary-rgb), 0.3));
         transform: translateX(-50%);
     }
 
     .tv-process-step {
         display: flex;
         align-items: center;
-        margin-bottom: 60px;
+        margin-bottom: 50px;
         position: relative;
     }
 
@@ -408,8 +296,8 @@
     .tv-step-number {
         width: 80px;
         height: 80px;
-        background: linear-gradient(135deg, var(--primary), var(--secondary));
-        color: var(--bg-primary);
+        background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+        color: white;
         border-radius: 50%;
         display: flex;
         align-items: center;
@@ -417,7 +305,7 @@
         font-size: 1.8rem;
         font-weight: 800;
         flex-shrink: 0;
-        box-shadow: 0 15px 35px rgba(44, 76, 59, 0.3);
+        box-shadow: 0 15px 35px rgba(var(--accent-primary-rgb), 0.3);
         position: relative;
         z-index: 2;
     }
@@ -427,8 +315,8 @@
         border-radius: 20px;
         padding: 35px 30px;
         margin: 0 40px;
-        box-shadow: 0 15px 40px var(--shadow);
-        border: 1px solid var(--border);
+        box-shadow: 0 15px 40px var(--shadow-color);
+        border: 1px solid var(--border-color);
         flex: 1;
         position: relative;
     }
@@ -440,7 +328,7 @@
         width: 20px;
         height: 20px;
         background: var(--card-bg);
-        border: 1px solid var(--border);
+        border: 1px solid var(--border-color);
         transform: rotate(45deg);
     }
 
@@ -472,9 +360,9 @@
 
     /* Гарантии для ТВ */
     .tv-guarantee-section {
-        padding: 90px 0;
-        background: linear-gradient(135deg, var(--primary), var(--secondary));
-        color: var(--bg-primary);
+        padding: 100px 0;
+        background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+        color: white;
         text-align: center;
         position: relative;
         overflow: hidden;
@@ -483,8 +371,8 @@
     .tv-guarantee-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        gap: 35px;
-        margin-top: 60px;
+        gap: 30px;
+        margin-top: 50px;
         position: relative;
         z-index: 1;
     }
@@ -526,8 +414,8 @@
 
     /* Форма заявки на ремонт ТВ */
     .tv-repair-form-section {
-        padding: 90px 0;
-        background: var(--bg-secondary);
+        padding: 100px 0;
+        background: var(--bg-primary);
     }
 
     .tv-repair-form-container {
@@ -537,18 +425,18 @@
 
     .tv-form-note {
         background: var(--bg-tertiary);
-        border-left: 5px solid var(--secondary);
+        border-left: 5px solid var(--accent-primary);
         padding: 25px 30px;
-        margin-bottom: 45px;
+        margin-bottom: 40px;
         border-radius: 12px;
         display: flex;
         align-items: flex-start;
         gap: 15px;
-        border: 1px solid var(--border);
+        border: 1px solid var(--border-color);
     }
 
     .tv-form-note i {
-        color: var(--secondary);
+        color: var(--accent-primary);
         font-size: 1.5rem;
         margin-top: 3px;
         flex-shrink: 0;
@@ -563,10 +451,10 @@
 
     .tv-repair-form {
         background: var(--card-bg);
-        border: 2px solid var(--border);
+        border: 1px solid var(--border-color);
         border-radius: 24px;
         padding: 50px 45px;
-        box-shadow: 0 25px 70px var(--shadow);
+        box-shadow: 0 25px 70px var(--shadow-color);
         position: relative;
         overflow: hidden;
     }
@@ -578,7 +466,7 @@
         left: 0;
         right: 0;
         height: 6px;
-        background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+        background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
     }
 
     .form-row {
@@ -603,7 +491,7 @@
 
     .form-group.required label::after {
         content: ' *';
-        color: var(--secondary);
+        color: var(--accent-primary);
     }
 
     .form-group input,
@@ -624,14 +512,14 @@
     .form-group select:focus,
     .form-group textarea:focus {
         outline: none;
-        border-color: var(--secondary);
+        border-color: var(--accent-primary);
         background: var(--bg-tertiary);
-        box-shadow: 0 0 0 4px rgba(154, 75, 53, 0.15);
+        box-shadow: 0 0 0 4px rgba(var(--accent-primary-rgb), 0.15);
     }
 
     .form-group input::placeholder,
     .form-group textarea::placeholder {
-        color: var(--text-tertiary);
+        color: var(--input-placeholder);
     }
 
     .form-group textarea {
@@ -643,29 +531,24 @@
     /* Стилизация select - стрелочки */
     .form-group select {
         appearance: none;
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%239A4B35' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%236c757d' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
         background-repeat: no-repeat;
         background-position: right 22px center;
         background-size: 20px;
         padding-right: 60px;
         cursor: pointer;
-        position: relative;
     }
 
-    /* Для темной темы меняем цвет стрелки */
-    body.dark-theme .form-group select {
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23C19A6B' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-    }
+    
 
     /* Checkbox стили */
     .form-group label input[type="checkbox"] {
         width: 20px;
         height: 20px;
         margin-right: 12px;
-        accent-color: var(--secondary);
+        accent-color: var(--accent-primary);
         vertical-align: middle;
         cursor: pointer;
-        border: 2px solid var(--border);
     }
 
     .form-group label {
@@ -674,15 +557,14 @@
         cursor: pointer;
         user-select: none;
         font-weight: 500;
-        color: var(--text-secondary);
     }
 
     .tv-submit-btn {
         width: 100%;
         padding: 20px 35px;
-        background: linear-gradient(135deg, var(--secondary), var(--accent));
-        color: var(--bg-primary);
-        border: 1px solid var(--border);
+        background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+        color: white;
+        border: none;
         border-radius: 14px;
         font-size: 1.2rem;
         font-weight: 700;
@@ -698,8 +580,7 @@
 
     .tv-submit-btn:hover {
         transform: translateY(-3px);
-        box-shadow: 0 20px 50px rgba(154, 75, 53, 0.4);
-        background: linear-gradient(135deg, var(--accent), var(--secondary));
+        box-shadow: 0 20px 50px rgba(var(--accent-primary-rgb), 0.4);
     }
 
     .tv-submit-btn:active {
@@ -708,16 +589,15 @@
 
     /* Контакты экстренной помощи */
     .tv-emergency-contacts {
-        background: linear-gradient(135deg, var(--primary), var(--secondary));
-        color: var(--bg-primary);
+        background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+        color: white;
         padding: 50px 40px;
-        margin-top: 70px;
+        margin-top: 60px;
         border-radius: 20px;
         text-align: center;
         position: relative;
         overflow: hidden;
-        box-shadow: 0 20px 50px rgba(44, 76, 59, 0.3);
-        border: 1px solid var(--border);
+        box-shadow: 0 20px 50px rgba(var(--accent-primary-rgb), 0.3);
     }
 
     .tv-emergency-contacts::before {
@@ -727,7 +607,7 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="1" fill="rgba(245, 241, 232, 0.15)"/></svg>');
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="1" fill="rgba(255, 255, 255, 0.15)"/></svg>');
         background-size: 40px 40px;
     }
 
@@ -737,7 +617,6 @@
         position: relative;
         z-index: 1;
         font-weight: 800;
-        color: var(--bg-primary);
     }
 
     .tv-emergency-contacts p {
@@ -758,7 +637,7 @@
     }
 
     .tv-emergency-phone a {
-        color: var(--bg-primary);
+        color: white;
         text-decoration: none;
         transition: all 0.3s ease;
         display: inline-flex;
@@ -782,58 +661,16 @@
         position: relative;
         z-index: 1;
         font-weight: 500;
-        color: var(--bg-primary);
     }
 
-    /* Кнопка переключения темы */
-    .theme-toggle {
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        z-index: 1000;
-        background: var(--card-bg);
-        border: 1px solid var(--border);
-        border-radius: 50%;
-        width: 50px;
-        height: 50px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        box-shadow: 0 4px 15px var(--shadow);
-        transition: all 0.3s ease;
-    }
-
-    .theme-toggle:hover {
-        transform: rotate(30deg);
-        box-shadow: 0 6px 20px var(--shadow);
-    }
-
-    .theme-toggle i {
-        font-size: 1.5rem;
-        color: var(--secondary);
-    }
-
-    /* Адаптивность */
+    /* Адаптивность для страницы ТВ */
     @media (max-width: 992px) {
-        .repair-tv-hero {
-            padding: 100px 0 60px;
-        }
-        
         .repair-tv-hero h1 {
-            font-size: 2.7rem;
+            font-size: 2.8rem;
         }
         
         .repair-tv-hero p {
             font-size: 1.2rem;
-        }
-        
-        .section-title {
-            font-size: 2.3rem;
-        }
-        
-        .section-subtitle {
-            font-size: 1.15rem;
         }
         
         .tv-process-timeline::before {
@@ -850,14 +687,14 @@
             right: auto !important;
             border-left: none;
             border-bottom: none;
-            border-right: 1px solid var(--border);
-            border-top: 1px solid var(--border);
+            border-right: 1px solid var(--border-color);
+            border-top: 1px solid var(--border-color);
         }
     }
 
     @media (max-width: 768px) {
         .repair-tv-hero {
-            padding: 80px 0 50px;
+            padding: 100px 0 60px;
         }
         
         .repair-tv-hero h1 {
@@ -865,14 +702,6 @@
         }
         
         .repair-tv-hero p {
-            font-size: 1.1rem;
-        }
-        
-        .section-title {
-            font-size: 2rem;
-        }
-        
-        .section-subtitle {
             font-size: 1.1rem;
         }
         
@@ -885,13 +714,7 @@
             padding: 40px 30px;
         }
         
-        .tv-problems-grid {
-            grid-template-columns: 1fr;
-            max-width: 450px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        
+        .tv-problems-grid,
         .tv-features-grid,
         .tv-guarantee-grid {
             grid-template-columns: 1fr;
@@ -913,15 +736,6 @@
             height: 70px;
             font-size: 1.6rem;
         }
-        
-        .tv-brands {
-            gap: 15px;
-        }
-        
-        .tv-brand {
-            padding: 10px 20px;
-            font-size: 0.9rem;
-        }
     }
 
     @media (max-width: 480px) {
@@ -930,14 +744,6 @@
         }
         
         .repair-tv-hero p {
-            font-size: 1rem;
-        }
-        
-        .section-title {
-            font-size: 1.8rem;
-        }
-        
-        .section-subtitle {
             font-size: 1rem;
         }
         
@@ -974,20 +780,9 @@
             height: 60px;
             font-size: 1.4rem;
         }
-        
-        .theme-toggle {
-            top: 10px;
-            right: 10px;
-            width: 40px;
-            height: 40px;
-        }
-        
-        .theme-toggle i {
-            font-size: 1.2rem;
-        }
     }
 
-    /* Анимации */
+    /* Анимации для страницы ТВ */
     @keyframes fadeInUp {
         from {
             opacity: 0;
@@ -1031,26 +826,16 @@
     .tv-guarantee-card:nth-child(4) { animation-delay: 2.0s; }
     .tv-repair-form { animation-delay: 2.1s; }
 
-    /* Плавные переходы */
-    .repair-tv-hero-content *,
-    .tv-problem-card *,
-    .tv-feature-card *,
-    .tv-process-step *,
-    .tv-guarantee-card *,
-    .tv-repair-form * {
-        transition: all 0.3s ease;
-    }
-
     /* Эффект пульсации для кнопки */
     @keyframes pulse {
         0% {
-            box-shadow: 0 0 0 0 rgba(154, 75, 53, 0.4);
+            box-shadow: 0 0 0 0 rgba(var(--accent-primary-rgb), 0.4);
         }
         70% {
-            box-shadow: 0 0 0 10px rgba(154, 75, 53, 0);
+            box-shadow: 0 0 0 10px rgba(var(--accent-primary-rgb), 0);
         }
         100% {
-            box-shadow: 0 0 0 0 rgba(154, 75, 53, 0);
+            box-shadow: 0 0 0 0 rgba(var(--accent-primary-rgb), 0);
         }
     }
 
@@ -1058,11 +843,6 @@
         animation: pulse 1.5s infinite;
     }
 </style>
-
-<!-- Кнопка переключения темы -->
-<div class="theme-toggle" id="themeToggle">
-    <i class="fas fa-moon"></i>
-</div>
 
 <!-- Герой секция -->
 <section class="repair-tv-hero">
@@ -1139,7 +919,7 @@
                     <i class="fas fa-volume-mute"></i>
                 </div>
                 <h3>Нет звука</h3>
-                <p>Изображение есть, но нет звука или он очень тихий. Неисправности в аудиотракте, динамиках или программным настройкам.</p>
+                <p>Изображение есть, но нет звука или он очень тихий. Неисправности в аудиотракте, динамиках или программных настройках.</p>
                 <div class="tv-problem-price">от 1 800 ₽</div>
             </div>
 
@@ -1375,7 +1155,7 @@
                 </button>
 
                 <p style="text-align: center; margin-top: 20px; color: var(--text-tertiary); font-size: 0.95rem;">
-                    Нажимая кнопку, вы соглашаетесь с <a href="/privacy" style="color: var(--secondary); text-decoration: underline;">политикой конфиденциальности</a>
+                    Нажимая кнопку, вы соглашаетесь с <a href="/privacy" style="color: var(--accent-primary); text-decoration: underline;">политикой конфиденциальности</a>
                 </p>
             </form>
 
@@ -1396,34 +1176,6 @@
 
 <!-- JavaScript -->
 <script>
-    // Переключение темы
-    const themeToggle = document.getElementById('themeToggle');
-    const themeIcon = themeToggle.querySelector('i');
-    
-    // Проверяем сохраненную тему в localStorage
-    const savedTheme = localStorage.getItem('theme') || 'light';
-    
-    if (savedTheme === 'dark') {
-        document.body.classList.add('dark-theme');
-        themeIcon.className = 'fas fa-sun';
-    } else {
-        document.body.classList.remove('dark-theme');
-        themeIcon.className = 'fas fa-moon';
-    }
-    
-    themeToggle.addEventListener('click', () => {
-        document.body.classList.toggle('dark-theme');
-        
-        if (document.body.classList.contains('dark-theme')) {
-            localStorage.setItem('theme', 'dark');
-            themeIcon.className = 'fas fa-sun';
-        } else {
-            localStorage.setItem('theme', 'light');
-            themeIcon.className = 'fas fa-moon';
-        }
-    });
-
-    // Обработка формы
     document.getElementById('tvRepairRequestForm').addEventListener('submit', async function(e) {
         e.preventDefault();
         
@@ -1450,7 +1202,7 @@
                 
                 // Показываем сообщение об успехе
                 submitBtn.innerHTML = '<i class="fas fa-check"></i> Заявка отправлена!';
-                submitBtn.style.background = '#2C4C3B';
+                submitBtn.style.background = 'var(--accent-success)';
                 
                 setTimeout(() => {
                     submitBtn.innerHTML = originalText;
@@ -1507,10 +1259,15 @@
 
     // Добавляем класс required к обязательным полям при загрузке
     document.addEventListener('DOMContentLoaded', function() {
-        const requiredFields = document.querySelectorAll('input[required], select[required], textarea[required]');
+        const requiredFields = document.querySelectorAll('#tvRepairRequestForm input[required], #tvRepairRequestForm select[required], #tvRepairRequestForm textarea[required]');
         requiredFields.forEach(field => {
             field.parentElement.classList.add('required');
         });
+        
+        // Активируем переключатель темы, если он есть
+        if (typeof window.initializeTheme === 'function') {
+            window.initializeTheme();
+        }
     });
 </script>
 {% endblock %}

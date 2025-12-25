@@ -1,10 +1,10 @@
-<!-- templates/consulting.html -->
+<!-- templates/household-repair.html -->
 {% extends "base.html" %}
 
-{% block title %}IT Консультации - ТЕХНО БАТЯ{% endblock %}
+{% block title %}Ремонт бытовой техники - ТЕХНО БАТЯ{% endblock %}
 
 {% block content %}
-<!-- Стили для страницы консультаций -->
+<!-- Стили для страницы ремонта бытовой техники -->
 <style>
     /* Переменные для светлой темы */
     :root {
@@ -21,18 +21,19 @@
         --text-tertiary: #6c757d;
         --input-text: #212529;
         
-        /* Цвета акцентов */
-        --accent-primary: #7209b7;
-        --accent-primary-rgb: 114, 9, 183;
+        /* Цвета акцентов - синие оттенки */
+        --accent-primary: #4361ee;
+        --accent-primary-rgb: 67, 97, 238;
         --accent-secondary: #3a0ca3;
-        --accent-consult: #7209b7;
-        --accent-consult-rgb: 114, 9, 183;
+        --accent-repair: #4361ee;
+        --accent-repair-rgb: 67, 97, 238;
         --accent-success: #06d6a0;
         --accent-warning: #ffd166;
         --accent-danger: #ef476f;
-        --accent-business: #4361ee;
-        --accent-personal: #ff6b6b;
-        --accent-technical: #1dd1a1;
+        --accent-kitchen: #4895ef;
+        --accent-laundry: #4cc9f0;
+        --accent-climate: #4361ee;
+        --accent-small: #7209b7;
         
         /* Границы и тени */
         --border-color: #dee2e6;
@@ -55,18 +56,19 @@
         --text-tertiary: #adb5bd;
         --input-text: #f8f9fa;
         
-        /* Цвета акцентов */
-        --accent-primary: #9d4edd;
-        --accent-primary-rgb: 157, 78, 221;
-        --accent-secondary: #560bad;
-        --accent-consult: #9d4edd;
-        --accent-consult-rgb: 157, 78, 221;
+        /* Цвета акцентов - синие оттенки */
+        --accent-primary: #5a7dff;
+        --accent-primary-rgb: 90, 125, 255;
+        --accent-secondary: #4a0dff;
+        --accent-repair: #5a7dff;
+        --accent-repair-rgb: 90, 125, 255;
         --accent-success: #1ce9a8;
         --accent-warning: #ffe169;
         --accent-danger: #ff6b8b;
-        --accent-business: #5a7dff;
-        --accent-personal: #ff8e8e;
-        --accent-technical: #3ae6bc;
+        --accent-kitchen: #64b5ff;
+        --accent-laundry: #64e6ff;
+        --accent-climate: #5a7dff;
+        --accent-small: #9d4edd;
         
         /* Границы и тени */
         --border-color: #404040;
@@ -74,9 +76,9 @@
         --shadow-color: rgba(0, 0, 0, 0.3);
     }
 
-    /* Базовые стили для страницы консультаций */
-    .consulting-hero {
-        background: linear-gradient(135deg, var(--accent-consult), var(--accent-secondary));
+    /* Базовые стили для страницы */
+    .household-repair-hero {
+        background: linear-gradient(135deg, var(--accent-repair), var(--accent-secondary));
         color: white;
         padding: clamp(60px, 12vw, 100px) 0 clamp(40px, 8vw, 60px);
         text-align: center;
@@ -84,19 +86,19 @@
         overflow: hidden;
     }
 
-    .consulting-hero::before {
+    .household-repair-hero::before {
         content: '';
         position: absolute;
         top: 0;
         left: 0;
         right: 0;
         bottom: 0;
-        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M20,50 Q50,20 80,50 T140,50" fill="none" stroke="rgba(255, 255, 255, 0.1)" stroke-width="1"/><circle cx="50" cy="50" r="5" fill="rgba(255, 255, 255, 0.2)"/></svg>');
+        background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="10" y="20" width="30" height="40" rx="2" fill="rgba(255, 255, 255, 0.1)"/><circle cx="50" cy="40" r="10" fill="rgba(255, 255, 255, 0.1)"/><rect x="60" y="20" width="30" height="40" rx="2" fill="rgba(255, 255, 255, 0.1)"/></svg>');
         background-size: 80px 80px;
         opacity: 0.3;
     }
 
-    .consulting-hero-content {
+    .household-repair-hero-content {
         position: relative;
         z-index: 1;
         max-width: 800px;
@@ -104,21 +106,21 @@
         padding: 0 clamp(20px, 4vw, 40px);
     }
 
-    .consulting-hero h1 {
+    .household-repair-hero h1 {
         font-size: clamp(2rem, 5vw, 3rem);
         font-weight: 800;
         margin-bottom: 20px;
         line-height: 1.2;
     }
 
-    .consulting-hero p {
+    .household-repair-hero p {
         font-size: clamp(1rem, 2.5vw, 1.2rem);
         opacity: 0.9;
         margin-bottom: 30px;
         line-height: 1.6;
     }
 
-    .consulting-badge {
+    .household-repair-badge {
         display: inline-block;
         background: rgba(255, 255, 255, 0.2);
         padding: clamp(8px, 2vw, 10px) clamp(15px, 4vw, 25px);
@@ -147,14 +149,14 @@
     }
 
     .btn-primary {
-        background: linear-gradient(135deg, var(--accent-consult), var(--accent-secondary));
+        background: linear-gradient(135deg, var(--accent-repair), var(--accent-secondary));
         color: white;
-        box-shadow: 0 8px 25px rgba(var(--accent-consult-rgb, 114, 9, 183), 0.3);
+        box-shadow: 0 8px 25px rgba(var(--accent-repair-rgb, 67, 97, 238), 0.3);
     }
 
     .btn-primary:hover {
         transform: translateY(-3px);
-        box-shadow: 0 15px 35px rgba(var(--accent-consult-rgb, 114, 9, 183), 0.4);
+        box-shadow: 0 15px 35px rgba(var(--accent-repair-rgb, 67, 97, 238), 0.4);
     }
 
     .btn-large {
@@ -162,8 +164,8 @@
         font-size: clamp(1.1rem, 2.5vw, 1.2rem);
     }
 
-    /* Типы консультаций */
-    .consulting-types-section {
+    /* Услуги ремонта */
+    .repair-services-section {
         padding: clamp(40px, 8vw, 80px) 0;
         background: var(--bg-secondary);
     }
@@ -188,13 +190,13 @@
         line-height: 1.6;
     }
 
-    .consulting-types-grid {
+    .repair-services-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
         gap: clamp(20px, 4vw, 30px);
     }
 
-    .consulting-type-card {
+    .repair-service-card {
         background: var(--card-bg);
         border: 1px solid var(--border-color);
         border-radius: 15px;
@@ -204,24 +206,28 @@
         overflow: hidden;
     }
 
-    .consulting-type-card:hover {
+    .repair-service-card:hover {
         transform: translateY(-10px);
         box-shadow: 0 20px 40px var(--shadow-color);
     }
 
-    .consulting-type-card.business {
-        border-color: var(--accent-business);
+    .repair-service-card.kitchen {
+        border-color: var(--accent-kitchen);
     }
 
-    .consulting-type-card.personal {
-        border-color: var(--accent-personal);
+    .repair-service-card.laundry {
+        border-color: var(--accent-laundry);
     }
 
-    .consulting-type-card.technical {
-        border-color: var(--accent-technical);
+    .repair-service-card.climate {
+        border-color: var(--accent-climate);
     }
 
-    .consulting-type-card::before {
+    .repair-service-card.small {
+        border-color: var(--accent-small);
+    }
+
+    .repair-service-card::before {
         content: '';
         position: absolute;
         top: 0;
@@ -230,55 +236,63 @@
         height: 100%;
     }
 
-    .consulting-type-card.business::before {
-        background: linear-gradient(to bottom, var(--accent-business), var(--accent-secondary));
+    .repair-service-card.kitchen::before {
+        background: linear-gradient(to bottom, var(--accent-kitchen), #2a6eff);
     }
 
-    .consulting-type-card.personal::before {
-        background: linear-gradient(to bottom, var(--accent-personal), #ee5a24);
+    .repair-service-card.laundry::before {
+        background: linear-gradient(to bottom, var(--accent-laundry), #2a9dff);
     }
 
-    .consulting-type-card.technical::before {
-        background: linear-gradient(to bottom, var(--accent-technical), #10ac84);
+    .repair-service-card.climate::before {
+        background: linear-gradient(to bottom, var(--accent-climate), #2a4dff);
     }
 
-    .type-icon {
+    .repair-service-card.small::before {
+        background: linear-gradient(to bottom, var(--accent-small), #560bad);
+    }
+
+    .service-icon {
         font-size: clamp(2rem, 5vw, 2.5rem);
         margin-bottom: 20px;
     }
 
-    .consulting-type-card.business .type-icon {
-        color: var(--accent-business);
+    .repair-service-card.kitchen .service-icon {
+        color: var(--accent-kitchen);
     }
 
-    .consulting-type-card.personal .type-icon {
-        color: var(--accent-personal);
+    .repair-service-card.laundry .service-icon {
+        color: var(--accent-laundry);
     }
 
-    .consulting-type-card.technical .type-icon {
-        color: var(--accent-technical);
+    .repair-service-card.climate .service-icon {
+        color: var(--accent-climate);
     }
 
-    .consulting-type-card h3 {
+    .repair-service-card.small .service-icon {
+        color: var(--accent-small);
+    }
+
+    .repair-service-card h3 {
         font-size: clamp(1.2rem, 3vw, 1.4rem);
         font-weight: 600;
         margin-bottom: 15px;
         color: var(--text-primary);
     }
 
-    .consulting-type-card p {
+    .repair-service-card p {
         color: var(--text-secondary);
         line-height: 1.6;
         margin-bottom: 20px;
     }
 
-    .type-features {
+    .service-features {
         list-style: none;
         padding: 0;
         margin: 20px 0;
     }
 
-    .type-features li {
+    .service-features li {
         padding: 8px 0;
         color: var(--text-secondary);
         position: relative;
@@ -286,26 +300,30 @@
         font-size: clamp(0.9rem, 2vw, 1rem);
     }
 
-    .type-features li:before {
+    .service-features li:before {
         content: '✓';
         position: absolute;
         left: 0;
         font-weight: bold;
     }
 
-    .consulting-type-card.business .type-features li:before {
-        color: var(--accent-business);
+    .repair-service-card.kitchen .service-features li:before {
+        color: var(--accent-kitchen);
     }
 
-    .consulting-type-card.personal .type-features li:before {
-        color: var(--accent-personal);
+    .repair-service-card.laundry .service-features li:before {
+        color: var(--accent-laundry);
     }
 
-    .consulting-type-card.technical .type-features li:before {
-        color: var(--accent-technical);
+    .repair-service-card.climate .service-features li:before {
+        color: var(--accent-climate);
     }
 
-    .type-price {
+    .repair-service-card.small .service-features li:before {
+        color: var(--accent-small);
+    }
+
+    .service-price {
         font-size: clamp(1.1rem, 3vw, 1.3rem);
         font-weight: 700;
         margin-top: 15px;
@@ -314,28 +332,79 @@
         gap: 10px;
     }
 
-    .consulting-type-card.business .type-price {
-        color: var(--accent-business);
+    .repair-service-card.kitchen .service-price {
+        color: var(--accent-kitchen);
     }
 
-    .consulting-type-card.personal .type-price {
-        color: var(--accent-personal);
+    .repair-service-card.laundry .service-price {
+        color: var(--accent-laundry);
     }
 
-    .consulting-type-card.technical .type-price {
-        color: var(--accent-technical);
+    .repair-service-card.climate .service-price {
+        color: var(--accent-climate);
     }
 
-    .type-price span {
+    .repair-service-card.small .service-price {
+        color: var(--accent-small);
+    }
+
+    .service-price span {
         font-size: 0.9rem;
         color: var(--text-tertiary);
         font-weight: normal;
     }
 
-    /* Процесс консультации */
-    .consulting-process-section {
+    /* Распространенные проблемы */
+    .common-problems-section {
         padding: clamp(40px, 8vw, 80px) 0;
         background: var(--bg-primary);
+    }
+
+    .problems-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr));
+        gap: clamp(20px, 4vw, 30px);
+        margin-top: clamp(30px, 6vw, 50px);
+    }
+
+    .problem-card {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 15px;
+        padding: clamp(20px, 4vw, 25px);
+        transition: all 0.3s ease;
+        text-align: center;
+    }
+
+    .problem-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px var(--shadow-color);
+        border-color: var(--accent-repair);
+    }
+
+    .problem-icon {
+        font-size: clamp(2rem, 5vw, 2.2rem);
+        color: var(--accent-repair);
+        margin-bottom: 15px;
+    }
+
+    .problem-card h4 {
+        font-size: clamp(1.1rem, 2.5vw, 1.3rem);
+        font-weight: 600;
+        margin-bottom: 10px;
+        color: var(--text-primary);
+    }
+
+    .problem-card p {
+        color: var(--text-secondary);
+        line-height: 1.5;
+        font-size: clamp(0.9rem, 2vw, 1rem);
+    }
+
+    /* Процесс ремонта */
+    .repair-process-section {
+        padding: clamp(40px, 8vw, 80px) 0;
+        background: var(--bg-secondary);
     }
 
     .process-steps {
@@ -357,13 +426,13 @@
 
     .process-step:hover {
         transform: translateX(10px);
-        border-color: var(--accent-consult);
+        border-color: var(--accent-repair);
     }
 
     .step-number {
         width: clamp(50px, 8vw, 60px);
         height: clamp(50px, 8vw, 60px);
-        background: linear-gradient(135deg, var(--accent-consult), var(--accent-secondary));
+        background: linear-gradient(135deg, var(--accent-repair), var(--accent-secondary));
         color: white;
         border-radius: 50%;
         display: flex;
@@ -372,7 +441,7 @@
         font-size: clamp(1.2rem, 3vw, 1.5rem);
         font-weight: 700;
         flex-shrink: 0;
-        box-shadow: 0 10px 25px rgba(var(--accent-consult-rgb, 114, 9, 183), 0.3);
+        box-shadow: 0 10px 25px rgba(var(--accent-repair-rgb, 67, 97, 238), 0.3);
     }
 
     .step-content h3 {
@@ -388,15 +457,15 @@
         font-size: clamp(0.9rem, 2vw, 1rem);
     }
 
-    /* Эксперты */
-    .experts-section {
+    /* Преимущества */
+    .advantages-section {
         padding: clamp(40px, 8vw, 80px) 0;
-        background: linear-gradient(135deg, var(--accent-consult), var(--accent-secondary));
+        background: linear-gradient(135deg, var(--accent-repair), var(--accent-secondary));
         color: white;
         text-align: center;
     }
 
-    .experts-section::before {
+    .advantages-section::before {
         content: '';
         position: absolute;
         top: 0;
@@ -407,7 +476,7 @@
         background-size: 40px 40px;
     }
 
-    .experts-grid {
+    .advantages-grid {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr));
         gap: clamp(20px, 4vw, 30px);
@@ -416,7 +485,7 @@
         z-index: 1;
     }
 
-    .expert-card {
+    .advantage-card {
         background: rgba(255, 255, 255, 0.1);
         border: 1px solid rgba(255, 255, 255, 0.2);
         border-radius: 15px;
@@ -425,63 +494,88 @@
         transition: all 0.3s ease;
     }
 
-    .expert-card:hover {
+    .advantage-card:hover {
         transform: translateY(-10px);
         background: rgba(255, 255, 255, 0.15);
         border-color: rgba(255, 255, 255, 0.3);
     }
 
-    .expert-avatar {
-        width: clamp(80px, 15vw, 100px);
-        height: clamp(80px, 15vw, 100px);
-        border-radius: 50%;
-        object-fit: cover;
-        margin: 0 auto 20px;
-        border: 3px solid rgba(255, 255, 255, 0.3);
+    .advantage-icon {
+        font-size: clamp(2rem, 5vw, 2.5rem);
+        margin-bottom: 20px;
+        color: rgba(255, 255, 255, 0.9);
     }
 
-    .expert-card h3 {
+    .advantage-card h3 {
         font-size: clamp(1.2rem, 3vw, 1.4rem);
         font-weight: 600;
-        margin-bottom: 10px;
-    }
-
-    .expert-card .expert-role {
-        color: rgba(255, 255, 255, 0.8);
-        font-size: clamp(0.9rem, 2vw, 1rem);
         margin-bottom: 15px;
     }
 
-    .expert-card .expert-bio {
+    .advantage-card p {
         opacity: 0.9;
         line-height: 1.6;
-        font-size: clamp(0.85rem, 1.8vw, 0.95rem);
-        margin-bottom: 15px;
+        font-size: clamp(0.9rem, 2vw, 1rem);
     }
 
-    .expert-specialization {
-        display: inline-block;
-        background: rgba(255, 255, 255, 0.2);
-        padding: 5px 15px;
-        border-radius: 20px;
-        font-size: 0.85rem;
-        margin-top: 10px;
+    /* Бренды которые мы ремонтируем */
+    .brands-section {
+        padding: clamp(40px, 8vw, 60px) 0;
+        background: var(--bg-tertiary);
     }
 
-    /* Форма заявки на консультацию */
-    .consulting-form-section {
+    .brands-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(min(120px, 100%), 1fr));
+        gap: clamp(15px, 3vw, 25px);
+        margin-top: clamp(20px, 4vw, 40px);
+    }
+
+    .brand-item {
+        background: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 10px;
+        padding: clamp(15px, 3vw, 20px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        min-height: 80px;
+    }
+
+    .brand-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px var(--shadow-color);
+        border-color: var(--accent-repair);
+    }
+
+    .brand-item img {
+        max-width: 100%;
+        height: auto;
+        filter: grayscale(100%);
+        opacity: 0.7;
+        transition: all 0.3s ease;
+    }
+
+    .brand-item:hover img {
+        filter: grayscale(0%);
+        opacity: 1;
+    }
+
+    /* Форма заявки */
+    .repair-form-section {
         padding: clamp(40px, 8vw, 80px) 0;
         background: var(--bg-secondary);
     }
 
-    .consulting-form-container {
+    .repair-form-container {
         max-width: 800px;
         margin: 0 auto;
     }
 
     .form-note {
         background: var(--bg-tertiary);
-        border-left: 4px solid var(--accent-consult);
+        border-left: 4px solid var(--accent-repair);
         padding: clamp(15px, 3vw, 20px);
         margin-bottom: clamp(20px, 4vw, 40px);
         border-radius: 8px;
@@ -495,11 +589,11 @@
     }
 
     .form-note i {
-        color: var(--accent-consult);
+        color: var(--accent-repair);
         margin-right: 10px;
     }
 
-    .consulting-form {
+    .repair-form {
         background: var(--card-bg);
         border: 1px solid var(--border-color);
         border-radius: 20px;
@@ -544,9 +638,9 @@
     .form-group select:focus,
     .form-group textarea:focus {
         outline: none;
-        border-color: var(--accent-consult);
+        border-color: var(--accent-repair);
         background: var(--bg-tertiary);
-        box-shadow: 0 0 0 3px rgba(var(--accent-consult-rgb, 114, 9, 183), 0.1);
+        box-shadow: 0 0 0 3px rgba(var(--accent-repair-rgb, 67, 97, 238), 0.1);
     }
 
     .form-group input::placeholder,
@@ -570,15 +664,13 @@
         cursor: pointer;
     }
 
-    body.dark-theme .form-group select {
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23f1f5f9' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-    }
+ 
 
     .form-group label input[type="checkbox"] {
         width: clamp(16px, 3vw, 18px);
         height: clamp(16px, 3vw, 18px);
         margin-right: 10px;
-        accent-color: var(--accent-consult);
+        accent-color: var(--accent-repair);
         vertical-align: middle;
         cursor: pointer;
     }
@@ -594,7 +686,7 @@
     .submit-btn {
         width: 100%;
         padding: clamp(15px, 3vw, 18px) clamp(20px, 4vw, 30px);
-        background: linear-gradient(135deg, var(--accent-consult), var(--accent-secondary));
+        background: linear-gradient(135deg, var(--accent-repair), var(--accent-secondary));
         color: white;
         border: none;
         border-radius: 12px;
@@ -611,7 +703,7 @@
 
     .submit-btn:hover {
         transform: translateY(-3px);
-        box-shadow: 0 15px 40px rgba(var(--accent-consult-rgb, 114, 9, 183), 0.4);
+        box-shadow: 0 15px 40px rgba(var(--accent-repair-rgb, 67, 97, 238), 0.4);
     }
 
     .submit-btn:active {
@@ -675,7 +767,7 @@
     .faq-toggle {
         transition: transform 0.3s ease;
         font-size: 1.2rem;
-        color: var(--accent-consult);
+        color: var(--accent-repair);
     }
 
     .faq-item.active .faq-toggle {
@@ -684,7 +776,7 @@
 
     /* Контакты экстренной помощи */
     .emergency-contacts {
-        background: var(--accent-consult);
+        background: var(--accent-repair);
         color: white;
         padding: clamp(20px, 4vw, 40px);
         margin-top: clamp(30px, 6vw, 60px);
@@ -759,47 +851,42 @@
         }
     }
 
-    .consulting-hero-content,
-    .consulting-type-card,
+    .household-repair-hero-content,
+    .repair-service-card,
+    .problem-card,
     .process-step,
-    .expert-card,
-    .consulting-form {
+    .advantage-card,
+    .repair-form {
         animation: fadeInUp 0.6s ease-out forwards;
         opacity: 0;
     }
 
-    .consulting-hero-content { animation-delay: 0.1s; }
-    .consulting-type-card:nth-child(1) { animation-delay: 0.2s; }
-    .consulting-type-card:nth-child(2) { animation-delay: 0.3s; }
-    .consulting-type-card:nth-child(3) { animation-delay: 0.4s; }
-    .process-step:nth-child(1) { animation-delay: 0.5s; }
-    .process-step:nth-child(2) { animation-delay: 0.6s; }
-    .process-step:nth-child(3) { animation-delay: 0.7s; }
-    .process-step:nth-child(4) { animation-delay: 0.8s; }
-    .expert-card:nth-child(1) { animation-delay: 0.9s; }
-    .expert-card:nth-child(2) { animation-delay: 1.0s; }
-    .expert-card:nth-child(3) { animation-delay: 1.1s; }
-    .consulting-form { animation-delay: 1.2s; }
-
-    /* Плавные переходы для всех элементов */
-    .consulting-hero-content *,
-    .consulting-type-card *,
-    .process-step *,
-    .expert-card *,
-    .consulting-form * {
-        transition: all 0.3s ease;
-    }
+    .household-repair-hero-content { animation-delay: 0.1s; }
+    .repair-service-card:nth-child(1) { animation-delay: 0.2s; }
+    .repair-service-card:nth-child(2) { animation-delay: 0.3s; }
+    .repair-service-card:nth-child(3) { animation-delay: 0.4s; }
+    .repair-service-card:nth-child(4) { animation-delay: 0.5s; }
+    .problem-card:nth-child(1) { animation-delay: 0.6s; }
+    .problem-card:nth-child(2) { animation-delay: 0.7s; }
+    .problem-card:nth-child(3) { animation-delay: 0.8s; }
+    .problem-card:nth-child(4) { animation-delay: 0.9s; }
+    .process-step:nth-child(1) { animation-delay: 1.0s; }
+    .process-step:nth-child(2) { animation-delay: 1.1s; }
+    .process-step:nth-child(3) { animation-delay: 1.2s; }
+    .process-step:nth-child(4) { animation-delay: 1.3s; }
+    .process-step:nth-child(5) { animation-delay: 1.4s; }
+    .repair-form { animation-delay: 1.5s; }
 
     /* Эффект пульсации для кнопки */
     @keyframes pulse {
         0% {
-            box-shadow: 0 0 0 0 rgba(var(--accent-consult-rgb, 114, 9, 183), 0.4);
+            box-shadow: 0 0 0 0 rgba(var(--accent-repair-rgb, 67, 97, 238), 0.4);
         }
         70% {
-            box-shadow: 0 0 0 10px rgba(var(--accent-consult-rgb, 114, 9, 183), 0);
+            box-shadow: 0 0 0 10px rgba(var(--accent-repair-rgb, 67, 97, 238), 0);
         }
         100% {
-            box-shadow: 0 0 0 0 rgba(var(--accent-consult-rgb, 114, 9, 183), 0);
+            box-shadow: 0 0 0 0 rgba(var(--accent-repair-rgb, 67, 97, 238), 0);
         }
     }
 
@@ -807,24 +894,7 @@
         animation: pulse 1.5s infinite;
     }
 
-    /* Плавные переходы между темами */
-    * {
-        transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-    }
-
-    /* Улучшенная поддержка тем для всех элементов */
-    input, textarea, select {
-        background-color: var(--input-bg) !important;
-        color: var(--input-text) !important;
-        border-color: var(--input-border) !important;
-    }
-
-    /* Стили для выпадающих списков в темной теме */
-    body.dark-theme select {
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23f1f5f9' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-    }
-
-    /* Адаптивность для очень маленьких экранов */
+    /* Адаптивность */
     @media (max-width: 480px) {
         .process-step {
             flex-direction: column;
@@ -838,7 +908,7 @@
             font-size: 1.4rem;
         }
         
-        .type-features li {
+        .service-features li {
             padding-left: 20px;
             font-size: 0.9rem;
         }
@@ -847,25 +917,9 @@
             padding: 15px;
             font-size: 0.95rem;
         }
-    }
-
-    /* Поддержка высокого контраста */
-    @media (prefers-contrast: high) {
-        :root {
-            --text-primary: #000000;
-            --text-secondary: #333333;
-            --border-color: #000000;
-        }
         
-        body.dark-theme {
-            --text-primary: #ffffff;
-            --text-secondary: #cccccc;
-            --border-color: #ffffff;
-        }
-        
-        .consulting-type-card:hover {
-            outline: 2px solid var(--accent-consult);
-            outline-offset: 2px;
+        .brands-grid {
+            grid-template-columns: repeat(2, 1fr);
         }
     }
 
@@ -879,11 +933,11 @@
             transition-duration: 0.01ms !important;
         }
         
-        .consulting-hero-content,
-        .consulting-type-card,
+        .household-repair-hero-content,
+        .repair-service-card,
         .process-step,
-        .expert-card,
-        .consulting-form {
+        .advantage-card,
+        .repair-form {
             animation: none;
             opacity: 1;
         }
@@ -895,124 +949,249 @@
 </style>
 
 <!-- Герой секция -->
-<section class="consulting-hero">
-    <div class="consulting-hero-content">
-        <div class="consulting-badge">
-            <i class="fas fa-user-tie"></i> Профессиональные консультации
+<section class="household-repair-hero">
+    <div class="household-repair-hero-content">
+        <div class="household-repair-badge">
+            <i class="fas fa-home"></i> Профессиональный ремонт бытовой техники
         </div>
-        <h1>IT Консультации и экспертиза</h1>
-        <p>Профессиональные консультации по выбору оборудования, внедрению технологий, цифровой трансформации и оптимизации IT-инфраструктуры.</p>
-        <a href="#consulting-form" class="btn btn-primary btn-large">
-            <i class="fas fa-calendar-check"></i> Записаться на консультацию
+        <h1>Ремонт бытовой техники любой сложности</h1>
+        <p>Качественный ремонт холодильников, стиральных машин, плит, кондиционеров и другой бытовой техники. Гарантия на работы и запчасти.</p>
+        <a href="#repair-form" class="btn btn-primary btn-large">
+            <i class="fas fa-tools"></i> Вызвать мастера
         </a>
     </div>
 </section>
 
-<!-- Типы консультаций -->
-<section class="consulting-types-section">
+<!-- Услуги ремонта -->
+<section class="repair-services-section">
     <div class="container">
         <div class="section-header">
-            <h2 class="section-title">Наши направления консультаций</h2>
-            <p class="section-subtitle">Комплексные решения для бизнеса и частных клиентов</p>
+            <h2 class="section-title">Виды ремонта</h2>
+            <p class="section-subtitle">Ремонтируем все виды бытовой техники с гарантией</p>
         </div>
 
-        <div class="consulting-types-grid">
-            <div class="consulting-type-card business">
-                <div class="type-icon">
-                    <i class="fas fa-briefcase"></i>
+        <div class="repair-services-grid">
+            <div class="repair-service-card kitchen">
+                <div class="service-icon">
+                    <i class="fas fa-blender"></i>
                 </div>
-                <h3>Бизнес-консультации</h3>
-                <p>Стратегия цифровизации, выбор IT-решений, автоматизация бизнес-процессов, внедрение CRM и ERP систем.</p>
-                <ul class="type-features">
-                    <li>Анализ текущей IT-инфраструктуры</li>
-                    <li>Разработка IT-стратегии</li>
-                    <li>Подбор программного обеспечения</li>
-                    <li>Автоматизация бизнес-процессов</li>
-                    <li>Обучение сотрудников</li>
+                <h3>Кухонная техника</h3>
+                <p>Ремонт холодильников, плит, духовых шкафов, микроволновок, посудомоек, вытяжек и другой техники для кухни.</p>
+                <ul class="service-features">
+                    <li>Холодильники и морозильники</li>
+                    <li>Плиты газовые и электрические</li>
+                    <li>Духовые шкафы</li>
+                    <li>Микроволновые печи</li>
+                    <li>Посудомоечные машины</li>
                 </ul>
-                <div class="type-price">
-                    от 5 000 ₽ <span>/ час</span>
+                <div class="service-price">
+                    от 1 500 ₽
                 </div>
             </div>
 
-            <div class="consulting-type-card personal">
-                <div class="type-icon">
-                    <i class="fas fa-user"></i>
+            <div class="repair-service-card laundry">
+                <div class="service-icon">
+                    <i class="fas fa-tshirt"></i>
                 </div>
-                <h3>Персональные консультации</h3>
-                <p>Помощь в выборе техники, настройке домашней сети, обучение работе с программами, кибербезопасность.</p>
-                <ul class="type-features">
-                    <li>Подбор компьютера и комплектующих</li>
-                    <li>Настройка домашней сети</li>
-                    <li>Обучение работе с программами</li>
-                    <li>Защита от киберугроз</li>
-                    <li>Оптимизация работы устройств</li>
+                <h3>Стиральная техника</h3>
+                <p>Ремонт стиральных и сушильных машин, утюгов, отпаривателей, швейных машин и другой техники для ухода за одеждой.</p>
+                <ul class="service-features">
+                    <li>Стиральные машины</li>
+                    <li>Сушильные машины</li>
+                    <li>Утюги и отпариватели</li>
+                    <li>Швейные машины</li>
+                    <li>Машинки для чистки обуви</li>
                 </ul>
-                <div class="type-price">
-                    от 2 000 ₽ <span>/ час</span>
+                <div class="service-price">
+                    от 2 000 ₽
                 </div>
             </div>
 
-            <div class="consulting-type-card technical">
-                <div class="type-icon">
-                    <i class="fas fa-cogs"></i>
+            <div class="repair-service-card climate">
+                <div class="service-icon">
+                    <i class="fas fa-wind"></i>
                 </div>
-                <h3>Техническая экспертиза</h3>
-                <p>Оценка IT-инфраструктуры, аудит безопасности, анализ производительности, рекомендации по оптимизации.</p>
-                <ul class="type-features">
-                    <li>Технический аудит инфраструктуры</li>
-                    <li>Анализ безопасности сети</li>
-                    <li>Оценка производительности систем</li>
-                    <li>Рекомендации по модернизации</li>
-                    <li>Составление технической документации</li>
+                <h3>Климатическая техника</h3>
+                <p>Ремонт кондиционеров, обогревателей, вентиляторов, увлажнителей воздуха и другой климатической техники.</p>
+                <ul class="service-features">
+                    <li>Кондиционеры и сплит-системы</li>
+                    <li>Обогреватели и тепловентиляторы</li>
+                    <li>Увлажнители и очистители воздуха</li>
+                    <li>Вентиляторы и вытяжки</li>
+                    <li>Водонагреватели и бойлеры</li>
                 </ul>
-                <div class="type-price">
-                    от 10 000 ₽ <span>/ проект</span>
+                <div class="service-price">
+                    от 2 500 ₽
+                </div>
+            </div>
+
+            <div class="repair-service-card small">
+                <div class="service-icon">
+                    <i class="fas fa-plug"></i>
+                </div>
+                <h3>Мелкая бытовая техника</h3>
+                <p>Ремонт пылесосов, кофемашин, чайников, блендеров, мясорубок и другой мелкой кухонной и домашней техники.</p>
+                <ul class="service-features">
+                    <li>Пылесосы и роботы-пылесосы</li>
+                    <li>Кофемашины и кофеварки</li>
+                    <li>Электрочайники и термопоты</li>
+                    <li>Блендеры и миксеры</li>
+                    <li>Мясорубки и кухонные комбайны</li>
+                </ul>
+                <div class="service-price">
+                    от 800 ₽
                 </div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Процесс консультации -->
-<section class="consulting-process-section">
+<!-- Распространенные проблемы -->
+<section class="common-problems-section">
     <div class="container">
         <div class="section-header">
-            <h2 class="section-title">Как проходит консультация</h2>
-            <p class="section-subtitle">Прозрачный процесс от обращения до результата</p>
+            <h2 class="section-title">Частые неисправности</h2>
+            <p class="section-subtitle">С какими проблемами чаще всего обращаются</p>
         </div>
 
-        <div class="process-steps">
-            <div class="process-step">
-                <div class="step-number">01</div>
-                <div class="step-content">
-                    <h3>Первичная консультация</h3>
-                    <p>Бесплатная 15-минутная консультация для понимания ваших задач и потребностей.</p>
+        <div class="problems-grid">
+            <div class="problem-card">
+                <div class="problem-icon">
+                    <i class="fas fa-snowflake"></i>
                 </div>
+                <h4>Не холодит</h4>
+                <p>Холодильник не поддерживает температуру, недостаточно холодно</p>
             </div>
 
-            <div class="process-step">
-                <div class="step-number">02</div>
-                <div class="step-content">
-                    <h3>Анализ и планирование</h3>
-                    <p>Детальный анализ ситуации, разработка плана решения и оценка стоимости.</p>
+            <div class="problem-card">
+                <div class="problem-icon">
+                    <i class="fas fa-tint-slash"></i>
                 </div>
+                <h4>Не набирает воду</h4>
+                <p>Стиральная машина не набирает воду или набирает очень медленно</p>
             </div>
 
-            <div class="process-step">
-                <div class="step-number">03</div>
-                <div class="step-content">
-                    <h3>Проведение консультации</h3>
-                    <p>Профессиональная консультация с разбором ваших вопросов и предоставлением решений.</p>
+            <div class="problem-card">
+                <div class="problem-icon">
+                    <i class="fas fa-bolt"></i>
                 </div>
+                <h4>Не включается</h4>
+                <p>Техника не реагирует на кнопку включения, нет индикации</p>
             </div>
 
-            <div class="process-step">
-                <div class="step-number">04</div>
-                <div class="step-content">
-                    <h3>Поддержка и отчетность</h3>
-                    <p>Предоставление письменных рекомендаций и дальнейшая поддержка по вопросам.</p>
+            <div class="problem-card">
+                <div class="problem-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
                 </div>
+                <h4>Коды ошибок</h4>
+                <p>На дисплее появляются коды ошибок, мигают индикаторы</p>
+            </div>
+
+            <div class="problem-card">
+                <div class="problem-icon">
+                    <i class="fas fa-volume-up"></i>
+                </div>
+                <h4>Сильный шум</h4>
+                <p>Техника работает слишком громко, появились посторонние звуки</p>
+            </div>
+
+            <div class="problem-card">
+                <div class="problem-icon">
+                    <i class="fas fa-fire"></i>
+                </div>
+                <h4>Не греет</h4>
+                <p>Плита, духовка, водонагреватель или обогреватель не греет</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<!-- Бренды -->
+<section class="brands-section">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Бренды которые мы ремонтируем</h2>
+            <p class="section-subtitle">Работаем с техникой всех популярных производителей</p>
+        </div>
+
+        <div class="brands-grid">
+            <div class="brand-item">
+                <i class="fas fa-snowflake fa-2x" style="color: var(--accent-kitchen);"></i>
+                <span style="display: none;">LG</span>
+            </div>
+            <div class="brand-item">
+                <i class="fas fa-blender fa-2x" style="color: var(--accent-kitchen);"></i>
+                <span style="display: none;">Samsung</span>
+            </div>
+            <div class="brand-item">
+                <i class="fas fa-tshirt fa-2x" style="color: var(--accent-laundry);"></i>
+                <span style="display: none;">Bosch</span>
+            </div>
+            <div class="brand-item">
+                <i class="fas fa-wind fa-2x" style="color: var(--accent-climate);"></i>
+                <span style="display: none;">Electrolux</span>
+            </div>
+            <div class="brand-item">
+                <i class="fas fa-fire fa-2x" style="color: #ff6b6b;"></i>
+                <span style="display: none;">Indesit</span>
+            </div>
+            <div class="brand-item">
+                <i class="fas fa-plug fa-2x" style="color: var(--accent-small);"></i>
+                <span style="display: none;">Whirlpool</span>
+            </div>
+            <div class="brand-item">
+                <i class="fas fa-home fa-2x" style="color: var(--accent-repair);"></i>
+                <span style="display: none;">Philips</span>
+            </div>
+            <div class="brand-item">
+                <i class="fas fa-cogs fa-2x" style="color: var(--text-tertiary);"></i>
+                <span style="display: none;">Другие бренды</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Преимущества -->
+<section class="advantages-section">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Почему выбирают нас</h2>
+            <p class="section-subtitle">Надежность и качество в каждом ремонте</p>
+        </div>
+
+        <div class="advantages-grid">
+            <div class="advantage-card">
+                <div class="advantage-icon">
+                    <i class="fas fa-user-shield"></i>
+                </div>
+                <h3>Гарантия до 2 лет</h3>
+                <p>Даем официальную гарантию на все виды работ и установленные запчасти</p>
+            </div>
+
+            <div class="advantage-card">
+                <div class="advantage-icon">
+                    <i class="fas fa-home"></i>
+                </div>
+                <h3>Ремонт на дому</h3>
+                <p>90% ремонтов выполняем на дому, без необходимости везти технику в сервис</p>
+            </div>
+
+            <div class="advantage-card">
+                <div class="advantage-icon">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <h3>Выезд в день обращения</h3>
+                <p>Приезжаем в течение 2-4 часов после заявки, работаем без выходных</p>
+            </div>
+
+            <div class="advantage-card">
+                <div class="advantage-icon">
+                    <i class="fas fa-tools"></i>
+                </div>
+                <h3>Оригинальные запчасти</h3>
+                <p>Используем только качественные оригинальные и совместимые запчасти</p>
             </div>
         </div>
     </div>
@@ -1024,105 +1203,69 @@
     
     <div class="faq-item">
         <div class="faq-question">
-            <span>Как выбрать подходящий тип консультации?</span>
+            <span>Как быстро приедет мастер?</span>
             <i class="fas fa-chevron-down faq-toggle"></i>
         </div>
         <div class="faq-answer">
-            <p>На бесплатной первичной консультации мы поможем определить, какой тип консультации подходит именно вам. Бизнес-консультации ориентированы на компании, персональные — на частных лиц, техническая экспертиза — на комплексную оценку IT-инфраструктуры.</p>
+            <p>Обычно мастер приезжает в течение 2-4 часов после вашей заявки. В экстренных случаях возможен выезд в течение часа. Мы работаем без выходных с 8:00 до 22:00.</p>
         </div>
     </div>
     
     <div class="faq-item">
         <div class="faq-question">
-            <span>Сколько длится консультация?</span>
+            <span>Диагностика действительно бесплатная?</span>
             <i class="fas fa-chevron-down faq-toggle"></i>
         </div>
         <div class="faq-answer">
-            <p>Стандартная консультация длится 1 час. При необходимости можно заказать расширенную консультацию на 2 часа или несколько сессий. Первичная 15-минутная консультация проводится бесплатно.</p>
+            <p>Да, диагностика проводится абсолютно бесплатно. Вы платите только в том случае, если соглашаетесь на ремонт. Если ремонт не требуется, вы ничего не платите.</p>
         </div>
     </div>
     
     <div class="faq-item">
         <div class="faq-question">
-            <span>Получу ли я письменные рекомендации?</span>
+            <span>Какая гарантия на ремонт?</span>
             <i class="fas fa-chevron-down faq-toggle"></i>
         </div>
         <div class="faq-answer">
-            <p>Да, после каждой платной консультации мы предоставляем письменный отчет с подробными рекомендациями, планом действий и техническими спецификациями (при необходимости).</p>
+            <p>Мы предоставляем гарантию от 6 месяцев до 2 лет в зависимости от вида ремонта и установленных запчастей. Все гарантийные обязательства оформляются документально.</p>
         </div>
     </div>
     
     <div class="faq-item">
         <div class="faq-question">
-            <span>Можно ли получить консультацию онлайн?</span>
+            <span>Можно ли отремонтировать старую технику?</span>
             <i class="fas fa-chevron-down faq-toggle"></i>
         </div>
         <div class="faq-answer">
-            <p>Да, мы проводим консультации как офлайн в нашем офисе, так и онлайн через Zoom, Skype или другие удобные для вас платформы.</p>
+            <p>Да, мы ремонтируем технику любых годов выпуска. Однако для очень старой техники (более 15 лет) иногда сложно найти запчасти. Это мастер уточняет при диагностике.</p>
         </div>
     </div>
     
     <div class="faq-item">
         <div class="faq-question">
-            <span>Предоставляете ли вы гарантии?</span>
+            <span>Что делать, если сломалась гарантийная техника?</span>
             <i class="fas fa-chevron-down faq-toggle"></i>
         </div>
         <div class="faq-answer">
-            <p>Мы гарантируем качество предоставляемых рекомендаций. Если рекомендации окажутся неэффективными, мы проведем дополнительную консультацию бесплатно для корректировки решений.</p>
+            <p>Если техника на гарантии у производителя, рекомендуем сначала обратиться в авторизованный сервисный центр. Если гарантия закончилась или сервисный центр далеко - мы поможем.</p>
         </div>
     </div>
 </div>
 
-<!-- Эксперты -->
-<section class="experts-section">
+<!-- Форма заявки на ремонт -->
+<section class="repair-form-section" id="repair-form">
     <div class="container">
-        <div class="section-header">
-            <h2 class="section-title">Наши эксперты</h2>
-            <p class="section-subtitle">Профессионалы с многолетним опытом в IT-индустрии</p>
-        </div>
-
-        <div class="experts-grid">
-            <div class="expert-card">
-                <img src="https://i.pravatar.cc/150?img=1" alt="Александр Петров" class="expert-avatar">
-                <h3>Александр Петров</h3>
-                <div class="expert-role">Senior IT Consultant</div>
-                <p class="expert-bio">15 лет опыта в IT-консалтинге. Специализация: цифровая трансформация, внедрение ERP-систем, бизнес-аналитика.</p>
-                <div class="expert-specialization">Бизнес-консультации</div>
-            </div>
-
-            <div class="expert-card">
-                <img src="https://i.pravatar.cc/150?img=5" alt="Мария Иванова" class="expert-avatar">
-                <h3>Мария Иванова</h3>
-                <div class="expert-role">Technical Expert</div>
-                <p class="expert-bio">12 лет опыта в системном администрировании и сетевой безопасности. Сертифицированный специалист Cisco, Microsoft.</p>
-                <div class="expert-specialization">Техническая экспертиза</div>
-            </div>
-
-            <div class="expert-card">
-                <img src="https://i.pravatar.cc/150?img=8" alt="Дмитрий Смирнов" class="expert-avatar">
-                <h3>Дмитрий Смирнов</h3>
-                <div class="expert-role">Personal IT Coach</div>
-                <p class="expert-bio">10 лет опыта обучения и консультирования частных клиентов. Специализация: домашние сети, кибербезопасность, обучение.</p>
-                <div class="expert-specialization">Персональные консультации</div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<!-- Форма заявки на консультацию -->
-<section class="consulting-form-section" id="consulting-form">
-    <div class="container">
-        <div class="consulting-form-container">
+        <div class="repair-form-container">
             <div class="section-header">
-                <h2 class="section-title">Запись на консультацию</h2>
-                <p class="section-subtitle">Оставьте заявку и наш эксперт свяжется с вами для бесплатной первичной консультации</p>
+                <h2 class="section-title">Вызвать мастера</h2>
+                <p class="section-subtitle">Оставьте заявку и наш специалист свяжется с вами в течение 15 минут</p>
             </div>
 
             <div class="form-note">
-                <p><i class="fas fa-info-circle"></i> Первичная 15-минутная консультация проводится бесплатно. Вы сможете задать все вопросы и определиться с форматом сотрудничества.</p>
+                <p><i class="fas fa-info-circle"></i> Диагностика проводится бесплатно! Оплачиваете только ремонт, если соглашаетесь на него.</p>
             </div>
 
-            <form action="/api/consulting/request" method="POST" class="consulting-form" id="consultingRequestForm">
+            <form action="/api/household-repair/request" method="POST" class="repair-form" id="householdRepairForm">
                 <div class="form-row">
                     <div class="form-group">
                         <label for="name">Ваше имя *</label>
@@ -1137,63 +1280,63 @@
 
                 <div class="form-row">
                     <div class="form-group">
-                        <label for="email">Email *</label>
-                        <input type="email" id="email" name="email" placeholder="ivan@example.com" required>
+                        <label for="address">Адрес *</label>
+                        <input type="text" id="address" name="address" placeholder="Улица, дом, квартира" required>
                     </div>
 
                     <div class="form-group">
-                        <label for="company">Компания / Организация</label>
-                        <input type="text" id="company" name="company" placeholder="Название компании (если есть)">
+                        <label for="preferred_time">Удобное время</label>
+                        <select id="preferred_time" name="preferred_time">
+                            <option value="">Выберите время</option>
+                            <option value="morning">Утро (9:00 - 12:00)</option>
+                            <option value="day">День (12:00 - 17:00)</option>
+                            <option value="evening">Вечер (17:00 - 21:00)</option>
+                            <option value="asap">Как можно скорее</option>
+                        </select>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="consultation_type">Тип консультации *</label>
-                    <select id="consultation_type" name="consultation_type" required>
-                        <option value="">Выберите тип консультации</option>
-                        <option value="business">Бизнес-консультация</option>
-                        <option value="personal">Персональная консультация</option>
-                        <option value="technical">Техническая экспертиза</option>
-                        <option value="not_sure">Не знаю, нужна помощь в выборе</option>
+                    <label for="appliance_type">Тип техники *</label>
+                    <select id="appliance_type" name="appliance_type" required>
+                        <option value="">Выберите тип техники</option>
+                        <option value="refrigerator">Холодильник/Морозильник</option>
+                        <option value="washer">Стиральная машина</option>
+                        <option value="cooker">Плита/Духовка</option>
+                        <option value="ac">Кондиционер</option>
+                        <option value="dishwasher">Посудомоечная машина</option>
+                        <option value="water_heater">Водонагреватель</option>
+                        <option value="vacuum">Пылесос</option>
+                        <option value="other">Другая техника</option>
                     </select>
                 </div>
 
-                <div class="form-group">
-                    <label for="preferred_date">Предпочтительная дата и время</label>
-                    <input type="text" id="preferred_date" name="preferred_date" placeholder="Например: завтра после 18:00, в среду утром">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="brand">Бренд</label>
+                        <input type="text" id="brand" name="brand" placeholder="Например: LG, Samsung, Bosch">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="model">Модель</label>
+                        <input type="text" id="model" name="model" placeholder="Номер модели (если знаете)">
+                    </div>
                 </div>
 
                 <div class="form-group">
-                    <label for="format">Формат консультации *</label>
-                    <select id="format" name="format" required>
-                        <option value="">Выберите формат</option>
-                        <option value="online">Онлайн (Zoom/Skype)</option>
-                        <option value="offline">Очно в офисе</option>
-                        <option value="both">Не важно</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="problem_description">Опишите вашу задачу или вопрос *</label>
-                    <textarea id="problem_description" name="problem_description" placeholder="Подробно опишите, с какой задачей или проблемой вы столкнулись, что хотите решить..." required></textarea>
+                    <label for="problem_description">Опишите проблему *</label>
+                    <textarea id="problem_description" name="problem_description" placeholder="Что именно не работает? Когда появилась проблема? Какие есть симптомы?..." required></textarea>
                 </div>
 
                 <div class="form-group">
                     <label>
-                        <input type="checkbox" name="receive_newsletter" id="receive_newsletter">
-                        Хочу получать полезные материалы и советы по IT
-                    </label>
-                </div>
-
-                <div class="form-group">
-                    <label>
-                        <input type="checkbox" name="agree_terms" id="agree_terms" required>
-                        Я соглашаюсь с политикой конфиденциальности и обработкой персональных данных *
+                        <input type="checkbox" name="urgent_repair" id="urgent_repair">
+                        Нужен срочный ремонт (выезд в течение 2 часов)
                     </label>
                 </div>
 
                 <button type="submit" class="submit-btn">
-                    <i class="fas fa-calendar-check"></i> Записаться на консультацию
+                    <i class="fas fa-tools"></i> Вызвать мастера
                 </button>
 
                 <p style="text-align: center; margin-top: 20px; color: var(--text-tertiary); font-size: 0.9rem;">
@@ -1203,14 +1346,14 @@
 
             <!-- Контакты экстренной помощи -->
             <div class="emergency-contacts">
-                <h2>Срочная консультация</h2>
-                <p>Если нужна срочная помощь или консультация прямо сейчас</p>
+                <h2>Экстренная помощь по техники</h2>
+                <p>Если срочно нужен мастер или консультация</p>
                 <div class="emergency-phone">
-                    <a href="tel:+79997776655">
-                        <i class="fas fa-phone-alt"></i> +7 (999) 777-66-55
+                    <a href="tel:+79995554433">
+                        <i class="fas fa-phone-alt"></i> +7 (999) 555-44-33
                     </a>
                 </div>
-                <p class="emergency-note">Консультанты доступны с 9:00 до 21:00 ежедневно</p>
+                <p class="emergency-note">Круглосуточная поддержка, выезд без выходных</p>
             </div>
         </div>
     </div>
@@ -1219,7 +1362,7 @@
 <!-- JavaScript -->
 <script>
     // Обработка формы заявки
-    document.getElementById('consultingRequestForm').addEventListener('submit', async function(e) {
+    document.getElementById('householdRepairForm').addEventListener('submit', async function(e) {
         e.preventDefault();
         
         const formData = new FormData(this);
@@ -1231,7 +1374,7 @@
         submitBtn.disabled = true;
         
         try {
-            const response = await fetch('/api/consulting/request', {
+            const response = await fetch('/api/household-repair/request', {
                 method: 'POST',
                 body: formData
             });
@@ -1240,7 +1383,7 @@
             
             if (result.success) {
                 // Успешная отправка
-                alert(result.message);
+                alert('Спасибо! Ваша заявка принята. Мастер свяжется с вами в течение 15 минут для уточнения деталей.');
                 this.reset();
                 
                 // Показываем сообщение об успехе
@@ -1279,18 +1422,35 @@
         e.target.value = value;
     });
 
-    // Обработка выбора типа консультации
-    document.getElementById('consultation_type').addEventListener('change', function() {
+    // Динамическое описание проблемы
+    document.getElementById('appliance_type').addEventListener('change', function() {
         const descriptionField = document.getElementById('problem_description');
+        const brandField = document.getElementById('brand');
         
         const placeholders = {
-            'business': 'Опишите бизнес-задачу: автоматизация процессов, внедрение CRM/ERP, цифровизация, подбор IT-решений...',
-            'personal': 'Опишите вашу задачу: подбор компьютера, настройка домашней сети, обучение программам, безопасность...',
-            'technical': 'Опишите техническую задачу: аудит инфраструктуры, оценка безопасности, анализ производительности...',
-            'not_sure': 'Опишите ситуацию, и мы поможем определить, какая консультация вам нужна...'
+            'refrigerator': 'Опишите проблему: не холодит, не морозит, течет, шумит, не выключается компрессор...',
+            'washer': 'Опишите проблему: не набирает воду, не сливает, не отжимает, течет, показывает ошибку...',
+            'cooker': 'Опишите проблему: не греет конфорки, не работает духовка, не включается, искрит...',
+            'ac': 'Опишите проблему: не включается, не охлаждает/не греет, течет вода, шумит, неприятный запах...',
+            'dishwasher': 'Опишите проблему: не набирает воду, не сливает, не моет посуду, течет, показывает ошибку...',
+            'water_heater': 'Опишите проблему: не греет воду, течет, выбивает автомат, плохо греет...',
+            'vacuum': 'Опишите проблему: не включается, слабая тяга, шумит, не работает щетка...',
+            'other': 'Опишите вашу технику и проблему максимально подробно...'
         };
         
-        descriptionField.placeholder = placeholders[this.value] || 'Опишите вашу задачу или вопрос...';
+        const brandPlaceholders = {
+            'refrigerator': 'Например: LG, Samsung, Bosch, Indesit',
+            'washer': 'Например: Samsung, LG, Bosch, Electrolux',
+            'cooker': 'Например: Hansa, Gorenje, Electrolux, Bosch',
+            'ac': 'Например: LG, Samsung, Mitsubishi, Daikin',
+            'dishwasher': 'Например: Bosch, Siemens, Electrolux, Candy',
+            'water_heater': 'Например: Ariston, Thermex, Electrolux',
+            'vacuum': 'Например: Samsung, LG, Philips, Thomas',
+            'other': 'Производитель техники'
+        };
+        
+        descriptionField.placeholder = placeholders[this.value] || 'Опишите вашу проблему...';
+        brandField.placeholder = brandPlaceholders[this.value] || 'Например: LG, Samsung, Bosch';
     });
 
     // FAQ аккордеон
@@ -1311,20 +1471,6 @@
                 item.classList.add('active');
             }
         });
-    });
-
-    // Предзаполнение даты и времени
-    document.getElementById('preferred_date').addEventListener('focus', function() {
-        if (!this.value) {
-            const now = new Date();
-            const tomorrow = new Date(now);
-            tomorrow.setDate(tomorrow.getDate() + 1);
-            
-            const days = ['воскресенье', 'понедельник', 'вторник', 'среду', 'четверг', 'пятницу', 'субботу'];
-            const dayName = days[tomorrow.getDay()];
-            
-            this.value = `завтра после 18:00, или в ${dayName} утром`;
-        }
     });
 </script>
 {% endblock %}
