@@ -1,0 +1,1309 @@
+{% extends "base.html" %}
+
+{% block title %}Услуги электрика - ТЕХНО БАТЯ{% endblock %}
+
+{% block content %}
+<!-- Герой-секция -->
+<section class="hero-section electric-hero">
+    <div class="container">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1 class="hero-title">Услуги <span class="highlight">электрика</span> в Москве</h1>
+                <p class="hero-subtitle">Профессиональный монтаж и ремонт электропроводки с гарантией безопасности. Решаем любые проблемы с электрикой в квартирах, домах и офисах.</p>
+                <div class="hero-buttons">
+                    <a href="tel:+79991234567" class="btn btn-primary btn-large">
+                        <i class="fas fa-phone-alt"></i> Вызвать электрика
+                    </a>
+                    <a href="#price" class="btn btn-outline btn-large">
+                        <i class="fas fa-ruble-sign"></i> Узнать цены
+                    </a>
+                </div>
+                <div class="hero-features">
+                    <div class="feature">
+                        <i class="fas fa-bolt"></i>
+                        <span>Экстренный выезд 60 минут</span>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>Гарантия 3 года</span>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-certificate"></i>
+                        <span>Лицензия Ростехнадзор</span>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-image">
+                <div class="image-container">
+                    <img class="hero-img" src="../static/images/electrician.jpg" alt="Услуги электрика">
+                    <div class="floating-badge">
+                        <i class="fas fa-hard-hat"></i>
+                        <span>Работаем 24/7</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Услуги -->
+<section class="services-section">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Наши услуги</h2>
+            <p class="section-subtitle">Полный спектр электромонтажных работ любой сложности</p>
+        </div>
+        
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-plug"></i>
+                </div>
+                <h3>Замена электропроводки</h3>
+                <ul class="service-list">
+                    <li>Полная замена проводки в квартире</li>
+                    <li>Монтаж новой электропроводки</li>
+                    <li>Замена алюминиевых проводов на медные</li>
+                    <li>Установка автоматов и УЗО</li>
+                </ul>
+                <div class="service-price">от 3 000 ₽</div>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-lightbulb"></i>
+                </div>
+                <h3>Установка и замена освещения</h3>
+                <ul class="service-list">
+                    <li>Монтаж люстр и светильников</li>
+                    <li>Установка точечных светильников</li>
+                    <li>Подключение LED-лент</li>
+                    <li>Замена выключателей и розеток</li>
+                </ul>
+                <div class="service-price">от 1 500 ₽</div>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-solar-panel"></i>
+                </div>
+                <h3>Установка розеток и выключателей</h3>
+                <ul class="service-list">
+                    <li>Монтаж розеток европейского стандарта</li>
+                    <li>Установка выключателей с подсветкой</li>
+                    <li>Перенос розеток и выключателей</li>
+                    <li>Монтаж диммеров и регуляторов</li>
+                </ul>
+                <div class="service-price">от 800 ₽/шт</div>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-tachometer-alt"></i>
+                </div>
+                <h3>Установка электросчетчиков</h3>
+                <ul class="service-list">
+                    <li>Монтаж однофазных счетчиков</li>
+                    <li>Установка трехфазных счетчиков</li>
+                    <li>Замена старых счетчиков</li>
+                    <li>Оформление документов в Энергосбыте</li>
+                </ul>
+                <div class="service-price">от 2 500 ₽</div>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-thermometer-half"></i>
+                </div>
+                <h3>Монтаж теплых полов</h3>
+                <ul class="service-list">
+                    <li>Установка электрического теплого пола</li>
+                    <li>Подключение к терморегулятору</li>
+                    <li>Тестирование и настройка системы</li>
+                    <li>Гарантия на работу и материалы</li>
+                </ul>
+                <div class="service-price">от 2 000 ₽/м²</div>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-video"></i>
+                </div>
+                <h3>Электрика для кухни</h3>
+                <ul class="service-list">
+                    <li>Подключение электроплиты</li>
+                    <li>Монтаж розеток для техники</li>
+                    <li>Установка вытяжки</li>
+                    <li>Разводка для посудомоечной машины</li>
+                </ul>
+                <div class="service-price">от 4 000 ₽</div>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-bath"></i>
+                </div>
+                <h3>Электромонтаж в ванной</h3>
+                <ul class="service-list">
+                    <li>Монтаж влагозащищенных розеток</li>
+                    <li>Подключение полотенцесушителя</li>
+                    <li>Установка встроенного освещения</li>
+                    <li>Заземление ванны и душевой кабины</li>
+                </ul>
+                <div class="service-price">от 3 500 ₽</div>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <h3>Аварийные работы</h3>
+                <ul class="service-list">
+                    <li>Отсутствие электричества в квартире</li>
+                    <li>Искрение розеток и выключателей</li>
+                    <li>Замена сгоревших автоматов</li>
+                    <li>Восстановление электропитания</li>
+                </ul>
+                <div class="service-price">от 2 000 ₽</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Прайс-лист -->
+<section class="price-section" id="price">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Цены на услуги</h2>
+            <p class="section-subtitle">Прозрачное ценообразование без скрытых платежей</p>
+        </div>
+        
+        <div class="price-tables">
+            <div class="price-table">
+                <h3 class="table-title">Ремонтные работы</h3>
+                <div class="price-items">
+                    <div class="price-item">
+                        <span class="service-name">Замена розетки/выключателя</span>
+                        <span class="service-price">800 - 1 500 ₽</span>
+                    </div>
+                    <div class="price-item">
+                        <span class="service-name">Ремонт электропроводки</span>
+                        <span class="service-price">1 500 - 3 000 ₽</span>
+                    </div>
+                    <div class="price-item">
+                        <span class="service-name">Замена автомата/УЗО</span>
+                        <span class="service-price">1 000 - 2 000 ₽</span>
+                    </div>
+                    <div class="price-item">
+                        <span class="service-name">Поиск неисправности</span>
+                        <span class="service-price">1 500 - 2 500 ₽</span>
+                    </div>
+                    <div class="price-item">
+                        <span class="service-name">Замена патрона в люстре</span>
+                        <span class="service-price">600 - 1 200 ₽</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="price-table">
+                <h3 class="table-title">Монтажные работы</h3>
+                <div class="price-items">
+                    <div class="price-item">
+                        <span class="service-name">Установка розетки</span>
+                        <span class="service-price">800 - 1 500 ₽</span>
+                    </div>
+                    <div class="price-item">
+                        <span class="service-name">Монтаж выключателя</span>
+                        <span class="service-price">800 - 1 500 ₽</span>
+                    </div>
+                    <div class="price-item">
+                        <span class="service-name">Установка люстры</span>
+                        <span class="service-price">1 500 - 3 000 ₽</span>
+                    </div>
+                    <div class="price-item">
+                        <span class="service-name">Монтаж светильника</span>
+                        <span class="service-price">800 - 2 000 ₽</span>
+                    </div>
+                    <div class="price-item">
+                        <span class="service-name">Установка электросчетчика</span>
+                        <span class="service-price">2 500 - 4 000 ₽</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="price-table">
+                <h3 class="table-title">Сложные работы</h3>
+                <div class="price-items">
+                    <div class="price-item">
+                        <span class="service-name">Замена проводки в квартире</span>
+                        <span class="service-price">от 50 000 ₽</span>
+                    </div>
+                    <div class="price-item">
+                        <span class="service-name">Монтаж щитка учета</span>
+                        <span class="service-price">8 000 - 15 000 ₽</span>
+                    </div>
+                    <div class="price-item">
+                        <span class="service-name">Укладка кабеля в штробе</span>
+                        <span class="service-price">300 - 500 ₽/м</span>
+                    </div>
+                    <div class="price-item">
+                        <span class="service-name">Установка теплого пола</span>
+                        <span class="service-price">2 000 - 3 000 ₽/м²</span>
+                    </div>
+                    <div class="price-item">
+                        <span class="service-name">Монтаж заземления</span>
+                        <span class="service-price">5 000 - 10 000 ₽</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="price-note">
+            <i class="fas fa-info-circle"></i>
+            <p>Окончательная стоимость рассчитывается после диагностики. Выезд мастера и диагностика - бесплатно при заказе работ.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Почему мы -->
+<section class="why-us-section">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Почему выбирают наших электриков</h2>
+            <p class="section-subtitle">Наши преимущества для вашей безопасности и комфорта</p>
+        </div>
+        
+        <div class="advantages-grid">
+            <div class="advantage-card">
+                <div class="advantage-icon">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <h3>Квалифицированные специалисты</h3>
+                <p>Все мастера имеют 4-5 группу электробезопасности, сертификаты и стаж работы от 7 лет. Регулярно проходят аттестацию.</p>
+            </div>
+            
+            <div class="advantage-card">
+                <div class="advantage-icon">
+                    <i class="fas fa-tools"></i>
+                </div>
+                <h3>Профессиональное оборудование</h3>
+                <p>Используем современное диагностическое оборудование: мегаомметры, мультиметры, тепловизоры, детекторы скрытой проводки.</p>
+            </div>
+            
+            <div class="advantage-card">
+                <div class="advantage-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3>Гарантия безопасности</h3>
+                <p>Соблюдаем все нормы ПУЭ и ПТЭЭП. Даем гарантию 3 года на все виды работ. Оформляем акты выполненных работ.</p>
+            </div>
+            
+            <div class="advantage-card">
+                <div class="advantage-icon">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <h3>Экстренный выезд 24/7</h3>
+                <p>Работаем круглосуточно, включая выходные и праздники. Выезжаем на аварийные вызовы в течение 60 минут.</p>
+            </div>
+            
+            <div class="advantage-card">
+                <div class="advantage-icon">
+                    <i class="fas fa-clipboard-check"></i>
+                </div>
+                <h3>Официальный договор</h3>
+                <p>Заключаем официальный договор с фиксированной стоимостью. Предоставляем все необходимые документы и акты.</p>
+            </div>
+            
+            <div class="advantage-card">
+                <div class="advantage-icon">
+                    <i class="fas fa-clean"></i>
+                </div>
+                <h3>Чистота после работы</h3>
+                <p>Убираем за собой строительный мусор, протираем пыль. Оставляем помещение в чистоте после выполнения работ.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Как мы работаем -->
+<section class="workflow-section">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Как мы работаем</h2>
+            <p class="section-subtitle">Простой процесс от заявки до завершения работ</p>
+        </div>
+        
+        <div class="workflow-steps">
+            <div class="workflow-step">
+                <div class="step-number">01</div>
+                <div class="step-content">
+                    <h3>Консультация и заявка</h3>
+                    <p>Вы описываете проблему или задачу нашему оператору. Мы согласовываем удобное время для визита электрика.</p>
+                </div>
+            </div>
+            
+            <div class="workflow-step">
+                <div class="step-number">02</div>
+                <div class="step-content">
+                    <h3>Выезд и диагностика</h3>
+                    <p>Мастер приезжает с оборудованием, проводит бесплатную диагностику, определяет причину неисправности.</p>
+                </div>
+            </div>
+            
+            <div class="workflow-step">
+                <div class="step-number">03</div>
+                <div class="step-content">
+                    <h3>Составление сметы</h3>
+                    <p>После диагностики мастер составляет подробную смету с указанием стоимости работ и материалов.</p>
+                </div>
+            </div>
+            
+            <div class="workflow-step">
+                <div class="step-number">04</div>
+                <div class="step-content">
+                    <h3>Выполнение работ</h3>
+                    <p>Мастер выполняет работы с соблюдением всех норм безопасности. Использует только качественные материалы.</p>
+                </div>
+            </div>
+            
+            <div class="workflow-step">
+                <div class="step-number">05</div>
+                <div class="step-content">
+                    <h3>Сдача и гарантия</h3>
+                    <p>Вы проверяете качество работы. Подписываете акт выполненных работ и получаете гарантийный талон на 3 года.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Форма заказа -->
+<section class="order-section">
+    <div class="container">
+        <div class="order-wrapper">
+            <div class="order-info">
+                <h2 class="order-title">Вызвать электрика</h2>
+                <p class="order-description">Оставьте заявку и получите:</p>
+                <ul class="order-benefits">
+                    <li><i class="fas fa-check"></i> Бесплатный выезд и диагностику</li>
+                    <li><i class="fas fa-check"></i> Квалифицированного специалиста 4-5 группы</li>
+                    <li><i class="fas fa-check"></i> Гарантию 3 года на все работы</li>
+                    <li><i class="fas fa-check"></i> Официальный договор и акты</li>
+                </ul>
+                <div class="order-contacts">
+                    <div class="contact-item">
+                        <i class="fas fa-phone-alt"></i>
+                        <div>
+                            <p>Круглосуточная линия</p>
+                            <a href="tel:+79991234567">+7 (999) 123-45-67</a>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-clock"></i>
+                        <div>
+                            <p>Время работы</p>
+                            <p>Круглосуточно, без выходных</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="order-form">
+                <h3 class="form-title">Оставить заявку</h3>
+                <form id="electric-form">
+                    <div class="form-group">
+                        <input type="text" placeholder="Ваше имя" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="tel" placeholder="Телефон" required>
+                    </div>
+                    <div class="form-group">
+                        <select required>
+                            <option value="" disabled selected>Тип услуги</option>
+                            <option value="emergency">Аварийный вызов (нет света)</option>
+                            <option value="repair">Ремонт розеток/выключателей</option>
+                            <option value="lighting">Установка освещения</option>
+                            <option value="wiring">Замена электропроводки</option>
+                            <option value="counter">Установка электросчетчика</option>
+                            <option value="other">Другое</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <textarea placeholder="Опишите проблему или задачу..." rows="3"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">
+                        <i class="fas fa-paper-plane"></i> Вызвать электрика
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq-section">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Частые вопросы</h2>
+            <p class="section-subtitle">Ответы на самые популярные вопросы об услугах электрика</p>
+        </div>
+        
+        <div class="faq-container">
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>Сколько стоит выезд электрика?</h3>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Выезд мастера и первичная диагностика абсолютно бесплатны при заказе работ. Если вы отказываетесь от работ после диагностики, стоимость выезда составляет 500 рублей.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>Нужно ли отключать электричество для работы?</h3>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Да, для безопасности проведения электромонтажных работ необходимо отключать электричество на участке работ. Мастер сделает это сам, используя средства защиты.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>Даете ли вы гарантию на работы?</h3>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Да, мы предоставляем гарантию 3 года на все виды электромонтажных работ. Гарантийный талон выдается после выполнения работ и подписания акта.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>Какие материалы вы используете?</h3>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Мы работаем с материалами ведущих производителей: Legrand, Schneider Electric, ABB, IEK. Можем использовать как наши материалы, так и ваши (гарантия в этом случае только на работу).</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>Что делать, если ночью пропал свет?</h3>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Мы работаем круглосуточно! Просто позвоните по номеру +7 (999) 123-45-67, и наш дежурный электрик приедет к вам в течение 60 минут для восстановления электропитания.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question">
+                    <h3>Нужны ли какие-то документы для замены счетчика?</h3>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Мы оказываем полный комплекс услуг: установку счетчика, опломбировку и оформление всех необходимых документов в Энергосбыте. Вам не нужно никуда ходить!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Предупреждения -->
+<section class="warning-section">
+    <div class="container">
+        <div class="warning-card">
+            <div class="warning-icon">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <div class="warning-content">
+                <h3>Важная информация по безопасности</h3>
+                <p>Электромонтажные работы относятся к работам повышенной опасности. Не пытайтесь самостоятельно устранять серьезные неисправности! При первых признаках проблем с электрикой (искрение, запах гари, нагрев проводов) немедленно отключите автоматы и вызовите профессионала.</p>
+                <p class="warning-contact">Аварийная служба: <a href="tel:+79991234567">+7 (999) 123-45-67</a></p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+/* ===== СТРАНИЦА "УСЛУГИ ЭЛЕКТРИКА" ===== */
+
+/* Герой секция */
+.electric-hero {
+    background: linear-gradient(135deg, 
+        rgba(245, 158, 11, 0.05) 0%, 
+        rgba(234, 179, 8, 0.05) 100%);
+}
+
+.hero-features {
+    display: flex;
+    gap: 30px;
+    margin-top: 40px;
+    flex-wrap: wrap;
+}
+
+.feature {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.feature i {
+    color: #f59e0b;
+    font-size: 1.2rem;
+}
+
+.floating-badge {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    background: white;
+    padding: 12px 20px;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.floating-badge i {
+    color: #f59e0b;
+}
+
+/* Услуги */
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.service-card {
+    background: var(--card-bg);
+    border-radius: 20px;
+    padding: 30px;
+    border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+    height: 100%;
+}
+
+.service-card:hover {
+    transform: translateY(-10px);
+    border-color: #f59e0b;
+    box-shadow: 0 20px 40px rgba(245, 158, 11, 0.15);
+}
+
+.service-icon {
+    width: 70px;
+    height: 70px;
+    background: linear-gradient(135deg, 
+        rgba(245, 158, 11, 0.1) 0%, 
+        rgba(234, 179, 8, 0.1) 100%);
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 25px;
+    font-size: 2rem;
+    color: #f59e0b;
+}
+
+.service-card h3 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 20px;
+    color: var(--text-primary);
+}
+
+.service-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 25px 0;
+}
+
+.service-list li {
+    color: var(--text-secondary);
+    margin-bottom: 10px;
+    font-size: 0.95rem;
+    padding-left: 20px;
+    position: relative;
+}
+
+.service-list li::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    color: #f59e0b;
+    font-size: 1.2rem;
+}
+
+.service-price {
+    color: #f59e0b;
+    font-size: 1.3rem;
+    font-weight: 700;
+    text-align: center;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color);
+}
+
+/* Прайс-лист */
+.price-tables {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.price-table {
+    background: var(--card-bg);
+    border-radius: 20px;
+    padding: 30px;
+    border: 1px solid var(--border-color);
+}
+
+.table-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 25px;
+    color: var(--text-primary);
+    text-align: center;
+    padding-bottom: 15px;
+    border-bottom: 2px solid var(--border-color);
+}
+
+.price-items {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.price-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px dashed var(--border-color-light);
+}
+
+.price-item:last-child {
+    border-bottom: none;
+}
+
+.service-name {
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+.service-price {
+    color: #f59e0b;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.price-note {
+    background: linear-gradient(135deg, 
+        rgba(245, 158, 11, 0.1) 0%, 
+        rgba(234, 179, 8, 0.1) 100%);
+    border-radius: 15px;
+    padding: 20px;
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    border-left: 4px solid #f59e0b;
+}
+
+.price-note i {
+    color: #f59e0b;
+    font-size: 1.5rem;
+    margin-top: 2px;
+}
+
+.price-note p {
+    color: var(--text-secondary);
+    margin: 0;
+    line-height: 1.6;
+}
+
+/* Преимущества */
+.advantages-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+}
+
+.advantage-card {
+    background: var(--card-bg);
+    border-radius: 20px;
+    padding: 30px;
+    border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.advantage-card:hover {
+    transform: translateY(-5px);
+    border-color: #f59e0b;
+    box-shadow: 0 15px 30px rgba(245, 158, 11, 0.15);
+}
+
+.advantage-icon {
+    width: 70px;
+    height: 70px;
+    background: linear-gradient(135deg, 
+        rgba(245, 158, 11, 0.1) 0%, 
+        rgba(234, 179, 8, 0.1) 100%);
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 25px;
+    font-size: 2rem;
+    color: #f59e0b;
+}
+
+.advantage-card h3 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+    color: var(--text-primary);
+}
+
+.advantage-card p {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Процесс работы */
+.workflow-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    max-width: 800px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.workflow-steps::before {
+    content: '';
+    position: absolute;
+    left: 35px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, 
+        rgba(245, 158, 11, 0.3), 
+        rgba(234, 179, 8, 0.3));
+}
+
+.workflow-step {
+    display: flex;
+    gap: 30px;
+    position: relative;
+}
+
+.step-number {
+    width: 70px;
+    height: 70px;
+    background: linear-gradient(135deg, #f59e0b, #eab308);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 800;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 2;
+}
+
+.step-content {
+    padding-top: 15px;
+    flex: 1;
+}
+
+.step-content h3 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: var(--text-primary);
+}
+
+.step-content p {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Форма заказа */
+.order-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+}
+
+.order-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 20px;
+    color: var(--text-primary);
+}
+
+.order-description {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    margin-bottom: 30px;
+}
+
+.order-benefits {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 40px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.order-benefits li {
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 500;
+}
+
+.order-benefits li i {
+    color: #f59e0b;
+}
+
+.order-contacts {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.contact-item i {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, #f59e0b, #eab308);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+.contact-item p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin: 0 0 5px 0;
+}
+
+.contact-item a {
+    color: var(--text-primary);
+    font-weight: 600;
+    font-size: 1.1rem;
+    text-decoration: none;
+}
+
+.contact-item a:hover {
+    color: #f59e0b;
+}
+
+.order-form {
+    background: var(--card-bg);
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--border-color);
+}
+
+.form-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 30px;
+    color: var(--text-primary);
+    text-align: center;
+}
+
+#electric-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+#electric-form .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+#electric-form input,
+#electric-form select,
+#electric-form textarea {
+    width: 100%;
+    padding: 15px;
+    border: 2px solid var(--border-color);
+    border-radius: 10px;
+    background: var(--input-bg);
+    color: var(--text-primary);
+    font-size: 1rem;
+    font-family: inherit;
+    transition: all 0.3s ease;
+}
+
+#electric-form input:focus,
+#electric-form select:focus,
+#electric-form textarea:focus {
+    outline: none;
+    border-color: #f59e0b;
+    box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
+}
+
+#electric-form textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.btn-block {
+    width: 100%;
+    justify-content: center;
+}
+
+/* FAQ */
+.faq-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.faq-item {
+    background: var(--card-bg);
+    border-radius: 15px;
+    margin-bottom: 15px;
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.faq-item.active {
+    border-color: #f59e0b;
+    box-shadow: 0 8px 25px rgba(245, 158, 11, 0.15);
+}
+
+.faq-question {
+    padding: 25px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.faq-question:hover {
+    background: var(--bg-secondary);
+}
+
+.faq-question h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+    flex: 1;
+}
+
+.faq-question i {
+    color: #f59e0b;
+    font-size: 1.2rem;
+    transition: transform 0.3s ease;
+}
+
+.faq-item.active .faq-question i {
+    transform: rotate(180deg);
+}
+
+.faq-answer {
+    padding: 0 30px;
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.faq-item.active .faq-answer {
+    padding: 0 30px 25px;
+    max-height: 500px;
+}
+
+.faq-answer p {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin: 0;
+    font-size: 0.95rem;
+}
+
+/* Предупреждения */
+.warning-section {
+    padding: 40px 0;
+}
+
+.warning-card {
+    background: linear-gradient(135deg, 
+        rgba(239, 68, 68, 0.1) 0%, 
+        rgba(220, 38, 38, 0.1) 100%);
+    border-radius: 20px;
+    padding: 30px;
+    display: flex;
+    align-items: flex-start;
+    gap: 25px;
+    border-left: 6px solid #ef4444;
+}
+
+.warning-icon {
+    width: 60px;
+    height: 60px;
+    background: #ef4444;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    color: white;
+    flex-shrink: 0;
+}
+
+.warning-content h3 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+    color: var(--text-primary);
+}
+
+.warning-content p {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 15px;
+}
+
+.warning-contact {
+    color: var(--text-primary) !important;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.warning-contact a {
+    color: #ef4444;
+    text-decoration: none;
+}
+
+.warning-contact a:hover {
+    text-decoration: underline;
+}
+
+/* Адаптивность */
+@media (max-width: 992px) {
+    .order-wrapper {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+    
+    .workflow-steps::before {
+        left: 25px;
+    }
+    
+    .price-tables {
+        grid-template-columns: 1fr;
+    }
+    
+    .warning-card {
+        flex-direction: column;
+        text-align: center;
+        align-items: center;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 40px;
+    }
+    
+    .hero-features {
+        justify-content: center;
+    }
+    
+    .hero-buttons {
+        flex-direction: column;
+    }
+    
+    .btn-large {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .workflow-steps::before {
+        display: none;
+    }
+    
+    .workflow-step {
+        flex-direction: column;
+        text-align: center;
+        align-items: center;
+        gap: 20px;
+    }
+    
+    .services-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .advantages-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-title {
+        font-size: 2rem;
+    }
+    
+    .floating-badge {
+        position: static;
+        margin-top: 20px;
+        justify-content: center;
+    }
+    
+    .form-title {
+        font-size: 1.5rem;
+    }
+    
+    .order-form {
+        padding: 25px;
+    }
+    
+    .warning-card {
+        padding: 20px;
+    }
+}
+</style>
+
+<script>
+// FAQ аккордеон
+document.addEventListener('DOMContentLoaded', function() {
+    const faqQuestions = document.querySelectorAll('.faq-question');
+    
+    faqQuestions.forEach(question => {
+        question.addEventListener('click', function() {
+            const item = this.parentElement;
+            const isActive = item.classList.contains('active');
+            
+            // Закрываем все вопросы
+            document.querySelectorAll('.faq-item').forEach(otherItem => {
+                otherItem.classList.remove('active');
+            });
+            
+            // Если текущий вопрос был неактивен - открываем его
+            if (!isActive) {
+                item.classList.add('active');
+            }
+        });
+    });
+    
+    // Маска для телефона в форме
+    const phoneInputs = document.querySelectorAll('input[type="tel"]');
+    
+    phoneInputs.forEach(input => {
+        input.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            
+            if (value.length > 0) {
+                value = '+7 (' + value.substring(1, 4) + ') ' + value.substring(4, 7) + '-' + value.substring(7, 9) + '-' + value.substring(9, 11);
+                value = value.substring(0, 18);
+            }
+            
+            e.target.value = value;
+        });
+    });
+    
+    // Отправка формы
+    const electricForm = document.getElementById('electric-form');
+    
+    electricForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Здесь можно добавить отправку формы на сервер
+        const formData = new FormData(this);
+        const data = Object.fromEntries(formData);
+        
+        console.log('Electric form data:', data);
+        
+        // Показываем сообщение об успехе
+        alert('Заявка отправлена! Наш электрик свяжется с вами в течение 15 минут.');
+        this.reset();
+    });
+});
+
+// Анимация счетчиков (если будут добавлены)
+document.addEventListener('DOMContentLoaded', function() {
+    const counters = document.querySelectorAll('.stat-number');
+    const speed = 200;
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const counter = entry.target;
+                const target = +counter.getAttribute('data-count');
+                let count = 0;
+                
+                const updateCount = () => {
+                    if (count < target) {
+                        count += Math.ceil(target / speed);
+                        if (count > target) count = target;
+                        counter.innerText = count;
+                        setTimeout(updateCount, 10);
+                    }
+                };
+                
+                updateCount();
+                observer.unobserve(counter);
+            }
+        });
+    }, { threshold: 0.5 });
+    
+    counters.forEach(counter => {
+        observer.observe(counter);
+    });
+});
+</script>
+
+<!-- AOS библиотека для анимаций -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+
+<script>
+// Инициализация AOS
+document.addEventListener('DOMContentLoaded', function() {
+    if (typeof AOS !== 'undefined') {
+        AOS.init({
+            duration: 800,
+            once: true,
+            offset: 100
+        });
+    }
+});
+</script>
+{% endblock %}

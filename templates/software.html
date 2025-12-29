@@ -1648,24 +1648,28 @@
     });
 
     // FAQ аккордеон
-    document.querySelectorAll('.faq-question').forEach(question => {
-        question.addEventListener('click', () => {
-            const item = question.parentElement;
-            const isActive = item.classList.contains('active');
-            
-            // Закрываем все остальные вопросы
-            document.querySelectorAll('.faq-item').forEach(otherItem => {
-                if (otherItem !== item) {
-                    otherItem.classList.remove('active');
-                }
-            });
-            
-            // Открываем/закрываем текущий вопрос
-            if (!isActive) {
-                item.classList.add('active');
+document.querySelectorAll('.faq-question').forEach(question => {
+    question.addEventListener('click', () => {
+        const item = question.parentElement;
+        const isActive = item.classList.contains('active');
+        
+        // Закрываем все остальные вопросы
+        document.querySelectorAll('.faq-item').forEach(otherItem => {
+            if (otherItem !== item) {
+                otherItem.classList.remove('active');
             }
         });
+        
+        // Открываем/закрываем текущий вопрос
+        if (isActive) {
+            // Если уже активен - закрываем
+            item.classList.remove('active');
+        } else {
+            // Если не активен - открываем
+            item.classList.add('active');
+        }
     });
+});
 
     // Показываем/скрываем дополнительные поля при выборе "Другое ПО"
     document.getElementById('other_software').addEventListener('change', function() {

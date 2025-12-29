@@ -3,68 +3,1981 @@
 {% block title %}Контакты - Компьютерный Центр "ТехноБатя"{% endblock %}
 
 {% block content %}
-<div class="container">
-    <h1>Контакты</h1>
-    
-    <div class="contact-wrapper">
-        <div class="contact-info">
-            <h2>Наши контакты</h2>
-            
-            <div class="contact-item">
-                <i class="fas fa-map-marker-alt"></i>
-                <div>
-                    <h3>Адрес</h3>
-                    <p>г. Москва, ул. Примерная, д. 123</p>
-                </div>
-            </div>
-            
-            <div class="contact-item">
-                <i class="fas fa-phone"></i>
-                <div>
-                    <h3>Телефон</h3>
-                    <p>+7 (999) 123-45-67</p>
-                </div>
-            </div>
-            
-            <div class="contact-item">
-                <i class="fas fa-envelope"></i>
-                <div>
-                    <h3>Email</h3>
-                    <p>info@technobatya.ru</p>
-                </div>
-            </div>
-            
-            <div class="contact-item">
-                <i class="fas fa-clock"></i>
-                <div>
-                    <h3>Время работы</h3>
-                    <p>Пн-Пт: 9:00 - 21:00</p>
-                    <p>Сб-Вс: 10:00 - 18:00</p>
-                </div>
-            </div>
+
+
+<!-- Основная секция контактов -->
+<section class="contacts-section">
+    <div class="container">
+        <!-- Заголовок секции -->
+        <div class="contacts-main-header">
+            <h2 class="contacts-main-title">Свяжитесь с нами</h2>
+            <p class="contacts-main-subtitle">Мы готовы ответить на все ваши вопросы и помочь с решением задач</p>
         </div>
         
-        <div class="contact-form">
-            <h2>Написать нам</h2>
-            <form method="POST" action="{{ url_for('contact') }}">
-                <div class="form-group">
-                    <label for="name">Ваше имя:</label>
-                    <input type="text" id="name" name="name" required>
-                </div>
+        <div class="contacts-grid">
+            
                 
-                <div class="form-group">
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" required>
-                </div>
                 
-                <div class="form-group">
-                    <label for="message">Сообщение:</label>
-                    <textarea id="message" name="message" rows="5" required></textarea>
+            
+            <!-- Форма обратной связи (правая колонка) -->
+            <div class="contacts-form-wrapper">
+                <div class="form-container">
+                    <div class="form-header">
+                        <div class="form-icon">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                        <div>
+                            <h3 class="form-title">Обратная связь</h3>
+                            <p class="form-subtitle">Ответим в течение 15 минут в рабочее время</p>
+                        </div>
+                    </div>
+                    
+                    <form method="POST" action="{{ url_for('contact') }}" class="contact-form">
+                        <!-- Личные данные -->
+                        <div class="form-section">
+                            <h4 class="form-section-title">Ваши данные</h4>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="name" class="form-label">Имя *</label>
+                                    <div class="form-input-wrapper">
+                                        
+                                        <input type="text" id="name" name="name" class="form-input" 
+                                               placeholder="Иван Иванов" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="phone" class="form-label">Телефон *</label>
+                                    <div class="form-input-wrapper">
+                                        
+                                        <input type="tel" id="phone" name="phone" class="form-input" 
+                                               placeholder="+7 (999) 123-45-67" required>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="email" class="form-label">Email *</label>
+                                <div class="form-input-wrapper">
+                                  
+                                    <input type="email" id="email" name="email" class="form-input" 
+                                           placeholder="example@mail.ru" required>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Тема обращения -->
+                        <div class="form-section">
+                            <h4 class="form-section-title">Тема обращения</h4>
+                            <div class="form-group">
+                                <div class="form-select-wrapper">
+                                  
+                                    <select id="subject" name="subject" class="form-select" required>
+                                        <option value="" disabled selected>Выберите тему</option>
+                                        <option value="repair">Ремонт техники</option>
+                                        <option value="diagnostics">Диагностика</option>
+                                        <option value="courses">Обучение и курсы</option>
+                                        <option value="consultation">Консультация специалиста</option>
+                                        <option value="business">Сотрудничество с бизнесом</option>
+                                        <option value="feedback">Отзывы и предложения</option>
+                                        <option value="other">Другое</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Сообщение -->
+                        <div class="form-section">
+                            <h4 class="form-section-title">Ваше сообщение</h4>
+                            <div class="form-group">
+                                <label for="message" class="form-label">Опишите вашу задачу *</label>
+                                <div class="form-textarea-wrapper">
+                                    <textarea id="message" name="message" class="form-textarea" 
+                                              placeholder="Расскажите подробнее о вашей проблеме или вопросе..." 
+                                              rows="4" required></textarea>
+                                    <div class="textarea-counter">
+                                        <span class="char-count">0</span>/500 символов
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Кнопка отправки -->
+                        <div class="form-actions">
+                            <button type="submit" class="btn-submit">
+                                <i class="fas fa-paper-plane"></i>
+                                <span>Отправить заявку</span>
+                            </button>
+                            <p class="form-note">
+                                <i class="fas fa-shield-alt"></i>
+                                Ваши данные защищены и не будут переданы третьим лицам
+                            </p>
+                        </div>
+                    </form>
+                    
+                    <!-- Альтернативные способы связи -->
+                    <div class="alternative-contacts">
+                        <h4>Не любите формы?</h4>
+                        <div class="alternative-buttons">
+                            <a href="tel:+79991234567" class="alt-btn call">
+                                <i class="fas fa-phone-alt"></i>
+                                <span>Позвонить сейчас</span>
+                            </a>
+                            <a href="https://wa.me/79991234567" target="_blank" class="alt-btn whatsapp">
+                                <i class="fab fa-whatsapp"></i>
+                                <span>Написать в WhatsApp</span>
+                            </a>
+                        </div>
+                    </div>
                 </div>
-                
-                <button type="submit" class="btn btn-primary">Отправить сообщение</button>
-            </form>
+            </div>
         </div>
     </div>
-</div>
+</section>
+
+<style>
+/* ===== ОБНОВЛЕННАЯ СЕКЦИЯ КОНТАКТОВ ===== */
+
+/* Основные стили секции */
+.contacts-section {
+    padding: 80px 0;
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+}
+
+.dark-theme .contacts-section {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Заголовок секции */
+.contacts-main-header {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.contacts-main-title {
+    font-size: 2.8rem;
+    font-weight: 800;
+    color: #1e293b;
+    margin-bottom: 16px;
+    position: relative;
+    display: inline-block;
+}
+
+.dark-theme .contacts-main-title {
+    color: #f8fafc;
+}
+
+.contacts-main-title::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+    border-radius: 2px;
+}
+
+.contacts-main-subtitle {
+    font-size: 1.2rem;
+    color: #64748b;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+.dark-theme .contacts-main-subtitle {
+    color: #94a3b8;
+}
+
+/* Сетка контактов */
+.contacts-grid {
+   
+    grid-template-columns: 1fr 1.2fr;
+    gap: 40px;
+    align-items: start;
+}
+
+/* Левая колонка - контактная информация */
+.contacts-info {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.contacts-header {
+    margin-bottom: 8px;
+}
+
+.contacts-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 8px;
+}
+
+.dark-theme .contacts-title {
+    color: #f8fafc;
+}
+
+.contacts-subtitle {
+    color: #64748b;
+    font-size: 1rem;
+}
+
+.dark-theme .contacts-subtitle {
+    color: #94a3b8;
+}
+
+/* Карточки контактов */
+.contacts-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+}
+
+.contact-card {
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    transition: all 0.3s ease;
+}
+
+.dark-theme .contact-card {
+    background: #1e293b;
+    border-color: #334155;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+}
+
+.contact-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px -3px rgba(59, 130, 246, 0.1), 0 4px 6px -2px rgba(59, 130, 246, 0.05);
+    border-color: #3b82f6;
+}
+
+.contact-card-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.contact-icon {
+    width: 48px;
+    height: 48px;
+    background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+.contact-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0;
+}
+
+.dark-theme .contact-title {
+    color: #f8fafc;
+}
+
+.contact-card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.contact-text {
+    color: #475569;
+    font-size: 1.1rem;
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+.dark-theme .contact-text {
+    color: #cbd5e1;
+}
+
+.contact-text.contact-phone {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #3b82f6;
+}
+
+.contact-text-small {
+    color: #64748b;
+    font-size: 0.9rem;
+}
+
+.dark-theme .contact-text-small {
+    color: #94a3b8;
+}
+
+.contact-address-info {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 8px;
+}
+
+.contact-address-info p {
+    color: #64748b;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+}
+
+.dark-theme .contact-address-info p {
+    color: #94a3b8;
+}
+
+.contact-address-info i {
+    color: #3b82f6;
+    width: 16px;
+}
+
+.contact-action-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #3b82f6;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding: 8px 0;
+    transition: color 0.3s ease;
+}
+
+.contact-action-link:hover {
+    color: #2563eb;
+    text-decoration: underline;
+}
+
+/* Кнопки контактов */
+.contact-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 12px;
+}
+
+.contact-action-btn {
+    padding: 12px 20px;
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.contact-action-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(59, 130, 246, 0.3);
+}
+
+.messenger-buttons {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+}
+
+.messenger-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    color: white;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.messenger-btn:hover {
+    transform: translateY(-2px) scale(1.1);
+}
+
+.messenger-btn.whatsapp {
+    background: #25D366;
+}
+
+.messenger-btn.telegram {
+    background: #0088cc;
+}
+
+.messenger-btn.viber {
+    background: #7360F2;
+}
+
+/* График работы */
+.schedule-grid {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 12px 24px;
+    margin: 12px 0;
+}
+
+.schedule-day {
+    color: #475569;
+    font-weight: 500;
+}
+
+.dark-theme .schedule-day {
+    color: #cbd5e1;
+}
+
+.schedule-time {
+    color: #1e293b;
+    font-weight: 600;
+    text-align: right;
+}
+
+.dark-theme .schedule-time {
+    color: #f8fafc;
+}
+
+.schedule-note {
+    color: #64748b;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 16px;
+    padding: 12px;
+    background: #f1f5f9;
+    border-radius: 8px;
+    border-left: 4px solid #3b82f6;
+}
+
+.dark-theme .schedule-note {
+    color: #94a3b8;
+    background: #334155;
+}
+
+.schedule-note i {
+    color: #3b82f6;
+}
+
+/* Социальные сети */
+.social-section {
+    margin-top: 20px;
+}
+
+.social-title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 20px;
+}
+
+.dark-theme .social-title {
+    color: #f8fafc;
+}
+
+.social-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+.social-card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid #e2e8f0;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.dark-theme .social-card {
+    background: #1e293b;
+    border-color: #334155;
+}
+
+.social-card:hover {
+    transform: translateY(-4px);
+    border-color: currentColor;
+    box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1);
+}
+
+.social-card.vk:hover {
+    border-color: #4C75A3;
+}
+
+.social-card.youtube:hover {
+    border-color: #FF0000;
+}
+
+.social-card.telegram:hover {
+    border-color: #0088cc;
+}
+
+.social-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    color: white;
+    flex-shrink: 0;
+}
+
+.social-card.vk .social-icon {
+    background: #4C75A3;
+}
+
+.social-card.youtube .social-icon {
+    background: #FF0000;
+}
+
+.social-card.telegram .social-icon {
+    background: #0088cc;
+}
+
+.social-info h5 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0 0 4px 0;
+}
+
+.dark-theme .social-info h5 {
+    color: #f8fafc;
+}
+
+.social-info p {
+    color: #64748b;
+    font-size: 0.85rem;
+    margin: 0;
+}
+
+.dark-theme .social-info p {
+    color: #94a3b8;
+}
+
+/* Правая колонка - форма */
+.contacts-form-wrapper {
+    position: sticky;
+    top: 100px;
+}
+
+.form-container {
+    background: white;
+    border-radius: 20px;
+    padding: 32px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.1);
+}
+
+.dark-theme .form-container {
+    background: #1e293b;
+    border-color: #334155;
+    box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.3);
+}
+
+.form-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 32px;
+    padding-bottom: 24px;
+    border-bottom: 2px solid #f1f5f9;
+}
+
+.dark-theme .form-header {
+    border-bottom-color: #334155;
+}
+
+.form-icon {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.5rem;
+}
+
+.form-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin: 0 0 4px 0;
+}
+
+.dark-theme .form-title {
+    color: #f8fafc;
+}
+
+.form-subtitle {
+    color: #64748b;
+    font-size: 0.95rem;
+    margin: 0;
+}
+
+.dark-theme .form-subtitle {
+    color: #94a3b8;
+}
+
+/* Форма */
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}
+
+.form-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-section-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #f1f5f9;
+}
+
+.dark-theme .form-section-title {
+    color: #f8fafc;
+    border-bottom-color: #334155;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-label {
+    color: #475569;
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+.dark-theme .form-label {
+    color: #cbd5e1;
+}
+
+.form-label::after {
+    content: '*';
+    color: #ef4444;
+    margin-left: 4px;
+}
+
+.form-input-wrapper,
+.form-select-wrapper {
+    position: relative;
+}
+
+.input-icon,
+.select-icon {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #64748b;
+    font-size: 1rem;
+}
+
+.dark-theme .input-icon,
+.dark-theme .select-icon {
+    color: #94a3b8;
+}
+
+.form-input,
+.form-select,
+.form-textarea {
+    width: 100%;
+    padding: 14px 16px 14px 48px;
+    border: 2px solid #e2e8f0;
+    border-radius: 10px;
+    background: white;
+    color: #1e293b;
+    font-size: 1rem;
+    font-family: inherit;
+    transition: all 0.3s ease;
+}
+
+.dark-theme .form-input,
+.dark-theme .form-select,
+.dark-theme .form-textarea {
+    background: #0f172a;
+    border-color: #334155;
+    color: #f8fafc;
+}
+
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.form-select {
+    appearance: none;
+    cursor: pointer;
+    padding-right: 48px;
+}
+
+.form-textarea-wrapper {
+    position: relative;
+}
+
+.form-textarea {
+    resize: vertical;
+    min-height: 120px;
+    padding-right: 100px;
+}
+
+.textarea-counter {
+    position: absolute;
+    bottom: 12px;
+    right: 16px;
+    color: #64748b;
+    font-size: 0.85rem;
+}
+
+.dark-theme .textarea-counter {
+    color: #94a3b8;
+}
+
+.char-count {
+    color: #3b82f6;
+    font-weight: 600;
+}
+
+/* Кнопка отправки */
+.form-actions {
+    margin-top: 8px;
+}
+
+.btn-submit {
+    width: 100%;
+    padding: 18px 32px;
+    background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-bottom: 20px;
+}
+
+.btn-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 30px rgba(59, 130, 246, 0.3);
+}
+
+.form-note {
+    color: #64748b;
+    font-size: 0.9rem;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin: 0;
+}
+
+.dark-theme .form-note {
+    color: #94a3b8;
+}
+
+.form-note i {
+    color: #3b82f6;
+}
+
+/* Альтернативные способы связи */
+.alternative-contacts {
+    margin-top: 32px;
+    padding-top: 32px;
+    border-top: 2px solid #f1f5f9;
+}
+
+.dark-theme .alternative-contacts {
+    border-top-color: #334155;
+}
+
+.alternative-contacts h4 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0 0 16px 0;
+    text-align: center;
+}
+
+.dark-theme .alternative-contacts h4 {
+    color: #f8fafc;
+}
+
+.alternative-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.alt-btn {
+    padding: 16px;
+    border-radius: 10px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.alt-btn.call {
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    color: white;
+}
+
+.alt-btn.whatsapp {
+    background: linear-gradient(135deg, #25D366, #1DA851);
+    color: white;
+}
+
+.alt-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Адаптивность */
+@media (max-width: 1024px) {
+    .contacts-grid {
+        grid-template-columns: 1fr;
+        gap: 60px;
+    }
+    
+    .contacts-form-wrapper {
+        position: static;
+    }
+    
+    .social-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .contacts-section {
+        padding: 60px 0;
+    }
+    
+    .contacts-main-title {
+        font-size: 2.2rem;
+    }
+    
+    .contacts-main-subtitle {
+        font-size: 1.1rem;
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+    
+    .alternative-buttons {
+        grid-template-columns: 1fr;
+    }
+    
+    .social-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .form-container {
+        padding: 24px;
+    }
+    
+    .contact-card {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .contacts-main-title {
+        font-size: 1.8rem;
+    }
+    
+    .contacts-title,
+    .form-title {
+        font-size: 1.4rem;
+    }
+    
+    .contact-card-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+    
+    .messenger-buttons {
+        justify-content: flex-start;
+    }
+}
+</style>
+
+<script>
+// Счетчик символов в текстовом поле
+document.addEventListener('DOMContentLoaded', function() {
+    const textarea = document.getElementById('message');
+    const charCount = document.querySelector('.char-count');
+    
+    if (textarea && charCount) {
+        textarea.addEventListener('input', function() {
+            const length = this.value.length;
+            charCount.textContent = length;
+            
+            if (length > 500) {
+                charCount.style.color = '#ef4444';
+                this.value = this.value.substring(0, 500);
+                charCount.textContent = 500;
+            } else if (length > 450) {
+                charCount.style.color = '#f59e0b';
+            } else {
+                charCount.style.color = '#3b82f6';
+            }
+        });
+    }
+    
+    // Маска для телефона
+    const phoneInput = document.getElementById('phone');
+    if (phoneInput) {
+        phoneInput.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            
+            if (value.length > 0) {
+                value = '+7 (' + value.substring(1, 4) + ') ' + value.substring(4, 7) + '-' + value.substring(7, 9) + '-' + value.substring(9, 11);
+                value = value.substring(0, 18);
+            }
+            
+            e.target.value = value;
+        });
+    }
+});
+</script>
+
+<!-- FAQ -->
+<section class="faq-section">
+    <div class="container">
+        <div class="section-header">
+            <h2 class="section-title">Частые вопросы</h2>
+            <p class="section-subtitle">Ответы на самые популярные вопросы о наших услугах</p>
+        </div>
+        
+        <div class="faq-container">
+            <div class="faq-item" data-aos="fade-up">
+                <div class="faq-question">
+                    <h3>Как быстро вы отвечаете на заявки?</h3>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Мы отвечаем на все заявки в течение 15 минут в рабочее время. Заявки, оставленные в нерабочее время, обрабатываются на следующий день с 9:00.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item" data-aos="fade-up" data-aos-delay="100">
+                <div class="faq-question">
+                    <h3>Можно ли вызвать мастера на дом?</h3>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Да, мы предоставляем услуги выезда мастера на дом. Стоимость выезда зависит от района и сложности работы.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item" data-aos="fade-up" data-aos-delay="200">
+                <div class="faq-question">
+                    <h3>Есть ли у вас гарантия на ремонт?</h3>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Да, мы предоставляем гарантию до 2 лет на все виды ремонта. Подробные условия гарантии указаны в договоре.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item" data-aos="fade-up" data-aos-delay="300">
+                <div class="faq-question">
+                    <h3>Можно ли оплатить услуги онлайн?</h3>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Да, мы принимаем онлайн-оплату через банковские карты, электронные кошельки и систему быстрых платежей.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+    <div class="container">
+        <div class="cta-content">
+            <h2 class="cta-title">Остались вопросы?</h2>
+            <p class="cta-text">Позвоните нам прямо сейчас или напишите в любой удобный мессенджер</p>
+            <div class="cta-buttons">
+                <a href="tel:+79991234567" class="btn btn-primary btn-large">
+                    <i class="fas fa-phone-alt"></i> Позвонить сейчас
+                </a>
+                <a href="https://wa.me/79991234567" target="_blank" class="btn btn-success btn-large">
+                    <i class="fab fa-whatsapp"></i> WhatsApp
+                </a>
+                <a href="https://t.me/technobatya" target="_blank" class="btn btn-telegram btn-large">
+                    <i class="fab fa-telegram"></i> Telegram
+                </a>
+            </div>
+            <p class="cta-note">Мы работаем без выходных с 10:00 до 22:00</p>
+        </div>
+    </div>
+</section>
+
+<style>
+/* ===== КОНТАКТЫ ===== */
+
+/* Герой секция */
+.contacts-hero {
+    background: linear-gradient(135deg, 
+        rgba(37, 99, 235, 0.1) 0%, 
+        rgba(139, 92, 246, 0.1) 50%, 
+        rgba(59, 130, 246, 0.1) 100%);
+    padding: 100px 0 60px;
+    text-align: center;
+}
+
+.contacts-hero-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    margin-bottom: 20px;
+    background: linear-gradient(135deg, #1e40af 0%, #7c3aed 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.contacts-hero-subtitle {
+    font-size: 1.3rem;
+    color: var(--text-secondary);
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+/* Основная секция контактов */
+.contacts-section {
+    padding: 80px 0;
+    background: var(--bg-primary);
+}
+
+.contacts-grid {
+
+    grid-template-columns: 1fr 1.2fr;
+    gap: 60px;
+    align-items: start;
+}
+
+/* Контактная информация */
+.contacts-header {
+    margin-bottom: 40px;
+}
+
+.contacts-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: var(--text-primary);
+}
+
+.contacts-subtitle {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+}
+
+.contacts-list {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    margin-bottom: 40px;
+}
+
+.contact-card {
+    background: var(--card-bg);
+    border-radius: 16px;
+    padding: 25px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    transition: all 0.3s ease;
+}
+
+.contact-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(37, 99, 235, 0.15);
+    border-color: rgba(37, 99, 235, 0.3);
+}
+
+.contact-icon {
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, 
+        rgba(37, 99, 235, 0.1) 0%, 
+        rgba(139, 92, 246, 0.1) 100%);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: var(--accent-primary);
+    flex-shrink: 0;
+}
+
+.contact-content {
+    flex: 1;
+}
+
+.contact-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--text-primary);
+}
+
+.contact-text {
+    color: var(--text-secondary);
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+}
+
+.contact-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--accent-primary);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: color 0.3s ease;
+}
+
+.contact-link:hover {
+    color: var(--accent-secondary);
+}
+
+.contact-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 15px;
+}
+
+.contact-btn {
+    padding: 8px 16px;
+    background: rgba(37, 99, 235, 0.1);
+    color: var(--accent-primary);
+    border: 1px solid rgba(37, 99, 235, 0.2);
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.3s ease;
+}
+
+.contact-btn:hover {
+    background: var(--accent-primary);
+    color: white;
+    border-color: var(--accent-primary);
+}
+
+.contact-btn.whatsapp {
+    background: rgba(37, 211, 102, 0.1);
+    color: #25D366;
+    border-color: rgba(37, 211, 102, 0.2);
+}
+
+.contact-btn.whatsapp:hover {
+    background: #25D366;
+    color: white;
+}
+
+.contact-btn.telegram {
+    background: rgba(0, 136, 204, 0.1);
+    color: #0088cc;
+    border-color: rgba(0, 136, 204, 0.2);
+}
+
+.contact-btn.telegram:hover {
+    background: #0088cc;
+    color: white;
+}
+
+/* График работы */
+.schedule {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.schedule-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border-color-light);
+}
+
+.schedule-item:last-child {
+    border-bottom: none;
+}
+
+.day {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+}
+
+.time {
+    color: var(--text-primary);
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.schedule-note {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    font-style: italic;
+    margin-top: 10px;
+}
+
+/* Социальные сети */
+.social-section {
+    background: var(--card-bg);
+    border-radius: 16px;
+    padding: 30px;
+    border: 1px solid var(--border-color);
+}
+
+.social-title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: var(--text-primary);
+}
+
+.social-links {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.social-link {
+    flex: 1;
+    min-width: 120px;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 15px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.3s ease;
+}
+
+.social-link:hover {
+    transform: translateY(-3px);
+    border-color: var(--accent-primary);
+    box-shadow: 0 8px 20px rgba(37, 99, 235, 0.15);
+}
+
+.social-link i {
+    font-size: 1.5rem;
+    width: 30px;
+}
+
+.social-link span {
+    color: var(--text-primary);
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+.social-link.vk i { color: #4C75A3; }
+.social-link.youtube i { color: #FF0000; }
+.social-link.telegram i { color: #0088cc; }
+
+/* Форма обратной связи */
+.form-container {
+    background: var(--card-bg);
+    border-radius: 20px;
+    padding: 40px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 100px;
+}
+
+.form-header {
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.form-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: var(--text-primary);
+}
+
+.form-subtitle {
+    color: var(--text-secondary);
+    font-size: 1rem;
+}
+
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-label {
+    color: var(--text-primary);
+    font-weight: 500;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.form-label i {
+    color: var(--accent-primary);
+    font-size: 0.9rem;
+}
+
+.form-input,
+.form-select,
+.form-textarea {
+    padding: 14px 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    background: var(--input-bg);
+    color: var(--text-primary);
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+    outline: none;
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.form-textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.btn-submit {
+    padding: 16px 32px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.btn-submit i {
+    font-size: 1.2rem;
+}
+
+.form-footer {
+    margin-top: 10px;
+}
+
+.form-note {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    text-align: center;
+    margin-top: 15px;
+    opacity: 0.7;
+}
+
+/* Секция с картой */
+.map-section {
+    padding: 80px 0;
+    background: var(--bg-secondary);
+}
+
+.map-container {
+    background: var(--card-bg);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    margin: 40px 0;
+}
+
+.map-placeholder {
+    background: linear-gradient(135deg, 
+        rgba(37, 99, 235, 0.1) 0%, 
+        rgba(139, 92, 246, 0.1) 100%);
+    height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.map-content {
+    background: var(--card-bg);
+    border-radius: 16px;
+    padding: 30px;
+    max-width: 400px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--border-color);
+}
+
+.map-content h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 15px;
+    color: var(--text-primary);
+}
+
+.map-content p {
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.map-actions {
+    margin-top: 20px;
+}
+
+.directions-info {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    margin-top: 50px;
+}
+
+.direction-card {
+    background: var(--card-bg);
+    border-radius: 16px;
+    padding: 30px;
+    text-align: center;
+    border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+}
+
+.direction-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--accent-primary);
+    box-shadow: 0 15px 30px rgba(37, 99, 235, 0.15);
+}
+
+.direction-icon {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, 
+        rgba(37, 99, 235, 0.1) 0%, 
+        rgba(139, 92, 246, 0.1) 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    font-size: 1.8rem;
+    color: var(--accent-primary);
+}
+
+.direction-card h4 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: var(--text-primary);
+}
+
+.direction-card p {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+/* FAQ секция */
+.faq-section {
+    padding: 80px 0;
+    background: var(--bg-primary);
+}
+
+.faq-container {
+    max-width: 800px;
+    margin: 40px auto 0;
+}
+
+.faq-item {
+    background: var(--card-bg);
+    border-radius: 16px;
+    margin-bottom: 15px;
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.faq-item.active {
+    border-color: var(--accent-primary);
+    box-shadow: 0 8px 25px rgba(37, 99, 235, 0.15);
+}
+
+.faq-question {
+    padding: 25px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.faq-question:hover {
+    background: var(--bg-secondary);
+}
+
+.faq-question h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+    flex: 1;
+}
+
+.faq-question i {
+    color: var(--accent-primary);
+    font-size: 1.2rem;
+    transition: transform 0.3s ease;
+}
+
+.faq-item.active .faq-question i {
+    transform: rotate(180deg);
+}
+
+.faq-answer {
+    padding: 0 30px;
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.faq-item.active .faq-answer {
+    padding: 0 30px 25px;
+    max-height: 500px;
+}
+
+.faq-answer p {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin: 0;
+    font-size: 0.95rem;
+}
+
+/* CTA секция */
+.cta-section {
+    padding: 80px 0;
+    background: linear-gradient(135deg, 
+        rgba(37, 99, 235, 0.1) 0%, 
+        rgba(139, 92, 246, 0.1) 100%);
+    text-align: center;
+}
+
+.cta-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.cta-title {
+    font-size: 2.8rem;
+    font-weight: 800;
+    margin-bottom: 20px;
+    background: linear-gradient(135deg, #1e40af 0%, #7c3aed 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.cta-text {
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+    margin-bottom: 40px;
+    line-height: 1.6;
+}
+
+.cta-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+}
+
+.btn-large {
+    padding: 18px 35px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    min-width: 180px;
+}
+
+.btn-success {
+    background: linear-gradient(135deg, #25D366 0%, #1DA851 100%);
+    border: none;
+    color: white;
+}
+
+.btn-telegram {
+    background: linear-gradient(135deg, #0088cc 0%, #006699 100%);
+    border: none;
+    color: white;
+}
+
+.cta-note {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    opacity: 0.8;
+}
+
+/* Адаптивность */
+@media (max-width: 1200px) {
+    .contacts-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+    
+    .form-container {
+        position: static;
+    }
+    
+    .directions-info {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .contacts-hero-title {
+        font-size: 2.5rem;
+    }
+    
+    .contacts-hero-subtitle {
+        font-size: 1.1rem;
+    }
+    
+    .contacts-title {
+        font-size: 2rem;
+    }
+    
+    .form-container {
+        padding: 30px 25px;
+    }
+    
+    .form-title {
+        font-size: 1.8rem;
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+    
+    .contact-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    
+    .contact-icon {
+        width: 45px;
+        height: 45px;
+        font-size: 1.3rem;
+    }
+    
+    .social-links {
+        flex-direction: column;
+    }
+    
+    .social-link {
+        min-width: auto;
+    }
+    
+    .directions-info {
+        grid-template-columns: 1fr;
+    }
+    
+    .cta-title {
+        font-size: 2.2rem;
+    }
+    
+    .cta-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .btn-large {
+        width: 100%;
+        max-width: 300px;
+    }
+    
+    .faq-question {
+        padding: 20px;
+    }
+    
+    .faq-question h3 {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .contacts-hero {
+        padding: 60px 0 40px;
+    }
+    
+    .contacts-hero-title {
+        font-size: 2rem;
+    }
+    
+    .contacts-section {
+        padding: 40px 0;
+    }
+    
+    .map-placeholder {
+        height: 300px;
+    }
+    
+    .map-content {
+        padding: 20px;
+        margin: 0 15px;
+    }
+    
+    .cta-title {
+        font-size: 1.8rem;
+    }
+    
+    .btn-large {
+        padding: 16px 25px;
+        font-size: 1rem;
+    }
+}
+
+/* Анимации */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.faq-item,
+.contact-card,
+.direction-card,
+.form-container {
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeInUp 0.6s ease forwards;
+}
+
+.faq-item:nth-child(1) { animation-delay: 0.1s; }
+.faq-item:nth-child(2) { animation-delay: 0.2s; }
+.faq-item:nth-child(3) { animation-delay: 0.3s; }
+.faq-item:nth-child(4) { animation-delay: 0.4s; }
+
+.contact-card:nth-child(1) { animation-delay: 0.1s; }
+.contact-card:nth-child(2) { animation-delay: 0.2s; }
+.contact-card:nth-child(3) { animation-delay: 0.3s; }
+.contact-card:nth-child(4) { animation-delay: 0.4s; }
+
+.direction-card:nth-child(1) { animation-delay: 0.1s; }
+.direction-card:nth-child(2) { animation-delay: 0.2s; }
+.direction-card:nth-child(3) { animation-delay: 0.3s; }
+
+/* Темная тема */
+@media (prefers-color-scheme: dark) {
+    .contacts-hero {
+        background: linear-gradient(135deg, 
+            rgba(37, 99, 235, 0.15) 0%, 
+            rgba(139, 92, 246, 0.15) 50%, 
+            rgba(59, 130, 246, 0.15) 100%);
+    }
+    
+    .cta-section {
+        background: linear-gradient(135deg, 
+            rgba(37, 99, 235, 0.15) 0%, 
+            rgba(139, 92, 246, 0.15) 100%);
+    }
+    
+    .map-placeholder {
+        background: linear-gradient(135deg, 
+            rgba(37, 99, 235, 0.15) 0%, 
+            rgba(139, 92, 246, 0.15) 100%);
+    }
+    
+    .contact-card,
+    .social-section,
+    .form-container,
+    .direction-card,
+    .faq-item,
+    .map-content {
+        background: var(--card-bg);
+        border-color: var(--border-color);
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+    
+    .contact-card:hover,
+    .direction-card:hover,
+    .social-link:hover,
+    .faq-item.active {
+        border-color: var(--accent-primary);
+        box-shadow: 0 20px 40px rgba(37, 99, 235, 0.25);
+    }
+    
+    .form-input,
+    .form-select,
+    .form-textarea {
+        background: var(--input-bg);
+        border-color: var(--border-color);
+        color: var(--text-primary);
+    }
+    
+    .form-input:focus,
+    .form-select:focus,
+    .form-textarea:focus {
+        border-color: var(--accent-primary);
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+    }
+}
+</style>
+
+<script>
+// FAQ аккордеон
+document.addEventListener('DOMContentLoaded', function() {
+    const faqQuestions = document.querySelectorAll('.faq-question');
+    
+    faqQuestions.forEach(question => {
+        question.addEventListener('click', function() {
+            const item = this.parentElement;
+            const isActive = item.classList.contains('active');
+            
+            // Закрываем все вопросы
+            document.querySelectorAll('.faq-item').forEach(otherItem => {
+                otherItem.classList.remove('active');
+            });
+            
+            // Если текущий вопрос был неактивен - открываем его
+            if (!isActive) {
+                item.classList.add('active');
+            }
+        });
+    });
+    
+    // Инициализация AOS
+    if (typeof AOS !== 'undefined') {
+        AOS.init({
+            duration: 800,
+            once: true,
+            offset: 100
+        });
+    }
+});
+
+// Маска для телефона
+document.addEventListener('DOMContentLoaded', function() {
+    const phoneInput = document.getElementById('phone');
+    
+    if (phoneInput) {
+        phoneInput.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            
+            if (value.length > 0) {
+                value = '+7 (' + value.substring(1, 4) + ') ' + value.substring(4, 7) + '-' + value.substring(7, 9) + '-' + value.substring(9, 11);
+                value = value.substring(0, 18);
+            }
+            
+            e.target.value = value;
+        });
+    }
+});
+</script>
+
+<!-- AOS библиотека для анимаций -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
 {% endblock %}

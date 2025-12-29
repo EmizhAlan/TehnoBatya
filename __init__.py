@@ -1,44 +1,15 @@
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
-from flask_sqlalchemy import SQLAlchemy
 import json
 import re
 from datetime import datetime
 import os
+import random
 
 app = Flask(__name__)
 app.secret_key = 'technobatya-secret-key'
 
 # Убедитесь, что Flask ищет шаблоны в правильной папке
 app.template_folder = 'templates'
-
-# Настройка базы данных
-basedir = os.path.abspath(os.path.dirname(__file__))
-app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{os.path.join(basedir, "reviews.db")}'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SECRET_KEY'] = 'your-secret-key-here'  # Измените на случайный ключ
-
-# Инициализация базы данных
-db = SQLAlchemy(app)
-
-# Модель для отзывов
-class Review(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    author = db.Column(db.String(100), nullable=False)
-    position = db.Column(db.String(100))  # Должность/описание автора
-    text = db.Column(db.Text, nullable=False)
-    rating = db.Column(db.Integer, nullable=False)  # 1-5 звезд
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
-    is_approved = db.Column(db.Boolean, default=True)
-    avatar_url = db.Column(db.String(200), default='https://i.pravatar.cc/100')
-    service = db.Column(db.String(100))  # Услуга, по которой оставлен отзыв
-    
-    def __repr__(self):
-        return f'<Review {self.author}>'
-
-# Создаем таблицы при запуске
-with app.app_context():
-    db.create_all()
-
 
 # Главная страница
 @app.route('/')
@@ -110,6 +81,18 @@ def network():
 def consulting():
     return render_template('consulting.html', title='Консультации - Техно Батя')
 
+@app.route('/sites')
+def sites():
+    return render_template('sites.html', title='Сайты - Техно Батя')
+
+@app.route('/santeh')
+def santeh():
+    return render_template('santeh.html', title='Сантехник - Техно Батя')
+
+@app.route('/electr')
+def electr():
+    return render_template('electr.html', title='Электрик - Техно Батя')
+
 @app.route('/portfolio')
 def portfolio():
     return render_template('portfolio.html', title='Портфолио - Техно Батя')
@@ -118,71 +101,46 @@ def portfolio():
 def team():
     return render_template('team.html', title='Команда - Техно Батя')
 
-# Страница отзывов
+# Заглушка для страницы отзывов
 @app.route('/reviews')
 def reviews():
-    # Получаем все одобренные отзывы, отсортированные по дате
-    reviews_list = Review.query.filter_by(is_approved=True).order_by(Review.created_at.desc()).all()
+    # Временные данные для отзывов
+    reviews_list = []
     return render_template('reviews.html', reviews=reviews_list, title='Отзывы - Техно Батя')
 
-# API для получения отзывов (для AJAX)
+# API для получения отзывов (для AJAX) - заглушка
 @app.route('/api/reviews')
 def api_reviews():
-    reviews_list = Review.query.filter_by(is_approved=True).order_by(Review.created_at.desc()).all()
     reviews_data = []
-    for review in reviews_list:
-        reviews_data.append({
-            'id': review.id,
-            'author': review.author,
-            'position': review.position,
-            'text': review.text,
-            'rating': review.rating,
-            'created_at': review.created_at.strftime('%d.%m.%Y'),
-            'avatar_url': review.avatar_url,
-            'service': review.service
-        })
     return jsonify(reviews_data)
 
-# Добавление нового отзыва
+# Добавление нового отзыва - заглушка
 @app.route('/api/reviews/add', methods=['POST'])
 def add_review():
     try:
         data = request.get_json()
         
-        new_review = Review(
-            author=data['author'],
-            position=data.get('position', 'Клиент'),
-            text=data['text'],
-            rating=data['rating'],
-            avatar_url=data.get('avatar_url', f'https://i.pravatar.cc/100?img={random.randint(1, 70)}'),
-            service=data.get('service', 'Общая услуга')
-        )
-        
-        db.session.add(new_review)
-        db.session.commit()
+        # Здесь можно добавить логику обработки отзыва без БД
+        # Например, сохранение в JSON файл или просто возврат успеха
         
         return jsonify({
             'success': True,
-            'message': 'Отзыв успешно добавлен и будет опубликован после модерации!',
-            'review_id': new_review.id
+            'message': 'Отзыв успешно отправлен! Спасибо за ваш отзыв.',
+            'review_id': random.randint(1000, 9999)
         })
     except Exception as e:
         return jsonify({
             'success': False,
-            'message': f'Ошибка при добавлении отзыва: {str(e)}'
+            'message': f'Ошибка при отправке отзыва: {str(e)}'
         }), 400
 
-# Статистика отзывов
+# Статистика отзывов - заглушка
 @app.route('/api/reviews/stats')
 def reviews_stats():
-    total = Review.query.filter_by(is_approved=True).count()
-    avg_rating = db.session.query(db.func.avg(Review.rating)).filter_by(is_approved=True).scalar() or 0
-    recent = Review.query.filter_by(is_approved=True).order_by(Review.created_at.desc()).limit(5).count()
-    
     return jsonify({
-        'total': total,
-        'avg_rating': round(avg_rating, 1),
-        'recent': recent
+        'total': 0,
+        'avg_rating': 0,
+        'recent': 0
     })
     
 @app.route('/api/repair/request', methods=['POST'])
@@ -212,9 +170,6 @@ def repair_request():
                 'message': 'Пожалуйста, введите корректный номер телефона'
             })
         
-        # Здесь можно добавить логику сохранения заявки в базу данных
-        # Например, создать модель RepairRequest
-        
         # Пока просто возвращаем успешный ответ
         master_text = "с выездом мастера" if call_master else "в сервисном центре"
         response_message = (
@@ -228,10 +183,9 @@ def repair_request():
         )
         
         # В реальном приложении здесь можно:
-        # 1. Сохранить заявку в базу данных
-        # 2. Отправить уведомление на почту
-        # 3. Отправить SMS менеджеру
-        # 4. Интегрировать с CRM системой
+        # 1. Отправить уведомление на почту
+        # 2. Отправить SMS менеджеру
+        # 3. Интегрировать с CRM системой
         
         return jsonify({
             'success': True,
@@ -248,6 +202,7 @@ def repair_request():
 @app.route('/network')
 def network_redirect():
     return redirect(url_for('network'))
+
 
 @app.route('/consulting')
 def consulting_route():

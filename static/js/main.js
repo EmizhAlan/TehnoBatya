@@ -31,3 +31,4 @@ document.getElementById('enrollForm')?.addEventListener('submit', function(e) {
         alert('Пожалуйста, введите корректный номер телефона');
     }
 });
+
